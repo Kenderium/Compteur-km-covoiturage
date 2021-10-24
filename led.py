@@ -3,7 +3,7 @@ import time
 
 led = Pin(0, Pin.OUT)
 led.value(1)
-for i in rang(3):
+for i in range(3):
     x = input("Entre 0/1 pour allumer ou eteindre la lampe:")
     if x ==0:
         print("J'éteint la led")
