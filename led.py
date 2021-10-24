@@ -1,4 +1,4 @@
-from machine import pin
+from machine import Pin
 
 led = Pin(0, Pin.OUT)
 
