@@ -3,15 +3,19 @@ import time
 
 led = Pin(0, Pin.OUT)
 led.value(1)
-for i in range(3):
-    x = input("Entre 0/1 pour allumer ou eteindre la lampe:")
+run  = True 
+while run:
+    x = input("Entre 0/1/2pour allumer, eteindre la lampe ou stopper le système:")
     if x == 0:
-    x = int(input("Entre 0/1 pour allumer ou eteindre la lampe:"))
-    if x ==0:
-        print("J'éteint la led")
-        time.sleep(1)
-        led.value(x)
-    if x == 1:
         print("J'allume la led")
         time.sleep(1)
         led.value(x)
+    elif x == 1:
+        print("J'éteint la led")
+        time.sleep(1)
+        led.value(x)
+    elif x == 2:
+        print("Eteignons la led de l'arduino")
+        time.sleep(5)
+        led.value(0)
+        run = False 
