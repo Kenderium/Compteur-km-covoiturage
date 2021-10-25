@@ -1,5 +1,22 @@
 from machine import Pin
-import time
+import sys, time
+import RPi.GPIO as GPIO
+
+#Led RGB pin(0,1,2 + GND)
+redPin = 0
+greenPin = 1
+bluePin = 2
+
+def blink(pin):
+    GPIO.setmode(GPIO.BMC)
+    GPIO.setup(pin, GPIO.OUT)
+    GPIO.output(pin, GPIO.HIGH)    
+
+def turnOFF(pin):
+    GPIO.setmode(GPIO.BMC)
+    GPIO.setup(pin, GPIO.OUT)
+    GPIO.setup(pin, GPIO.LOW)
+
 
 led = Pin(0, Pin.OUT)
 led.value(1)
