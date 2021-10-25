@@ -17,7 +17,6 @@ def turnOFF(pin):
     GPIO.setup(pin, GPIO.OUT)
     GPIO.setup(pin, GPIO.LOW)
 
-
 led = Pin(0, Pin.OUT)
 led.value(1)
 run  = True 
