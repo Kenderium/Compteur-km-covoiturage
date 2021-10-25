@@ -6,6 +6,8 @@ led.value(1)
 for i in range(3):
     x = input("Entre 0/1 pour allumer ou eteindre la lampe:")
     if x == 0:
+    x = int(input("Entre 0/1 pour allumer ou eteindre la lampe:"))
+    if x ==0:
         print("J'éteint la led")
         time.sleep(1)
         led.value(x)
