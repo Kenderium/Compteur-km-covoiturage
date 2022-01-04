@@ -1,4 +1,13 @@
 from machine import Pin
+import time
+
+pin = Pin(25, Pin.OUT)
+
+while True:
+    pin.toggle()
+    time.sleep_ms(1000)
+
+'''rom machine import Pin
 import sys, time
 import RPi.GPIO as GPIO
 
@@ -35,3 +44,4 @@ while run:
         time.sleep(5)
         led.value(0)
         run = False 
+'''
