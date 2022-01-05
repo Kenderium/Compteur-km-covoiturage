@@ -1,7 +1,7 @@
 from machine import Pin
 import time
 
-pin = Pin(0, Pin.OUT)
+pin = Pin(25, Pin.OUT)
 
 # while True:
 #     pin.toggle()
@@ -9,11 +9,11 @@ pin = Pin(0, Pin.OUT)
 
 run  = True 
 while run:
-    x = input("Entre 0/1/2pour allumer, eteindre la lampe ou stopper le système:")
-    if x == 0:
+    x = int(input("Entre 0/1/2pour allumer, eteindre la lampe ou stopper le systeme:"))
+    if x == 1:
         print("J'allume la led")
         pin.value(x)
-    elif x == 1:
+    elif x == 0:
         print("J'éteint la led")
         time.sleep(1)
         pin.value(x)
