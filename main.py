@@ -1,7 +1,7 @@
 from machine import Pin
 import time
 
-pin = Pin(25, Pin.OUT)
+pin = Pin(0, Pin.OUT)
 
 # while True:
 #     pin.toggle()
@@ -14,7 +14,7 @@ while run:
         print("J'allume la led")
         pin.value(x)
     elif x == 0:
-        print("J'éteint la led")
+        print("J'eteint la led")
         time.sleep(1)
         pin.value(x)
     elif x == 2:
