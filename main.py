@@ -1,27 +1,35 @@
 from machine import Pin
 import time
 
-pin = Pin(0, Pin.OUT)
+#Setup
+led = Pin(0, Pin.OUT)
+button = Pin(2, Pin.IN, Pin.PULL_DOWN)
 
-# while True:
-#     pin.toggle()
-#     time.sleep_ms(1000)
+#Bouton pendant 5 fois
+i=0
+while i<6:
+    if button.value():
+        led.toggle()
+        time.sleep(0.5)
+        i += 1
 
+#Allumer-Eteindre led sur commandes
 run  = True 
 while run:
     x = int(input("Entre 0/1/2pour allumer, eteindre la lampe ou stopper le systeme:"))
     if x == 1:
         print("J'allume la led")
-        pin.value(x)
+        led.value(x)
     elif x == 0:
         print("J'eteint la led")
         time.sleep(1)
-        pin.value(x)
+        led.value(x)
     elif x == 2:
         print("Eteignons la led et arretons.")
         time.sleep(5)
-        pin.value(0)
+        led.value(0)
         run = False 
+
 
 '''rom machine import Pin
 import sys, time
