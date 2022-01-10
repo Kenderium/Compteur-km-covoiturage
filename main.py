@@ -8,10 +8,12 @@ button = Pin(2, Pin.IN, Pin.PULL_DOWN)
 #Bouton pendant 5 fois
 i=0
 while i<6:
+    print("Question?")
     if button.value():
         led.toggle()
         time.sleep(0.5)
         i += 1
+        print("oki")
 
 #Allumer-Eteindre led sur commandes
 run  = True 
