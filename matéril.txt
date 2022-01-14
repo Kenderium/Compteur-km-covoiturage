@@ -1,0 +1,8 @@
+Box 3D (imprimé)
+
+Puce GPS:
+Lecteur RFID (NFC--> téléphone ?):
+Module Wifi pour stats;...:
+Led rouge + verte (bonne lecture des cartes):
+Ecran (affichage conducteur, kilomètres,...):
+Haut parleur (annoncer le pilote ;) ):
