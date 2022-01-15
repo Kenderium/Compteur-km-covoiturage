@@ -1,0 +1,12 @@
+/*
+ * Filename: c:\Users\jujud\Documents\Covoiturage\Compteur-km-covoiturage\Setting up the project.txt
+ * Path: c:\Users\jujud\Documents\Covoiturage\Compteur-km-covoiturage\.vscode
+ * Created Date: Saturday, January 15th 2022, 10:42:54 am
+ * Author: Julien Dagnelie
+ * 
+ * Copyright (c) 2022 Universite catholique de Louvain
+ */
+
+1. Set up Folder structure
+2. Use github workflow
+
