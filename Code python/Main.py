@@ -46,16 +46,17 @@ def menu3():
     ECRAN.afficher()
 
 
-if bouton1.value():
-    bonjour()
-    while True:                       # Message de bienvenue
-        if bouton1.value():                     # Choix du menu
-            i=0
-            if i != 3:
-                i+=1            
-            else:
-                i = 1            
-            menu = str("menu" + str(i))
-            #menu()
+if bouton1.value():                             # Allumage
+    bonjour()                                   # Message de bienvenue
+    while True:
+        i = 1
+        if i == 1:
+            menu1()
+        if i == 2:
+            menu2()
+        if i == 3:
+            menu1()
+        if bouton1.value():                     # Changer de menu
+            i +=1
 
 run()
