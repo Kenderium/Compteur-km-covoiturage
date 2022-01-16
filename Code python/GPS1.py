@@ -16,21 +16,29 @@ Date   Sun Jan 16 2022   	By Julien Dagnelie	Comments
 import machine
 from micropyGPS import MicropyGPS
 from math import sin, cos, atan2, radians, sqrt
+import time
 
 uart = machine.UART(1, baudrate=9600, tx = machine.Pin(1))
 gps = MicropyGPS()
 
 def startgps(running=False):
+    """Demarre le tracking gps et logs les latitudes et longitudes dans le fichier de logs
+
+    Args:
+        running (bool, optional): . Defaults to False.
+    """
+
+    gps.start_logging("logs.txt")
+
     while running:
         if uart.any():
-            coordonees = (gps.latitude_string(), gps.longitude_string())
+            coordonees = gps.latitude_string(), gps.longitude_string()
 
-
-            gps.start_logging("logs.txt")
-            gps.write_log(coordonees)
-            gps.stop_logging()
+            gps.write_log(str(coordonees) + '\n')
             
-           
+        time.sleep(1.5) 
+
+    gps.stop_logging()     
 
 def distance(lat1,lat2, long1, long2):
     """Calcul la distance entre deux points grace a la formule haversine

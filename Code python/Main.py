@@ -14,7 +14,7 @@ Date   Sun Jan 16 2022   	By Julien Dagnelie	Comments
 ----------	---	---------------------------------------------------------
 '''
 
-import GPS
+import GPS1
 import ECRAN
 import RFID
 import Maths 
