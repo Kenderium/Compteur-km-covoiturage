@@ -6,6 +6,5 @@
  * 
  * Copyright (c) 2022 Universite catholique de Louvain
  */
- 
 50°43'28.4"N 4°23'04.6"E
 50°42'56.5"N 4°22'18.4"E
