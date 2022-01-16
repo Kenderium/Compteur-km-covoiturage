@@ -1,4 +1,20 @@
-from machine import Pin
+'''
+File: main.py
+Project: Compteur-km-covoiturage
+Created Date: Sa Jan 2022
+Author: Julien Dagnelie
+-----
+Last Modified: Sun Jan 16 2022
+Modified By: Julien Dagnelie
+-----
+Copyright (c) 2022 Universite catholique de Louvain
+-----
+HISTORY:
+Date   Sun Jan 16 2022   	By Julien Dagnelie	Comments
+----------	---	---------------------------------------------------------
+'''
+
+from machine import Pin, Timer
 import time
 
 #Setup
@@ -31,42 +47,10 @@ while run:
         led.value(0)
         run = False 
 
+led = Pin(15, Pin.OUT)
+button = Pin(14, Pin.IN, Pin.PULL_DOWN)
 
-'''rom machine import Pin
-import sys, time
-import RPi.GPIO as GPIO
-
-#Led RGB pin(0,1,2 + GND)
-redPin = 0
-greenPin = 1
-bluePin = 2
-
-def blink(pin):
-    GPIO.setmode(GPIO.BMC)
-    GPIO.setup(pin, GPIO.OUT)
-    GPIO.output(pin, GPIO.HIGH)    
-
-def turnOFF(pin):
-    GPIO.setmode(GPIO.BMC)
-    GPIO.setup(pin, GPIO.OUT)
-    GPIO.setup(pin, GPIO.LOW)
-
-led = Pin(0, Pin.OUT)
-led.value(1)
-run  = True 
-while run:
-    x = input("Entre 0/1/2pour allumer, eteindre la lampe ou stopper le système:")
-    if x == 0:
-        print("J'allume la led")
-        time.sleep(1)
-        led.value(x)
-    elif x == 1:
-        print("J'éteint la led")
-        time.sleep(1)
-        led.value(x)
-    elif x == 2:
-        print("Eteignons la led de l'arduino")
-        time.sleep(5)
-        led.value(0)
-        run = False 
-'''
+while True:
+    if button.value():
+        led.toggle()
+        time.sleep(0.5)
