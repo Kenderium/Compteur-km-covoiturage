@@ -23,12 +23,14 @@ gps = MicropyGPS()
 def startgps(running=False):
     while running:
         if uart.any():
-            lat = gps.latitude_string()
-            long = gps.longitude_string()
-
-            log = gps.start_logging("logs.txt")
+            coordonees = (gps.latitude_string(), gps.longitude_string())
 
 
+            gps.start_logging("logs.txt")
+            gps.write_log(coordonees)
+            gps.stop_logging()
+            
+           
 
 def distance(lat1,lat2, long1, long2):
     """Calcul la distance entre deux points grace a la formule haversine
