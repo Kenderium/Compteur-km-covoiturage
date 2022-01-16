@@ -26,17 +26,31 @@ led_verte = machine.Pin(17, machine.Pin.OUT)
 led_rouge = machine.Pin(16, machine.Pin.OUT)
 
 def bonjour():
+    """ Message de bienvenue
+    """
     ECRAN.txt("Bonjour", 0, 0)
     ECRAN.txt("Que voulez-vous faire ?", 1, 1)
     ECRAN.afficher()
+def aurevoir():
+    """ Message d'aurevoir
+    """
+    ECRAN.txt("Merci de m'avoir utilisé", 0, 0)
+    ECRAN.txt("Bye", 1, 1)
+    ECRAN.afficher()
 
 def menu1():
-    ECRAN.txt("Encoder Chauffeur", 1, 1)
+    """ Menu 1: encodage chauffeur
+    """
+    ECRAN.txt("Encoder chauffeur", 1, 1)
     ECRAN.afficher()
 def menu2():
-    ECRAN.txt("Encoder Passagers", 1, 1)
+    """ Menu 2: encodage passager
+    """
+    ECRAN.txt("Encoder passagers", 1, 1)
     ECRAN.afficher()
 def menu3():
+    """ Menu 3: démarrage du voyage
+    """
     ECRAN.txt("Démarrer le voyage", 1, 1)
     ECRAN.afficher()
 
@@ -60,8 +74,8 @@ if bouton1.value():                             # Allumage
         if i == 3:
             menu1()
             if bouton2.value():                 # Confirmation
-                run                             # Démarer voyage
+                run()                             # Démarer voyage
         if bouton1.value():                     # Changer de menu
             i +=1
 
-run()
+aurevoir()
