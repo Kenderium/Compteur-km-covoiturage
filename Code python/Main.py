@@ -25,11 +25,6 @@ bouton2 = machine.Pin(15, machine.Pin.IN, machine.Pin.PULL_DOWN) # bouton valide
 led_verte = machine.Pin(17, machine.Pin.OUT)
 led_rouge = machine.Pin(16, machine.Pin.OUT)
 
-def run():
-    """Lance toute l'artillerie lourde
-    """
-    pass
-
 def bonjour():
     ECRAN.txt("Bonjour", 0, 0)
     ECRAN.txt("Que voulez-vous faire ?", 1, 1)
@@ -45,6 +40,10 @@ def menu3():
     ECRAN.txt("Démarrer le voyage", 1, 1)
     ECRAN.afficher()
 
+def run():
+    """Lance toute l'artillerie lourde
+    """
+    pass
 
 if bouton1.value():                             # Allumage
     bonjour()                                   # Message de bienvenue
@@ -52,10 +51,16 @@ if bouton1.value():                             # Allumage
         i = 1
         if i == 1:
             menu1()
+            if bouton2.value():                 # Confirmation
+                pass                            # Encoder conducteur
         if i == 2:
             menu2()
+            if bouton2.value():                 # Confirmation
+                pass                            # Encoder Passager
         if i == 3:
             menu1()
+            if bouton2.value():                 # Confirmation
+                run                             # Démarer voyage
         if bouton1.value():                     # Changer de menu
             i +=1
 
