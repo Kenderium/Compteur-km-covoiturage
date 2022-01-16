@@ -18,3 +18,4 @@ from machine import Pin, I2C
 import ssd1306py
 
 ssd1306py.ssd1306.SSD1306_I2C
+i2c=I2C(1,sda=Pin(0), scl=Pin(1), freq=400000)
