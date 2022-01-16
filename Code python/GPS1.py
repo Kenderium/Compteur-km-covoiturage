@@ -44,10 +44,10 @@ def distance(lat1,lat2, long1, long2):
     """Calcul la distance entre deux points grace a la formule haversine
 
     Args:
-        lat1 [int]: Latitude des points du point de depart
-        lat2 [int]: Latitude des points du point d'arrivee
-        long1 [int]: Longitude des points du point de depart
-        long2 [int]: Longitude des points du point d'arrivee
+        lat1 [coordonees]: Latitude des points du point de depart
+        lat2 [coordonees]: Latitude des points du point d'arrivee
+        long1 [coordonees]: Longitude des points du point de depart
+        long2 [coordonees]: Longitude des points du point d'arrivee
 
     Returns:
         distkm [int]: distance entre les deux point (lat1, long1) et (lat2, long2)
@@ -69,3 +69,9 @@ def distance(lat1,lat2, long1, long2):
     distkm = round(distm / 1000, 3) # distance [km]
 
     return distkm
+
+lat1 = 50 + 43/60 + 28.4/3600
+long1 = 4 + 23/60+ 4.6/3600
+lat2 = 50 + 42/60 + 56.5/3600
+long2 = 4 + 22/60 + 18.4/3600
+print(distance(lat1, lat2, long1, long2))

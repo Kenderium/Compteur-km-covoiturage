@@ -15,4 +15,7 @@ Date   Sun Jan 16 2022   	By Julien Dagnelie & Loïc Tumelaire	Comments
 '''
 
 from machine import Pin, I2C
-from ssd1306 import SSD1306_I2C
+
+import ssd1306py
+
+ssd1306py.ssd1306.SSD1306_I2C
