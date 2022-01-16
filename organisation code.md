@@ -1,7 +1,7 @@
 # Librairie
 - math
 - machine (micropython)
-- time/time
+- time/utime
 - MicropyGPS
 
 
