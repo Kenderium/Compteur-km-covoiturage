@@ -13,13 +13,13 @@ HISTORY:
 Date   Sun Jan 16 2022   	By Julien Dagnelie	Comments
 ----------	---	---------------------------------------------------------
 '''
-# import machine
-# from micropyGPS import MicropyGPS
-# from math import sin, cos, atan2, radians, sqrt
-# import time
+import machine
+from micropyGPS import MicropyGPS
+from math import sin, cos, atan2, radians, sqrt
+import time
 
-# uart = machine.UART(1, baudrate=9600, tx = machine.Pin(1))
-# gps = MicropyGPS()
+uart = machine.UART(1, baudrate=9600, tx = machine.Pin(1))
+gps = MicropyGPS()
 
 def startgps(running=False):
     """Demarre le tracking gps et logs les latitudes et longitudes dans le fichier de logs
@@ -40,17 +40,30 @@ def startgps(running=False):
 
     gps.stop_logging()  
 
-def  transformation_coord(lat): 
-    deg = ""
+def transformation_coord(lat, long): 
+    """Transforme les degres minute seconde en degres pour pouvoir les utiliser a des fins calculatoirs
+
+    Args:
+        lat ([str]): coordonees selon la lattitude
+        long ([str]): coordonees selon la longitude
+    Returns:
+        [tuples]: tuples de coordonees 
+    """
+
+    deg_lat = ""
+    deg_long = ""
+
     for i in lat:
-        if i not in ["°", " ' ", """ " """, "N", "S", "O", "E"]:
-            deg += i
-    print(deg)
-
-transformation_coord("""50°43'28.4"N""")
-
-
-
+        if i not in ["°", "'", '"', "N", "S"]:
+            deg_lat += i
+    
+    for j in long:
+        if j not in ["°", "'", '"', "O", "E"]:
+            deg_long += j
+    
+    coord = (int(deg_lat[0:1]) + int(deg_lat[2:3]) / 60 + int(deg_lat[4:])/3600, \
+            int(deg_long[0:1]) + int(deg_long[2:3]) / 60 + int(deg_long[4:])/3600) 
+    return coord
 
 def distance(lat1,lat2, long1, long2):
     """Calcul la distance entre deux points grace a la formule haversine
