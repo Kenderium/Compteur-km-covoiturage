@@ -5,7 +5,7 @@ Created Date: Su Jan 2022
 Author: Julien Dagnelie
 -----
 Last Modified: Sun Jan 16 2022
-Modified By: Julien Dagnelie
+Modified By: Julien Dagnelie & Loïc Tumelaire
 -----
 Copyright (c) 2022 Universite catholique de Louvain
 -----
@@ -14,12 +14,20 @@ Date   Sun Jan 16 2022   	By Julien Dagnelie	Comments
 ----------	---	---------------------------------------------------------
 '''
 import machine
-import time 
 from micropyGPS import MicropyGPS
 from math import sin, cos, atan2, radians, sqrt
 
 uart = machine.UART(1, baudrate=9600, tx = machine.Pin(1))
 gps = MicropyGPS()
+
+def startgps(running=False):
+    while running:
+        if uart.any():
+            lat = gps.latitude_string()
+            long = gps.longitude_string()
+
+            log = gps.start_logging("logs.txt")
+
 
 
 def distance(lat1,lat2, long1, long2):

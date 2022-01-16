@@ -5,7 +5,7 @@ Created Date: Sa Jan 2022
 Author: Julien Dagnelie
 -----
 Last Modified: Sun Jan 16 2022
-Modified By: Julien Dagnelie
+Modified By: Julien Dagnelie & Loïc Tumelaire
 -----
 Copyright (c) 2022 Universite catholique de Louvain
 -----
