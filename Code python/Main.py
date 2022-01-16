@@ -16,7 +16,6 @@ Date   Sun Jan 16 2022   	By Julien Dagnelie	Comments
 
 import GPS
 import ECRAN
-import LCD
 import RFID
 import Maths 
 import machine
