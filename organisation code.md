@@ -3,6 +3,7 @@
 - machine (micropython)
 - time/utime
 - MicropyGPS
+- ssd1306py
 
 
 # GPS
