@@ -18,4 +18,14 @@ import GPS
 import LCD
 import RFID
 import Maths 
+import machine
+
+bouton1 = machine.Pin(14, machine.Pin.IN, machine.Pin.PULL_DOWN) # bouton suivant
+bouton2 = machine.Pin(15, machine.Pin.IN, machine.Pin.PULL_DOWN) # bouton valider
+
+
+
+def start():
+    if bouton2.value():
+        pass
 
