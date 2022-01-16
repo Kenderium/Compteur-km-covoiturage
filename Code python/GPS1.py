@@ -47,7 +47,7 @@ def  transformation_coord(lat):
             deg += i
     print(deg)
 
-print(transformation_coord("""50°43'28.4"N"""))
+transformation_coord("""50°43'28.4"N""")
 
 
 
