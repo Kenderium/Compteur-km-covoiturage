@@ -51,5 +51,3 @@ def distance(lat1,lat2, long1, long2):
     distkm = round(distm / 1000, 3) # distance [km]
 
     return distkm
-    
-
