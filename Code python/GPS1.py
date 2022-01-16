@@ -13,13 +13,13 @@ HISTORY:
 Date   Sun Jan 16 2022   	By Julien Dagnelie	Comments
 ----------	---	---------------------------------------------------------
 '''
-import machine
-from micropyGPS import MicropyGPS
-from math import sin, cos, atan2, radians, sqrt
-import time
+# import machine
+# from micropyGPS import MicropyGPS
+# from math import sin, cos, atan2, radians, sqrt
+# import time
 
-uart = machine.UART(1, baudrate=9600, tx = machine.Pin(1))
-gps = MicropyGPS()
+# uart = machine.UART(1, baudrate=9600, tx = machine.Pin(1))
+# gps = MicropyGPS()
 
 def startgps(running=False):
     """Demarre le tracking gps et logs les latitudes et longitudes dans le fichier de logs
@@ -38,7 +38,19 @@ def startgps(running=False):
             
         time.sleep(1.5) 
 
-    gps.stop_logging()     
+    gps.stop_logging()  
+
+def  transformation_coord(lat): 
+    deg = ""
+    for i in lat:
+        if i not in ["°", " ' ", """ " """, "N", "S", "O", "E"]:
+            deg += i
+    print(deg)
+
+print(transformation_coord("""50°43'28.4"N"""))
+
+
+
 
 def distance(lat1,lat2, long1, long2):
     """Calcul la distance entre deux points grace a la formule haversine
@@ -70,8 +82,8 @@ def distance(lat1,lat2, long1, long2):
 
     return distkm
 
-lat1 = 50 + 43/60 + 28.4/3600
-long1 = 4 + 23/60+ 4.6/3600
-lat2 = 50 + 42/60 + 56.5/3600
-long2 = 4 + 22/60 + 18.4/3600
-print(distance(lat1, lat2, long1, long2))
+# lat1 = 50 + 43/60 + 28.4/3600
+# long1 = 4 + 23/60+ 4.6/3600
+# lat2 = 50 + 42/60 + 56.5/3600
+# long2 = 4 + 22/60 + 18.4/3600
+# print(distance(lat1, lat2, long1, long2))
