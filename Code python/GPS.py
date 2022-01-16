@@ -21,6 +21,11 @@ uart = machine.UART(1, baudrate=9600, tx = machine.Pin(1))
 gps = MicropyGPS()
 
 def startgps(running=False):
+    """Demarre le tracking gps et logs les latitudes et longitudes dans le fichier de logs
+
+    Args:
+        running (bool, optional): . Defaults to False.
+    """
     while running:
         if uart.any():
             coordonees = (gps.latitude_string(), gps.longitude_string())
