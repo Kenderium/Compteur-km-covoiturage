@@ -46,9 +46,27 @@ def pixel(x, y):
     oled.pixel(x,y,1)
 
 def line(x1, y1, x2, y2):
+    """Créee une ligne (diagonale, verticale, horizontale)
+
+    Args:
+        x1 (int): Coordonnée x début
+        y1 (int): Coordonnée y début
+        x2 (int): Coordonnée x fin
+        y2 (int): Coordonnée y fin
+    """
     #oled.line(x1,y1,x2,y2,1)
     pass
+
 def rectangle(x1, y1, x2, y2, fill=False):
+    """Créée un rectangle, remplis ou pas
+
+    Args:
+        x1 (int): Coordonnée x début
+        y1 (int): Coordonnée y début
+        x2 (int): Coordonnée x fin
+        y2 (int): Coordonnée y fin
+        fill (bool, optional): Remplir le rectangle. Defaults to False.
+    """
     #oled.rect(x1, y1, x2, y2, 1)
     pass
     if fill == True:

@@ -15,8 +15,14 @@
 # Affichage LCD
 - txt(texte, x, y)
     - Crée un texte à afficher sur l'écran.
+- pixel(x, y)
+    - Créée un pixel.
+- line(x1, y1, x2, y2):
+    - Créee une ligne (diagonale, verticale, horizontale)
+- rectangle(x1, y1, x2, y2, fill=False):
+    - Créée un rectangle, remplis ou pas
 - afficher()
-    - Pour afficher les textes réalisés à l'écran.
+    - Pour afficher les éléments réalisés à l'écran.
 
 # RFID
 
