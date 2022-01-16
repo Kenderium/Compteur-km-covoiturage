@@ -16,7 +16,7 @@ Date   Sun Jan 16 2022   	By Julien Dagnelie	Comments
 import machine
 import time 
 from micropyGPS import MicropyGPS
-from math import *
+from math import sin, cos, atan2, radians, sqrt
 
 uart = machine.UART(1, baudrate=9600, tx = machine.Pin(1))
 gps = MicropyGPS()
