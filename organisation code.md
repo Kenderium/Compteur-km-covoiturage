@@ -7,16 +7,22 @@
 
 
 # GPS
-
 - startgps(running)
     - cette fonction permet de demarer les logs du gps pour recuperer les latitudes et longitudes
 - distance(lat1, lat2, long1, long2)
     - calcul la distance selon la formule haversine pour savoir les km parcourus lors du trajets
-# RFID
-
-# Partie mathematique
 
 # Affichage LCD
+- txt(texte, x, y)
+    - Crée un texte à afficher sur l'écran.
+- afficher()
+    - Pour afficher les textes réalisés à l'écran.
+
+# RFID
+
+# Bluethoot - App
+
+# Partie mathematique
 
 # Fonctionnement du boitier :
 

@@ -30,5 +30,8 @@ def run():
     """
     pass
 
+ECRAN.txt("yo", 0, 0)
+ECRAN.txt("Ju + Lu + Lo", 1, 1)
+ECRAN.afficher()
 
 run()
