@@ -30,8 +30,30 @@ def run():
     """
     pass
 
-ECRAN.txt("yo", 0, 0)
-ECRAN.txt("Ju + Lu + Lo", 1, 1)
-ECRAN.afficher()
+def bonjour():
+    ECRAN.txt("Bonjour", 0, 0)
+    ECRAN.txt("Que voulez-vous faire ?", 1, 1)
+    ECRAN.afficher()
+
+def menu1():
+    ECRAN.txt("Encoder Chauffeur", 1, 1)
+    ECRAN.afficher()
+def menu2():
+    ECRAN.txt("Encoder Passagers", 1, 1)
+    ECRAN.afficher()
+def menu3():
+    ECRAN.txt("Démarrer le voyage", 1, 1)
+    ECRAN.afficher()
+
+if bouton1:
+    bonjour()                       # Message de bienvenue
+    if bouton1:                     # Choix du menu
+        i=0
+        if i != 3:
+            i+=1
+        else:
+            i = 1
+        menu = str("menu" + str(i))
+        #menu()
 
 run()
