@@ -52,7 +52,7 @@ def rectangle(x1, y1, x2, y2, fill=False):
     #oled.rect(x1, y1, x2, y2, 1)
     pass
     if fill == True:
-        #oled.fill_rect(0, 0, 64, 32, 1)
+        #oled.fill_rect(x1, y1, x2, y2, 1)
         pass
 
 #Images et défilements inutiles?
