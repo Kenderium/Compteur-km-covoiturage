@@ -21,8 +21,6 @@ from math import sin, cos, atan2, radians, sqrt
 uart = machine.UART(1, baudrate=9600, tx = machine.Pin(1))
 gps = MicropyGPS()
 
-def start():
-    pass
 
 def distance(lat1,lat2, long1, long2):
     """Calcul la distance entre deux points grace a la formule haversine
