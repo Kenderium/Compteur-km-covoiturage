@@ -45,15 +45,17 @@ def menu3():
     ECRAN.txt("Démarrer le voyage", 1, 1)
     ECRAN.afficher()
 
-if bouton1:
-    bonjour()                       # Message de bienvenue
-    if bouton1:                     # Choix du menu
-        i=0
-        if i != 3:
-            i+=1
-        else:
-            i = 1
-        menu = str("menu" + str(i))
-        #menu()
+
+if bouton1.value():
+    bonjour()
+    while True:                       # Message de bienvenue
+        if bouton1.value():                     # Choix du menu
+            i=0
+            if i != 3:
+                i+=1            
+            else:
+                i = 1            
+            menu = str("menu" + str(i))
+            #menu()
 
 run()
