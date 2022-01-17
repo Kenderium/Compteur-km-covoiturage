@@ -77,16 +77,24 @@ if bouton1.value():                             # Allumage
         if i == 1:
             menu1()
             if bouton2.value():                 # Confirmation
-
+                led_verte.value(1)
+                time.sleep(0.5)
+                led_verte.value(0)
                 pass                            # Encoder conducteur
         if i == 2:
             menu2()
             if bouton2.value():                 # Confirmation
+                led_verte.value(1)
+                time.sleep(0.5)
+                led_verte.value(0)
                 pass                            # Encoder Passager
         if i == 3:
             menu1()
             if bouton2.value():                 # Confirmation
-                run()                             # Démarer voyage
+                led_rouge.value(1)
+                time.sleep(0.5)
+                led_rouge.value(0)
+                run()                           # Démarer voyage
         if bouton1.value():                     # Changer de menu
             i +=1
 
