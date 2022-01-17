@@ -29,3 +29,4 @@ def lecture():
 
 #Source:
 #https://www.tomshardware.com/how-to/raspberry-pi-pico-powered-rfid-lighting
+#https://github.com/danjperron/micropython-mfrc522
