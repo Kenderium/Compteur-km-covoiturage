@@ -1,5 +1,5 @@
 /*
- * Filename: d:\Utilisateurs\loict\Documents\GIT\Compteur-km-covoiturage\Code python\logs\tests.py
+ * Filename: c:\Users\loict\OneDrive\Documents\Git\Project1\Code python\logs\logs.txt
  * Path: c:\Users\jujud\Documents\Covoiturage\Compteur-km-covoiturage\Code python\logs
  * Created Date: Sunday, January 16th 2022, 6:08:27 pm
  * Author: Julien Dagnelie & Loïc Tumelaire
@@ -10,3 +10,5 @@
 50°42'56.5"N 4°22'18.4"E
 2
 3
+
+#(37, 51.65, 'S') (37, 51.65, 'S') ?

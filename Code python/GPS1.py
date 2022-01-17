@@ -4,7 +4,7 @@ Project: Code python
 Created Date: Su Jan 2022
 Author: Julien Dagnelie
 -----
-Last Modified: Mon Jan 17 2022
+Last Modified: Tue Jan 18 2022
 Modified By: Julien Dagnelie & Loïc Tumelaire
 -----
 Copyright (c) 2022 Universite catholique de Louvain
@@ -80,4 +80,9 @@ with open("C:\\Users\\jujud\\Documents\\Covoiturage\\Compteur-km-covoiturage\\Co
     l = []
     for line in file:
         l.append(line.strip())
-    print(l)
+    print(l)                            # Liste contenant comme chaque élément une coordonnée
+    
+    km = 0
+    for c in range(len(l)):
+        time.sleep(1.5)                 # Attendre que la voiture change de coordonnées
+        km += distance(l[c],l[c+1])     # Somme distance entre chaque point
