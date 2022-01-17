@@ -1,2 +1,12 @@
-(50, 43.01, 'N') (4, 23.01, 'E')
-(50, 42.02, 'N') (4, 22.01, 'E')
+/*
+ * Filename: d:\Utilisateurs\loict\Documents\GIT\Compteur-km-covoiturage\Code python\logs\tests.py
+ * Path: c:\Users\jujud\Documents\Covoiturage\Compteur-km-covoiturage\Code python\logs
+ * Created Date: Sunday, January 16th 2022, 6:08:27 pm
+ * Author: Julien Dagnelie & Loïc Tumelaire
+ * 
+ * Copyright (c) 2022 Universite catholique de Louvain
+ */
+50°43'28.4"N 4°23'04.6"E
+50°42'56.5"N 4°22'18.4"E
+2
+3
