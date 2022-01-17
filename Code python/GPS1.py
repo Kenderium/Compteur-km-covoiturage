@@ -4,7 +4,7 @@ Project: Code python
 Created Date: Su Jan 2022
 Author: Julien Dagnelie
 -----
-Last Modified: Sun Jan 16 2022
+Last Modified: Mon Jan 17 2022
 Modified By: Julien Dagnelie & Loïc Tumelaire
 -----
 Copyright (c) 2022 Universite catholique de Louvain
@@ -15,8 +15,9 @@ Date   Sun Jan 16 2022   	By Julien Dagnelie	Comments
 '''
 import machine
 from micropyGPS import MicropyGPS
-from math import sin, cos, atan2, radians, sqrt
+from math import radians, acos, cos, sin
 import time
+import os 
 
 uart = machine.UART(1, baudrate=9600, tx = machine.Pin(1))
 gps = MicropyGPS()
@@ -32,7 +33,7 @@ def startgps(running=False):
 
     while running:
         if uart.any():
-            coordonees = gps.latitude_string(), gps.longitude_string()
+            coordonees = gps.latitude, gps.longitude
 
             gps.write_log(str(coordonees) + '\n')
             
@@ -40,63 +41,43 @@ def startgps(running=False):
 
     gps.stop_logging()  
 
-def transformation_coord(lat, long): 
-    """Transforme les degres minute seconde en degres pour pouvoir les utiliser a des fins calculatoirs
+
+def transformation_coord(coord): 
+    new_coord = coord[0] + coord[1] / 60
+    return new_coord
+    
+
+def distance(coord1, coord2):
+    """Calcul la distance entre 2 point avec les latitudes et longitudes
 
     Args:
-        lat ([str]): coordonees selon la lattitude
-        long ([str]): coordonees selon la longitude
-    Returns:
-        [tuples]: tuples de coordonees 
-    """
-
-    deg_lat = ""
-    deg_long = ""
-
-    for i in lat:
-        if i not in ["°", "'", '"', "N", "S"]:
-            deg_lat += i
-    
-    for j in long:
-        if j not in ["°", "'", '"', "O", "E"]:
-            deg_long += j
-    
-    coord = (int(deg_lat[0:1]) + int(deg_lat[2:3]) / 60 + int(deg_lat[4:])/3600, \
-            int(deg_long[0:1]) + int(deg_long[2:3]) / 60 + int(deg_long[4:])/3600) 
-    return coord
-
-def distance(lat1,lat2, long1, long2):
-    """Calcul la distance entre deux points grace a la formule haversine
-
-    Args:
-        lat1 [coordonees]: Latitude des points du point de depart
-        lat2 [coordonees]: Latitude des points du point d'arrivee
-        long1 [coordonees]: Longitude des points du point de depart
-        long2 [coordonees]: Longitude des points du point d'arrivee
+        coord1 (tuple): tuple contenant la latitude et la longitude d'un point
+        coord2 (tuple): tuple contenant la latitude et la longitude d'un point
 
     Returns:
-        distkm [int]: distance entre les deux point (lat1, long1) et (lat2, long2)
+        [type]: [description]
     """
-    R = 6371000 # Rayon de la terre [m]
+  
+    R = 6378137 # Rayon de la terre [m]
 
-    phi1, phi2 = radians(lat1), radians(lat2)
+    phi1, phi2 = radians(coord1[0]), radians(coord2[0])
+    lambda1, lambda2 = radians(coord1[0]), radians(coord2[1])
 
     delta_phi = radians(phi2 - phi1)
-    delta_lambda = radians(long2-long1)
+    delta_lambda = radians(lambda2-lambda1)
 
     # Calcul grace a la formule haversine c.f Wikipedia
 
-    a = sin(delta_phi / 2.0) ** 2 + cos(phi1) * cos(phi2) * sin(delta_lambda / 2.0) ** 2
-    
-    c = 2 * atan2(sqrt(a), sqrt(1 - a))
+    S = acos(sin(phi1)*sin(phi2) + cos(lambda1)*cos(lambda2)*cos(delta_lambda))
 
-    distm = R * c # distance [m]
+    distm = R * S # distance [m]
     distkm = round(distm / 1000, 3) # distance [km]
 
     return distkm
 
-# lat1 = 50 + 43/60 + 28.4/3600
-# long1 = 4 + 23/60+ 4.6/3600
-# lat2 = 50 + 42/60 + 56.5/3600
-# long2 = 4 + 22/60 + 18.4/3600
-# print(distance(lat1, lat2, long1, long2))
+
+with open("C:\\Users\\jujud\\Documents\\Covoiturage\\Compteur-km-covoiturage\\Code python\\logs\\logs.txt") as file:
+    l = []
+    for line in file:
+        l.append(line.strip())
+    print(l)
