@@ -4,7 +4,7 @@ Project: Code python
 Created Date: Su Jan 2022
 Author: Julien Dagnelie
 -----
-Last Modified: Tue Jan 25 2022
+Last Modified: Sat Jan 29 2022
 Modified By: Julien Dagnelie & Loïc Tumelaire
 -----
 Copyright (c) 2022 Universite catholique de Louvain
@@ -18,7 +18,7 @@ from micropyGPS import MicropyGPS
 gps = MicropyGPS()
 from math import radians, acos, cos, sin
 import time
-import os
+#import os
 import _thread                                              #Pour exécuter plusieures taches en simultané
 
 uart = machine.UART(0, baudrate=9600, tx = machine.Pin(0))  #Pin du GPS
