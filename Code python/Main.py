@@ -4,7 +4,7 @@ Project: Code python
 Created Date: Su Jan 2022
 Author: Julien Dagnelie
 -----
-Last Modified: Mon Jan 17 2022
+Last Modified: Thu Jan 20 2022
 Modified By: Julien Dagnelie & Loïc Tumelaire
 -----
 Copyright (c) 2022 Universite catholique de Louvain
@@ -14,17 +14,22 @@ Date   Sun Jan 16 2022   	By Julien Dagnelie	Comments
 ----------	---	---------------------------------------------------------
 '''
 
+import machine
+import time
+
 import GPS1
 import ECRAN
 import RFID
-import Maths 
-import machine
-import time
+import covoit
 
 bouton1 = machine.Pin(14, machine.Pin.IN, machine.Pin.PULL_DOWN) # bouton suivant
 bouton2 = machine.Pin(15, machine.Pin.IN, machine.Pin.PULL_DOWN) # bouton valider
 led_verte = machine.Pin(17, machine.Pin.OUT)
 led_rouge = machine.Pin(16, machine.Pin.OUT)
+
+Conducteur = ""
+Passagers = []
+trajet_numero = 0
 
 def bonjour():
     """ Message de bienvenue
@@ -64,38 +69,100 @@ def menu3():
     """
     ECRAN.txt("Démarrer le voyage", 1, 1)
     ECRAN.afficher()
+def menu4():
+    """ Menu 4: historique
+    """
+    ECRAN.txt("Historique", 1, 1)
+    ECRAN.afficher()
+def menu5():
+    """ Menu 5: Bluethoot
+    """
+    ECRAN.txt("Bluethoot", 1, 1)
+    ECRAN.afficher()
+def menu_exit():
+    """ Menu_exit: exit
+    """
+    ECRAN.txt("Exit ?", 1, 1)
+    ECRAN.afficher()
 
 def run():
     """Lance toute l'artillerie lourde
     """
-    pass
+    km = GPS1.run()
+    prix = covoit.prix(km, Passagers)
+    with open("historique_trajets.txt") as historique:
+        historique.append("Trajet numéro " + trajet_numero + "\n" + "km = " + km + "\t" +"Conducteur : " + Conducteur + "\t" + "Passagers : " + Passagers)
+    
 
 if bouton1.value():                             # Allumage
     bonjour()                                   # Message de bienvenue
     while True:
         i = 1
-        if i == 1:
+        if i == 1:                              # Encoder conducteur
             menu1()
             if bouton2.value():                 # Confirmation
                 led_verte.value(1)
                 time.sleep(0.5)
                 led_verte.value(0)
-                pass                            # Encoder conducteur
-        if i == 2:
+                Conducteur = RFID.lecture()     # Encodage conducteur
+        if i == 2:                              # Encoder passagers
             menu2()
             if bouton2.value():                 # Confirmation
                 led_verte.value(1)
                 time.sleep(0.5)
                 led_verte.value(0)
-                pass                            # Encoder Passager
-        if i == 3:
-            menu1()
+                while not bouton2.value():      # Encodage Passager
+                    Passagers.append(RFID.lecture())
+                    led_rouge.value(1)
+                    time.sleep(0.5)
+                    led_rouge.value(0)
+        if i == 3:                              # Démarer voyage
+            menu3()
             if bouton2.value():                 # Confirmation
                 led_rouge.value(1)
                 time.sleep(0.5)
                 led_rouge.value(0)
-                run()                           # Démarer voyage
+                run()                           # Démarage voyage
+        if i == 4:
+            menu4()                             # Historique
+            if bouton2.value():                 # Confirmation
+                led_vert.value(1)
+                time.sleep(0.5)
+                led_vert.value(0)
+                with open("historique_trajets.txt") as historique:
+                    i=0
+                    while not bouton2.value():
+                        if bouton1.value():
+                            i +=1
+                        try:
+                            ECRAN.txt(historique[i], 1, 1)
+                            ECRAN.afficher()
+                        except IndexError:
+                            break
+        if i == 5:
+            menu5()                             # Bluethoot
+            if bouton2.value():                 # Confirmation
+                led_vert.value(1)
+                time.sleep(0.5)
+                led_vert.value(0)
+                pass
+        if i == 6:                              # Menu exit
+            menu_exit()
+            if bouton2.value():                 # Confirmation
+                led_rouge.value(1)
+                time.sleep(0.5)
+                led_rouge.value(0)
+                aurevoir()
         if bouton1.value():                     # Changer de menu
-            i +=1
-
-aurevoir()
+            if i == 6:
+                i = 1
+            else:
+                i += 1
+                
+'''            
+Menu Bluethoot:
+km total ?
+prix du plein
+recevoir historique
+stats?
+'''
