@@ -1,8 +1,0 @@
-/*
- * Filename: c:\Users\loict\OneDrive\Documents\Git\Project1\Code python\logs\logs.txt
- * Path: c:\Users\jujud\Documents\Covoiturage\Compteur-km-covoiturage\Code python\logs
- * Created Date: Sunday, January 16th 2022, 6:08:27 pm
- * Author: Julien Dagnelie & Loïc Tumelaire
- * 
- * Copyright (c) 2022 Universite catholique de Louvain
- */
