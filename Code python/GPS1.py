@@ -4,7 +4,7 @@ Project: Code python
 Created Date: Su Jan 2022
 Author: Julien Dagnelie
 -----
-Last Modified: Sat Jan 29 2022
+Last Modified: Sun Jan 30 2022
 Modified By: Julien Dagnelie & Loïc Tumelaire
 -----
 Copyright (c) 2022 Universite catholique de Louvain
@@ -67,15 +67,16 @@ def distance(coord1, coord2):
 
     S = acos(sin(phi1)*sin(phi2) + cos(lambda1)*cos(lambda2)*cos(delta_lambda))
 
-    distm = R * S # distance [m]
+    distm = R * S                   # distance [m]
     distkm = round(distm / 1000, 3) # distance [km]
 
     return distkm
 
+compteur_km = True           # Démarre le calcul des km
+
+
 def run():
     
-    compteur_km = True           # Démarre le calcul des km
-
     def second_thread():         # Seconde tâche
         global compteur_km
         while compteur_km:
@@ -119,4 +120,5 @@ def run():
                 except IndexError:
                     pass
                 
-                print("test_th2")
+                print("test_th1")
+run()
