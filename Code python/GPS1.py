@@ -33,6 +33,7 @@ def startgps(running=False):
     gps.start_logging("logs.txt")    # Base de données meilleure ?
     while running:
         if uart.any():
+            print("nani")                               # La boucle n'est réalisée que 2 fois ? --> bug
             coordonees = gps.latitude, gps.longitude
             gps.write_log(str(coordonees) + '\n')  
         time.sleep(1.5) 
@@ -80,18 +81,12 @@ def run():
 
     def second_thread():         # Seconde tâche
         global compteur_km
-        print("test_th2a")    # un test
         while compteur_km:
-            print("test_th2b")    # un test
             baton.acquire()      # Regarde si le thread est libre et se l'acquière
-            print("test_th2c")    # un test
             startgps(True)       # Démarre le gps   --> #Bug
-            print("test_th2d")    # un test
             time.sleep(5)        # Pendant 5 secs (pour les tests)
-            print("test_th2e")    # un test
             startgps(False)      # Arrete le gps
             print(km)            # Affiche les km parcourus
-            print("test_th2f")    # un test
             compteur_km = False  # Arrete le calcul des km
             
             baton.release()      # Libère le thread
