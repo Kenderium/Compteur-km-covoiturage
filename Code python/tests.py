@@ -29,7 +29,8 @@ while i != 8:
     gps.write_log(str(coordonees) + "\n") 
     time.sleep(1.5)
     i +=1
-    
+    print("ok")
+
 gps.stop_logging()
 
 
