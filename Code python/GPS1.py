@@ -35,8 +35,9 @@ def startgps(running=False):
         if uart.any():
             print("nani")                               # La boucle n'est réalisée que 2 fois ? --> bug
             coordonees = gps.latitude, gps.longitude
-            gps.write_log(str(coordonees) + '\n')  
-        time.sleep(1.5) 
+            gps.write_log(str(coordonees) + "\n")  
+        time.sleep(1.5)
+        running = False 
     gps.stop_logging()  
 
 
@@ -84,7 +85,6 @@ def run():
         while compteur_km:
             baton.acquire()      # Regarde si le thread est libre et se l'acquière
             startgps(True)       # Démarre le gps   --> #Bug
-            time.sleep(5)        # Pendant 5 secs (pour les tests)
             startgps(False)      # Arrete le gps
             print(km)            # Affiche les km parcourus
             compteur_km = False  # Arrete le calcul des km
