@@ -76,7 +76,8 @@ compteur_km = True           # Démarre le calcul des km
 
 
 def run():
-    
+    baton = _thread.allocate_lock()               # Bloqueur de thread pour éviter crash,...
+
     def second_thread():         # Seconde tâche
         global compteur_km
         print("test_th2a")    # un test
@@ -96,7 +97,7 @@ def run():
             baton.release()      # Libère le thread
             
 
-    baton = _thread.allocate_lock()               # Bloqueur de thread pour éviter crash,...
+    
     _thread.start_new_thread(second_thread, ())   # Création du thread et démarrage
 
     time.sleep(1.5)
