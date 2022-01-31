@@ -95,8 +95,6 @@ def run():
             compteur_km = False  # Arrete le calcul des km
             
             baton.release()      # Libère le thread
-            
-
     
     _thread.start_new_thread(second_thread, ())   # Création du thread et démarrage
 
