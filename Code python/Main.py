@@ -102,7 +102,7 @@ def run():
     km = GPS1.run()
     prix = covoit.prix(km, Passagers)
     with open("historique_trajets.txt") as historique:
-        historique.append("Trajet numéro " + trajet_numero + "\n" + "km = " + km + "\t" +"Conducteur : " + Conducteur + "\t" + "Passagers : " + Passagers)
+        historique.append("Trajet numéro {} ".format(trajet_numero) + "\n" + "km = {}".format(km) + "\t" +"Conducteur : " + Conducteur + "\t" + "Passagers : {}".format(Passagers))
     
 
 
