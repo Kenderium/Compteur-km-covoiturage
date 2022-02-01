@@ -30,7 +30,7 @@ compteur = 0
 
 while(True):
     BT.write(str(compteur)+'\n')
-    compteur = compteur + 1
+    compteur += + 1
     sleep(1)
 
 '''
