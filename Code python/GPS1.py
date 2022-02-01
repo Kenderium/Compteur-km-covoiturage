@@ -4,7 +4,7 @@ Project: Code python
 Created Date: Su Jan 2022
 Author: Julien Dagnelie
 -----
-Last Modified: Mon Jan 31 2022
+Last Modified: Tue Feb 01 2022
 Modified By: Julien Dagnelie & Loïc Tumelaire
 -----
 Copyright (c) 2022 Universite catholique de Louvain
@@ -37,7 +37,7 @@ def startgps(running=False):
             coordonees = gps.latitude, gps.longitude
             gps.write_log(str(coordonees) + "\n")  
         time.sleep(1.5)
-        running = False 
+        #running = False 
     gps.stop_logging()  
 
 
