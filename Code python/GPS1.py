@@ -4,7 +4,7 @@ Project: Code python
 Created Date: Su Jan 2022
 Author: Julien Dagnelie
 -----
-Last Modified: Tue Feb 01 2022
+Last Modified: Wed Feb 02 2022
 Modified By: Julien Dagnelie & Loïc Tumelaire
 -----
 Copyright (c) 2022 Universite catholique de Louvain
@@ -21,7 +21,7 @@ import _thread                                              # Pour exécuter plu
 
 gps = MicropyGPS()
 baton = _thread.allocate_lock()                             # Bloqueur de thread pour éviter crash,...
-uart = machine.UART(0, baudrate=9600, tx = machine.Pin(0))  # Pin du GPS
+uart = machine.UART(0, baudrate=9600)  # Pin du GPS     , tx = machine.Pin(0) ?
 on = True
 
 
@@ -37,12 +37,15 @@ def startgps(running):
     """
 
     gps.start_logging("logs.txt")                       # Base de données meilleure ?
-    while running:
+    while on:
         if uart.any():
             coordonees = gps.latitude, gps.longitude
             gps.write_log(str(coordonees) + "\n")  
         time.sleep(1.5)
-    gps.stop_logging()  
+        print("pas ok")
+    print("oki")
+    gps.stop_logging()
+    print("ok") 
 
 def second_thread():        # Seconde tâche: Si on appuie sur le bouton
         baton.acquire()     # Regarde si le thread est libre et se l'acquière
@@ -51,6 +54,7 @@ def second_thread():        # Seconde tâche: Si on appuie sur le bouton
         bouton = True       # On appuie sur le bouton "A modifier"
         if bouton:
             on = False      # On arrete le Gps
+            print("bouton")
         baton.release()     # Libère le thread
 
 """
@@ -93,8 +97,10 @@ def run():
     global on
     _thread.start_new_thread(second_thread, ())   # Création du thread et démarrage
     
-    while on:  
+    while on:
+        print("bug")
         startgps(True)              # Démarre le gps
+        print('bugg')
     startgps(False)                 # Arrete le gps
 
     with open("logs.txt") as file:  # Ouvre le fichier des trajets
