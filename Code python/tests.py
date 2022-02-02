@@ -4,7 +4,7 @@ Project: Code python
 Created Date: Sa Jan 2022
 Author: Julien Dagnelie & Loïc Tumelaire
 -----
-Last Modified: Mon Jan 31 2022
+Last Modified: Wed Feb 02 2022
 Modified By: Julien Dagnelie & Loïc Tumelaire
 -----
 Copyright (c) 2022 Universite catholique de Louvain
@@ -13,7 +13,7 @@ HISTORY:
 Date   Mon Jan 31 2022   	By Julien Dagnelie & Loïc Tumelaire	Comments
 ----------	---	---------------------------------------------------------
 '''
-
+'''
 import machine
 import _thread
 import time
@@ -32,7 +32,7 @@ while i != 8:
     print("ok")
 
 gps.stop_logging()
-
+'''
 
 '''
 compteur_km = True

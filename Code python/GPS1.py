@@ -22,9 +22,8 @@ import _thread                                              # Pour exécuter plu
 
 baton = _thread.allocate_lock()                             # Bloqueur de thread pour éviter crash,...
 uart = machine.UART(0, baudrate=9600)  # Pin du GPS     , tx = machine.Pin(0) ?
-on = True
 
-def startgps(on):
+def startgps(start):
     """Demarre le tracking gps et logs les latitudes et longitudes dans le fichier de logs
 
     Args:
@@ -32,25 +31,12 @@ def startgps(on):
     """
 
     gps.start_logging("logs.txt")                       # Base de données meilleure ?
-    while on:
-        if uart.any():
-            coordonees = gps.latitude, gps.longitude
-            gps.write_log(str(coordonees) + "\n")  
-        time.sleep(1.5)
-        print("pas ok")
-    print("oki")
+    if uart.any():
+        coordonees = gps.latitude, gps.longitude
+        gps.write_log(str(coordonees) + "\n")  
+    time.sleep(1.5)
     gps.stop_logging()
-    print("ok") 
 
-def second_thread():        # Seconde tâche: Si on appuie sur le bouton
-        baton.acquire()     # Regarde si le thread est libre et se l'acquière
-        global on
-        time.sleep(5)
-        bouton = True       # On appuie sur le bouton "A modifier"
-        if bouton:
-            on = False      # On arrete le Gps
-            print("bouton")
-        baton.release()     # Libère le thread
 
 """
 INUTILE ?
@@ -89,13 +75,10 @@ def distance(coord1, coord2):
     return distkm
 
 def run():
-    global on
     _thread.start_new_thread(second_thread, ())   # Création du thread et démarrage
     
-    while on:
-        print("bug")
+    while go:
         startgps(True)              # Démarre le gps
-        print('bugg')
     startgps(False)                 # Arrete le gps
 
     with open("logs.txt") as file:  # Ouvre le fichier des trajets
@@ -118,4 +101,16 @@ def run():
                 pass
     return km
 
+def second_thread():        # Seconde tâche: Si on appuie sur le bouton
+    global go
+    bouton = True
+    while bouton:
+        baton.acquire()     # Regarde si le thread est libre et se l'acquière
+        time.sleep(5)
+        bouton = False       # On appuie sur le bouton "A modifier"
+        if bouton == False:
+            go = False
+        baton.release()     # Libère le thread
+
+go = True
 print(run())
