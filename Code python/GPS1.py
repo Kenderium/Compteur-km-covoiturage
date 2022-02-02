@@ -15,14 +15,19 @@ Date   Sun Jan 16 2022   	By Julien Dagnelie	Comments
 '''
 import machine
 from micropyGPS import MicropyGPS
-gps = MicropyGPS()
 from math import radians, acos, cos, sin
 import time
 import _thread                                              # Pour exécuter plusieures taches en simultané
 
+gps = MicropyGPS()
 baton = _thread.allocate_lock()                             # Bloqueur de thread pour éviter crash,...
 uart = machine.UART(0, baudrate=9600, tx = machine.Pin(0))  # Pin du GPS
 on = True
+
+
+# ----------------
+# Functions ------
+# ----------------
 
 def startgps(running):
     """Demarre le tracking gps et logs les latitudes et longitudes dans le fichier de logs
@@ -64,7 +69,7 @@ def distance(coord1, coord2):
         coord2 (tuple): tuple contenant la latitude et la longitude d'un point
 
     Returns:
-        [type]: [description]
+        distkm: [description]
     """
   
     R = 6378137 # Rayon de la terre [m]
