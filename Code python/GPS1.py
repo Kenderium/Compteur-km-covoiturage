@@ -21,7 +21,7 @@ import _thread                                              # Pour exécuter plu
 
 gps = MicropyGPS()
 baton = _thread.allocate_lock()                             # Bloqueur de thread pour éviter crash,...
-uart = machine.UART(0, baudrate=9600)  # Pin du GPS     , tx = machine.Pin(0) ?
+uart = machine.UART(0, baudrate=9600, tx = machine.Pin(0), rx = machine.Pin(1))  # Pin du GPS      ?
 
 def startgps(start):
     """Demarre le tracking gps et logs les latitudes et longitudes dans le fichier de logs
