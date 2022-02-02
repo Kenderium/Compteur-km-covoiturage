@@ -99,6 +99,7 @@ def run():
                 km += distance(d[c],d[c+1])     # Somme distance entre chaque point
             except IndexError:
                 pass
+            print(km)
     return km
 
 def second_thread():        # Seconde tâche: Si on appuie sur le bouton
