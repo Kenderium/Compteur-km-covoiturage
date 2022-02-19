@@ -4,7 +4,7 @@ Project: Code python
 Created Date: Su Jan 2022
 Author: Julien Dagnelie & Loïc Tumelaire
 -----
-Last Modified: Wed Jan 19 2022
+Last Modified: Sat Feb 19 2022
 Modified By: Julien Dagnelie & Loïc Tumelaire
 -----
 Copyright (c) 2022 Universite catholique de Louvain
@@ -30,7 +30,7 @@ compteur = 0
 
 while(True):
     BT.write(str(compteur)+'\n')
-    compteur += + 1
+    compteur += 1
     sleep(1)
 
 '''
