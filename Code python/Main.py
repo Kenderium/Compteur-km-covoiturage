@@ -19,7 +19,7 @@ import time
 #import GPS1
 import ECRAN
 import RFID1
-import covoit
+#import covoit
 
 #  Creation des boutons, led indicatrices
 bouton1 = machine.Pin(14, machine.Pin.IN, machine.Pin.PULL_DOWN) # bouton suivant
@@ -41,7 +41,8 @@ def bonjour():
     led_verte.value(1)
     led_rouge.value(1)
     ECRAN.txt("Bonjour", 0, 0)
-    ECRAN.txt("Que voulez-vous faire ?", 1, 1)
+    ECRAN.txt("Que voulez-vous faire ?", 0, 10)
+    ECRAN.txt("faire ?", 0, 20)
     ECRAN.afficher()
     time.sleep(1)
     led_verte.value(0)
@@ -98,91 +99,88 @@ def menu_exit():
 def run():
     """Lance toute l'artillerie lourde
     """
-    km = GPS1.run()
-    
-    with open("historique_trajets.txt") as historique:
-        historique.append("Trajet numéro {} ".format(trajet_numero) + "\n" + "km = {}".format(km) + "\t" +"Conducteur : " + Conducteur + "\t" + "Passagers : {}".format(Passagers))
-    
+    km = 60
+    #with open("historique_trajets.txt") as historique:
+    #    historique.append("Trajet numéro {} ".format(trajet_numero) + "\n" + "km = {}".format(km) + "\t" +"Conducteur : " + Conducteur + "\t" + "Passagers : {}".format(Passagers))   
 
-Run = True
-if __name__ == "main":
-    while (Run):
-        print("start")
-        if bouton1.value():                             # Allumage
-            bonjour()                                   # Message de bienvenue
 
-            while True:
-                i = 1
-                if i == 1:                              # Encoder conducteur
+print("start")
+while True:
+    if bouton1.value():                             # Allumage
+        bonjour()                                   # Message de bienvenue
+        i = 1
+        while True:
 
-                    menu1()
-                    if bouton2.value():                 # Confirmation
-                        led_verte.value(1)
-                        time.sleep(0.5)
-                        led_verte.value(0)
-                        Conducteur = RFID.lecture()     # Encodage conducteur
+            if i == 1:                              # Encoder conducteur
+                menu1()
+                if bouton2.value():                 # Confirmation
+                    led_verte.value(1)
+                    time.sleep(0.5)
+                    led_verte.value(0)
+                    Conducteur = RFID1.lecture()     # Encodage conducteur
 
-                if i == 2:                              # Encoder passagers
-                    menu2()
-                    if bouton2.value():                 # Confirmation
-                        led_verte.value(1)
-                        time.sleep(0.5)
-                        led_verte.value(0)
-                        while not bouton2.value():      # Encodage Passager
-                            Passagers.append(RFID.lecture())
-                            led_rouge.value(1)
-                            time.sleep(0.5)
-                            led_rouge.value(0)
-
-                if i == 3:                              # Démarer voyage
-                    menu3()
-                    if bouton2.value():                 # Confirmation
+            if i == 2:                              # Encoder passagers
+                menu2()
+                if bouton2.value():                 # Confirmation
+                    led_verte.value(1)
+                    time.sleep(0.5)
+                    led_verte.value(0)
+                    while not bouton2.value():      # Encodage Passager
+                        Passagers.append(RFID1.lecture())
                         led_rouge.value(1)
                         time.sleep(0.5)
                         led_rouge.value(0)
-                        run()                           # Démarage voyage
 
-                if i == 4:
-                    menu4()                             # Historique
-                    if bouton2.value():                 # Confirmation
-                        led_verte.value(1)
-                        time.sleep(0.5)
-                        led_verte.value(0)
-                        with open("historique_trajets.txt") as historique:
-                            i=0
-                            while not bouton2.value():
-                                if bouton1.value():
-                                    i +=1
-                                try:
-                                    ECRAN.txt(historique[i], 1, 1)
-                                    ECRAN.afficher()
-                                except IndexError:
-                                    break
+            if i == 3:                              # Démarer voyage
+                menu3()
+                if bouton2.value():                 # Confirmation
+                    led_rouge.value(1)
+                    time.sleep(0.5)
+                    led_rouge.value(0)
+                    run()                           # Démarage voyage
 
-                if i == 5:
-                    menu5()                             # Bluetooth / plein
-                    if bouton2.value():                 # Confirmation
-                        led_verte.value(1)
-                        time.sleep(0.5)
-                        led_verte.value(0)
-                        prix = covoit.prix(km, Passagers)
-                        pass
+            if i == 4:
+                menu4()                             # Historique
+                if bouton2.value():                 # Confirmation
+                    led_verte.value(1)
+                    time.sleep(0.5)
+                    led_verte.value(0)
+                    with open("historique_trajets.txt") as historique:
+                        i=0
+                        while not bouton2.value():
+                            if bouton1.value():
+                                i +=1
+                            try:
+                                ECRAN.txt(historique[i], 1, 1)
+                                ECRAN.afficher()
+                            except IndexError:
+                                break
 
-                if i == 6:                              # Menu exit
-                    menu_exit()
-                    if bouton2.value():                 # Confirmation
-                        led_rouge.value(1)
-                        time.sleep(0.5)
-                        led_rouge.value(0)
-                        aurevoir()
-                        Run = False
+            if i == 5:
+                menu5()                             # Bluetooth / plein
+                if bouton2.value():                 # Confirmation
+                    led_verte.value(1)
+                    time.sleep(0.5)
+                    led_verte.value(0)
+                    pass
+                    #prix = covoit.prix(km, Passagers)
 
-                if bouton1.value():                     # Changer de menu
-                    if i == 6:
-                        i = 1
-                    else:
-                        i += 1
-             
+            if i == 6:                              # Menu exit
+                menu_exit()
+                if bouton2.value():                 # Confirmation
+                    led_rouge.value(1)
+                    time.sleep(0.5)
+                    led_rouge.value(0)
+                    aurevoir()
+                    
+
+            if bouton1.value():                     # Changer de menu
+                if i == 6:
+                    i = 1
+                else:
+                    i += 1
+                time.sleep(3)
+            
 '''           
     Menu Bluethoot:
     km total ?
