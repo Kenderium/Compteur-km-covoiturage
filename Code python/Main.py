@@ -85,9 +85,9 @@ def menu4():
     ECRAN.afficher()
 
 def menu5():
-    """ Menu 5: Bluethoot
+    """ Menu 5: Bluetooth / Plein
     """
-    ECRAN.txt("Bluethoot", 1, 1)
+    ECRAN.txt("Bluetooth", 1, 1)
     ECRAN.afficher()
 
 def menu_exit():
@@ -100,7 +100,7 @@ def run():
     """Lance toute l'artillerie lourde
     """
     km = GPS1.run()
-    prix = covoit.prix(km, Passagers)
+    
     with open("historique_trajets.txt") as historique:
         historique.append("Trajet numéro {} ".format(trajet_numero) + "\n" + "km = {}".format(km) + "\t" +"Conducteur : " + Conducteur + "\t" + "Passagers : {}".format(Passagers))
     
@@ -160,11 +160,12 @@ if __name__ == "main":
                                 break
 
             if i == 5:
-                menu5()                             # Bluethoot
+                menu5()                             # Bluetooth / plein
                 if bouton2.value():                 # Confirmation
                     led_verte.value(1)
                     time.sleep(0.5)
                     led_verte.value(0)
+                    prix = covoit.prix(km, Passagers)
                     pass
 
             if i == 6:                              # Menu exit
