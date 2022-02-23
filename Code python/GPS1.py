@@ -4,7 +4,7 @@ Project: Code python
 Created Date: Su Jan 2022
 Author: Julien Dagnelie
 -----
-Last Modified: Wed Feb 02 2022
+Last Modified: Wed Feb 23 2022
 Modified By: Julien Dagnelie & Loïc Tumelaire
 -----
 Copyright (c) 2022 Universite catholique de Louvain
@@ -13,15 +13,14 @@ HISTORY:
 Date   Sun Jan 16 2022   	By Julien Dagnelie	Comments
 ----------	---	---------------------------------------------------------
 '''
-import machine
+#import machine
 from micropyGPS import MicropyGPS
 from math import radians, acos, cos, sin
 import time
 import _thread                                              # Pour exécuter plusieures taches en simultané
 
-gps = MicropyGPS()
-baton = _thread.allocate_lock()                             # Bloqueur de thread pour éviter crash,...
-uart = machine.UART(0, baudrate=9600, tx = machine.Pin(0), rx = machine.Pin(1))  # Pin du GPS      ?
+#uart = machine.UART(1, baudrate=9600, tx = machine.Pin(1))
+#gps = MicropyGPS()
 
 def startgps(start):
     """Demarre le tracking gps et logs les latitudes et longitudes dans le fichier de logs
@@ -42,7 +41,7 @@ def startgps(start):
 INUTILE ?
 
 def transformation_coord(coord): 
-    new_coord = coord[0] + coord[1] / 60
+    new_coord = float(coord[0]) + float(coord[1]) / 60
     return new_coord
 """
 
