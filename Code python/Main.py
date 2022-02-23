@@ -19,18 +19,14 @@ import time
 #import GPS1
 import ECRAN
 import RFID1
-#import covoit
+import covoit
 
-ECRAN.txt("YO", 1,1)
-ECRAN.line(2,2,5,2)
-ECRAN.rectangle(2,2,10,10,True)
-ECRAN.afficher()
 #  Creation des boutons, led indicatrices
 bouton1 = machine.Pin(14, machine.Pin.IN, machine.Pin.PULL_DOWN) # bouton suivant
 bouton2 = machine.Pin(15, machine.Pin.IN, machine.Pin.PULL_DOWN) # bouton valider
 led_verte = machine.Pin(17, machine.Pin.OUT)
 led_rouge = machine.Pin(16, machine.Pin.OUT)
-'''
+
 Conducteur = ""
 Passagers = []
 trajet_numero = 0
@@ -110,7 +106,7 @@ def run():
 
 Run = True
 if __name__ == "main":
-    While Run:
+    while (Run):
         print("start")
         if bouton1.value():                             # Allumage
             bonjour()                                   # Message de bienvenue
@@ -186,11 +182,11 @@ if __name__ == "main":
                         i = 1
                     else:
                         i += 1
-'''               
-'''            
-Menu Bluethoot:
-km total ?
-prix du plein
-recevoir historique
-stats?
+             
+'''           
+    Menu Bluethoot:
+    km total ?
+    prix du plein
+    recevoir historique
+    stats?
 '''
