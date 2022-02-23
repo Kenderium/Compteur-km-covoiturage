@@ -187,4 +187,9 @@ while True:
     prix du plein
     recevoir historique
     stats?
+
+    GPS
+    Boite
+    RFID
+    Messages
 '''
