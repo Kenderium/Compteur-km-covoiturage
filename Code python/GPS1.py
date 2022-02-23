@@ -13,14 +13,14 @@ HISTORY:
 Date   Sun Jan 16 2022   	By Julien Dagnelie	Comments
 ----------	---	---------------------------------------------------------
 '''
-import machine
+#import machine
 from micropyGPS import MicropyGPS
 from math import radians, acos, cos, sin
 import time
 import os 
 
-uart = machine.UART(1, baudrate=9600, tx = machine.Pin(1))
-gps = MicropyGPS()
+#uart = machine.UART(1, baudrate=9600, tx = machine.Pin(1))
+#gps = MicropyGPS()
 
 def startgps(running=False):
     """Demarre le tracking gps et logs les latitudes et longitudes dans le fichier de logs
@@ -43,7 +43,7 @@ def startgps(running=False):
 
 
 def transformation_coord(coord): 
-    new_coord = coord[0] + coord[1] / 60
+    new_coord = float(coord[0]) + float(coord[1]) / 60
     return new_coord
     
 
