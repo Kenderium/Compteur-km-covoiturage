@@ -54,7 +54,7 @@ def line(x1, y1, x2, y2):
         x2 (int): Coordonnée x fin
         y2 (int): Coordonnée y fin
     """
-    #oled.line(x1,y1,x2,y2,1)
+    oled.line(x1,y1,x2,y2,1)
     pass
 
 def rectangle(x1, y1, x2, y2, fill=False):
@@ -67,10 +67,10 @@ def rectangle(x1, y1, x2, y2, fill=False):
         y2 (int): Coordonnée y fin
         fill (bool, optional): Remplir le rectangle. Defaults to False.
     """
-    #oled.rect(x1, y1, x2, y2, 1)
+    oled.rect(x1, y1, x2, y2, 1)
     pass
     if fill == True:
-        #oled.fill_rect(x1, y1, x2, y2, 1)
+        oled.fill_rect(x1, y1, x2, y2, 1)
         pass
 
 #Images et défilements inutiles?

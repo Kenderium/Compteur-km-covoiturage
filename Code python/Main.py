@@ -17,12 +17,14 @@ Date   Sun Jan 16 2022   	By Julien Dagnelie	Comments
 import machine
 import time
 #import GPS1
-#import ECRAN
+import ECRAN
 import RFID1
 #import covoit
 
-test = RFID1.lecture()
-print(test)
+ECRAN.txt("YO", 1,1)
+ECRAN.line(2,2,5,2)
+ECRAN.rectangle(2,2,10,10,True)
+ECRAN.afficher()
 #  Creation des boutons, led indicatrices
 bouton1 = machine.Pin(14, machine.Pin.IN, machine.Pin.PULL_DOWN) # bouton suivant
 bouton2 = machine.Pin(15, machine.Pin.IN, machine.Pin.PULL_DOWN) # bouton valider
