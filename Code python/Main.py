@@ -206,8 +206,7 @@ while True:
                     led_verte.value(1)
                     time.sleep(0.5)
                     led_verte.value(0)
-                    sc = True
-                    while sc:                       # Fonctionne pas avec "while not bouton2.value():"
+                    while not bouton2.value():                       # Obligé de scanner en appuyant sur le bouton pour sortir
                         scan = RFID1.lecture()
                         nom = RFID1.name(scan)
                         ECRAN.clean()
@@ -216,9 +215,8 @@ while True:
                         ECRAN.txt("Numero :", 0,20)
                         ECRAN.txt(str(scan), 0,30)
                         ECRAN.afficher()
-                        if bouton2.value():
-                            sc = False
-                    led_rouge.value(1)
+                        time.sleep(0.5)
+                    #led_rouge.value(1)                             # Mettre un delai ?
                     time.sleep(0.5)
                     led_rouge.value(0)
 
