@@ -217,6 +217,7 @@ while True:
                         ECRAN.txt(str(scan), 0,30)
                         ECRAN.afficher()
                         time.sleep(3)
+                        print("suivant")
                         if bouton2.value():
                             print("bouton2")
                             sc = False
