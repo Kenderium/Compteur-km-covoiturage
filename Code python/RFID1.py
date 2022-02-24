@@ -39,13 +39,13 @@ def name(card):
     if card == None:
         return "Rescannez"
     elif card == 707308629:
-        return "Loïc"
-    elif card == 000:
+        return "Lucas"
+    elif card == 401531548:
         return "Julien"
-    elif card == 000:
+    elif card == 852861376:
         return "Eduardo"
     elif card == 54835169:
-        return "Lucas"
+        return "Loic"
 
     else:
         return "Inconnu"
