@@ -134,6 +134,7 @@ def run():
     km = 60
     #with open("historique_trajets.txt") as historique:             #Enregistrer le trajet (km + conducteur + passagers)
     #    historique.append("Trajet numéro {} ".format(trajet_numero) + "\n" + "km = {}".format(km) + "\t" +"Conducteur : " + Conducteur + "\t" + "Passagers : {}".format(Passagers))   
+    return km
 
 while True:
     if bouton1.value():                             # Allumage
