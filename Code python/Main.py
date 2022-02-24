@@ -209,8 +209,12 @@ while True:
                     sc = True
                     while sc:                       # Fonctionne pas avec "while not bouton2.value():"
                         scan = RFID1.lecture()
+                        nom = RFID1.name(scan)
                         ECRAN.clean()
-                        ECRAN.txt(scan, 0,0)
+                        ECRAN.txt("nom :", 0,0)
+                        ECRAN.txt(nom, 0,10)
+                        ECRAN.txt("Numero :", 0,20)
+                        ECRAN.txt(str(scan), 0,30)
                         ECRAN.afficher()
                         time.sleep(3)
                         if bouton2.value():
