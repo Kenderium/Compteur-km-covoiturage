@@ -206,17 +206,17 @@ while True:
                     led_verte.value(1)
                     time.sleep(0.5)
                     led_verte.value(0)
-                    while not bouton2.value():                       # Obligé de scanner en appuyant sur le bouton pour sortir
+                    while not bouton2.value():                       # A optimiser: il faut parfois appuyer longtemps sur le bouton pour sortir....
                         scan = RFID1.lecture()
                         nom = RFID1.name(scan)
                         ECRAN.clean()
                         ECRAN.txt("Nom :", 0,0)
-                        ECRAN.txt(nom, 0,10)
+                        ECRAN.txt(str(nom), 0,10)
                         ECRAN.txt("Numero :", 0,20)
                         ECRAN.txt(str(scan), 0,30)
                         ECRAN.afficher()
-                        time.sleep(0.5)
-                    #led_rouge.value(1)                             # Mettre un delai ?
+                        #time.sleep(0.5)                            # Mettre un delai ?
+                    led_rouge.value(1)
                     time.sleep(0.5)
                     led_rouge.value(0)
 

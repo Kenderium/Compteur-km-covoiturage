@@ -49,9 +49,6 @@ def name(card):
     elif card == 54835169:
         return "Loic"
 
-    else:
-        return "Inconnu"
-
 #Source:
 #https://www.tomshardware.com/how-to/raspberry-pi-pico-powered-rfid-lighting
 #https://github.com/danjperron/micropython-mfrc522
