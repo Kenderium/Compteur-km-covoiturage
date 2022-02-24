@@ -34,7 +34,7 @@ led_rouge = machine.Pin(16, machine.Pin.OUT)
 # Gestion des passagers ----
 # --------------------------
 
-Conducteur = ""
+Conducteur = None
 Passagers = []
 trajet_numero = 0
 
@@ -135,7 +135,6 @@ def run():
     #with open("historique_trajets.txt") as historique:             #Enregistrer le trajet (km + conducteur + passagers)
     #    historique.append("Trajet numéro {} ".format(trajet_numero) + "\n" + "km = {}".format(km) + "\t" +"Conducteur : " + Conducteur + "\t" + "Passagers : {}".format(Passagers))   
 
-print("start")
 while True:
     if bouton1.value():                             # Allumage
         bonjour()                                   # Message de bienvenue
@@ -149,7 +148,17 @@ while True:
                     led_verte.value(1)
                     time.sleep(0.5)
                     led_verte.value(0)
-                    Conducteur = RFID1.lecture()     # Encodage conducteur
+                    ECRAN.clean()
+                    ECRAN.txt("Encodez :", 0,0)
+                    ECRAN.afficher()
+                    while Conducteur == None:
+                        Conducteur = RFID1.name(RFID1.lecture())     # Encodage conducteur
+                    led_rouge.value(1)
+                    ECRAN.clean()
+                    ECRAN.txt("Ok !", 0,0)
+                    ECRAN.afficher()
+                    time.sleep(1)
+                    led_rouge.value(0)
 
             if i == 2:                              # Encoder passagers
                 menu2()
@@ -158,10 +167,21 @@ while True:
                     time.sleep(0.5)
                     led_verte.value(0)
                     while not bouton2.value():      # Encodage Passager
-                        Passagers.append(RFID1.lecture())
-                        led_rouge.value(1)
-                        time.sleep(0.5)
-                        led_rouge.value(0)
+                        ECRAN.clean()
+                        ECRAN.txt("Encodez :", 0,0)
+                        ECRAN.afficher()
+                        passager = RFID1.name(RFID1.lecture())
+                        if  passager not in Passagers and passager != None:
+                            Passagers.append(passager)
+                            led_rouge.value(1)
+                            ECRAN.clean()
+                            ECRAN.txt("Ok !", 0,0)
+                            ECRAN.afficher()
+                            time.sleep(1)
+                            led_rouge.value(0)
+                            ECRAN.clean()
+                            ECRAN.txt("Autre passager ?", 0,0)
+                            ECRAN.afficher()
 
             if i == 3:                              # Démarer voyage
                 menu3()
@@ -245,6 +265,4 @@ while True:
 
     GPS
     Boite
-    RFID
-    Messages
 '''
