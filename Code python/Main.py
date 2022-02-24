@@ -40,6 +40,7 @@ def bonjour():
     """
     led_verte.value(1)
     led_rouge.value(1)
+    ECRAN.clean()
     ECRAN.txt("Bonjour", 0, 0)
     ECRAN.txt("Que voulez-vous faire ?", 0, 10)
     ECRAN.txt("faire ?", 0, 20)
@@ -53,46 +54,54 @@ def aurevoir():
     """
     led_verte.value(1)
     led_rouge.value(1)
+    ECRAN.clean()
     ECRAN.txt("Merci de m'avoir utilisé", 0, 0)
     ECRAN.txt("Bye", 1, 1)
     ECRAN.afficher()
     time.sleep(1)
     led_verte.value(0)
     led_rouge.value(0)
+    ECRAN.clean()
 
 def menu1():
     """ Menu 1: encodage chauffeur
     """
+    ECRAN.clean()
     ECRAN.txt("Encoder chauffeur", 1, 1)
     ECRAN.afficher()
 
 def menu2():
     """ Menu 2: encodage passager
     """
+    ECRAN.clean()
     ECRAN.txt("Encoder passagers", 1, 1)
     ECRAN.afficher()
 
 def menu3():
     """ Menu 3: démarrage du voyage
     """
+    ECRAN.clean()
     ECRAN.txt("Démarrer le voyage", 1, 1)
     ECRAN.afficher()
 
 def menu4():
     """ Menu 4: historique
     """
+    ECRAN.clean()
     ECRAN.txt("Historique", 1, 1)
     ECRAN.afficher()
 
 def menu5():
     """ Menu 5: Bluetooth / Plein
     """
+    ECRAN.clean()
     ECRAN.txt("Bluetooth", 1, 1)
     ECRAN.afficher()
 
 def menu_exit():
     """ Menu_exit: exit
     """
+    ECRAN.clean()
     ECRAN.txt("Exit ?", 1, 1)
     ECRAN.afficher()
 

@@ -44,4 +44,17 @@ def afficher():
     """
     oled.show()
 
+def clean():
+    """Pour vider l'écran
+    """
+    oled.fill(0)
+
+def scroll(dx, dy):
+    """?
+
+    Args:
+        dx (_type_): _description_
+        dy (_type_): _description_
+    """
+    oled.scroll(dx, dy)
 #Images et défilements inutiles?
