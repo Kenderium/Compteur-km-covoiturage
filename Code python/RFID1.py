@@ -36,7 +36,7 @@ def name(card):
     Returns:
         str: nom du propriétaire
     """
-    if card == None:
+    if card == 0:
         return "Rescannez"
     elif card == 707308629:
         return "Lucas"
