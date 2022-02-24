@@ -191,8 +191,11 @@ while True:
                     #prix = covoit.prix(km, Passagers)
 
             if i == 6:
-                menu5()                             # Scan de la carte
+                menu6()                             # Scan de la carte
                 if bouton2.value():                 # Confirmation
+                    ECRAN.clean()
+                    ECRAN.txt("Sannez", 0,0)
+                    ECRAN.afficher()
                     led_verte.value(1)
                     time.sleep(0.5)
                     led_verte.value(0)
