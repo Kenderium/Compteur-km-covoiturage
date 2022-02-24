@@ -28,10 +28,6 @@ def lecture():
             #if card == 611994825:                              # Si la carte est le numéro ...
                 #print("Hello user1")
 
-conducteur = lecture()
-
-print(conducteur)
-
 #Source:
 #https://www.tomshardware.com/how-to/raspberry-pi-pico-powered-rfid-lighting
 #https://github.com/danjperron/micropython-mfrc522
