@@ -202,6 +202,8 @@ while True:
                     while not bouton2.value():
                         scan = RFID1.lecture()
                         print(scan)
+                    ECRAN.clean()
+                    ECRAN.afficher()
                     led_rouge.value(1)
                     time.sleep(0.5)
                     led_rouge.value(0)
