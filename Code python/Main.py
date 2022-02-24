@@ -21,11 +21,18 @@ import RFID1
 #import GPS1
 #import covoit
 
-#  Creation des boutons, led indicatrices
+# -------------------------------------------
+# Creation des boutons, led indicatrices ----
+# -------------------------------------------
+
 bouton1 = machine.Pin(14, machine.Pin.IN, machine.Pin.PULL_DOWN) # bouton suivant
 bouton2 = machine.Pin(15, machine.Pin.IN, machine.Pin.PULL_DOWN) # bouton valider
 led_verte = machine.Pin(17, machine.Pin.OUT)
 led_rouge = machine.Pin(16, machine.Pin.OUT)
+
+# --------------------------
+# Gestion des passagers ----
+# --------------------------
 
 Conducteur = ""
 Passagers = []
@@ -125,7 +132,7 @@ def run():
     """Lance toute l'artillerie lourde
     """
     km = 60
-    #with open("historique_trajets.txt") as historique:
+    #with open("historique_trajets.txt") as historique:             #Enregistrer le trajet (km + conducteur + passagers)
     #    historique.append("Trajet numéro {} ".format(trajet_numero) + "\n" + "km = {}".format(km) + "\t" +"Conducteur : " + Conducteur + "\t" + "Passagers : {}".format(Passagers))   
 
 print("start")
@@ -199,11 +206,15 @@ while True:
                     led_verte.value(1)
                     time.sleep(0.5)
                     led_verte.value(0)
-                    while not bouton2.value():
+                    sc = True
+                    while sc:                       # Fonctionne pas avec "while not bouton2.value():"
                         scan = RFID1.lecture()
-                        print(scan)
-                    ECRAN.clean()
-                    ECRAN.afficher()
+                        ECRAN.clean()
+                        ECRAN.txt(scan, 0,0)
+                        ECRAN.afficher()
+                        time.sleep(3)
+                        if bouton2.value():
+                            sc = False
                     led_rouge.value(1)
                     time.sleep(0.5)
                     led_rouge.value(0)

@@ -28,6 +28,21 @@ def lecture():
             #if card == 611994825:                              # Si la carte est le numéro ...
                 #print("Hello user1")
 
+def name(card):
+    """Retourne ne nom du propriétaire de la carte
+
+    Args:
+        card (int): Numéro de la carte
+    Returns:
+        str: nom du propriétaire
+    """
+    if card == 54835169:
+        return "Lucas"
+    if card == 00000:
+        return ""
+    else:
+        return "Inconnu"
+
 #Source:
 #https://www.tomshardware.com/how-to/raspberry-pi-pico-powered-rfid-lighting
 #https://github.com/danjperron/micropython-mfrc522
