@@ -214,6 +214,7 @@ while True:
                         ECRAN.afficher()
                         time.sleep(3)
                         if bouton2.value():
+                            print("bouton2")
                             sc = False
                     led_rouge.value(1)
                     time.sleep(0.5)
@@ -233,7 +234,7 @@ while True:
                     i = 1
                 else:
                     i += 1
-                time.sleep(1)
+                time.sleep(0.5)
             
 '''           
     Menu Bluethoot:
