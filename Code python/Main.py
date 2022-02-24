@@ -42,67 +42,75 @@ def bonjour():
     led_rouge.value(1)
     ECRAN.clean()
     ECRAN.txt("Bonjour", 0, 0)
-    ECRAN.txt("Que voulez-vous faire ?", 0, 10)
+    ECRAN.txt("Que voulez-vous", 0, 10)
     ECRAN.txt("faire ?", 0, 20)
     ECRAN.afficher()
-    time.sleep(1)
+    time.sleep(2)
     led_verte.value(0)
     led_rouge.value(0)
 
 def aurevoir():
+    global on
     """ Message d'aurevoir
     """
     led_verte.value(1)
     led_rouge.value(1)
     ECRAN.clean()
-    ECRAN.txt("Merci de m'avoir utilisé", 0, 0)
-    ECRAN.txt("Bye", 1, 1)
+    ECRAN.txt("Merci de m'avoir", 0, 0)
+    ECRAN.txt("utilise", 0, 10)
+    ECRAN.txt("Bye", 0, 20)
     ECRAN.afficher()
     time.sleep(1)
+    ECRAN.clean()
+    ECRAN.afficher()
     led_verte.value(0)
     led_rouge.value(0)
-    ECRAN.clean()
+    on = False
+
 
 def menu1():
     """ Menu 1: encodage chauffeur
     """
     ECRAN.clean()
-    ECRAN.txt("Encoder chauffeur", 1, 1)
+    ECRAN.txt("Encoder", 0, 0)
+    ECRAN.txt("chauffeur", 0, 10)
     ECRAN.afficher()
 
 def menu2():
     """ Menu 2: encodage passager
     """
     ECRAN.clean()
-    ECRAN.txt("Encoder passagers", 1, 1)
+    ECRAN.txt("Encoder", 0, 0)
+    ECRAN.txt("passagers", 0, 10)
     ECRAN.afficher()
 
 def menu3():
     """ Menu 3: démarrage du voyage
     """
     ECRAN.clean()
-    ECRAN.txt("Démarrer le voyage", 1, 1)
+    ECRAN.txt("Demarrer", 0, 0)
+    ECRAN.txt("le voyage", 0, 10)
     ECRAN.afficher()
 
 def menu4():
     """ Menu 4: historique
     """
     ECRAN.clean()
-    ECRAN.txt("Historique", 1, 1)
+    ECRAN.txt("Historique", 0, 0)
     ECRAN.afficher()
 
 def menu5():
     """ Menu 5: Bluetooth / Plein
     """
     ECRAN.clean()
-    ECRAN.txt("Bluetooth", 1, 1)
+    ECRAN.txt("Bluetooth", 0, 0)
     ECRAN.afficher()
 
 def menu_exit():
     """ Menu_exit: exit
     """
     ECRAN.clean()
-    ECRAN.txt("Exit ?", 1, 1)
+    ECRAN.txt("Exit ?", 0, 0)
     ECRAN.afficher()
 
 def run():
@@ -112,13 +120,13 @@ def run():
     #with open("historique_trajets.txt") as historique:
     #    historique.append("Trajet numéro {} ".format(trajet_numero) + "\n" + "km = {}".format(km) + "\t" +"Conducteur : " + Conducteur + "\t" + "Passagers : {}".format(Passagers))   
 
-
 print("start")
 while True:
     if bouton1.value():                             # Allumage
         bonjour()                                   # Message de bienvenue
+        on = True
         i = 1
-        while True:
+        while on:
 
             if i == 1:                              # Encoder conducteur
                 menu1()
@@ -188,7 +196,7 @@ while True:
                     i = 1
                 else:
                     i += 1
-                time.sleep(3)
+                time.sleep(1)
             
 '''           
     Menu Bluethoot:
