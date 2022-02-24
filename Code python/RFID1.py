@@ -22,10 +22,15 @@ def lecture():
         reader.init()                                           # Start the connection to the RFID reader
         (stat, tag_type) = reader.request(reader.REQIDL)        # Request the current status of the reader. Nani ?
         if stat == reader.OK:                                   # Checks the value stored in stat, if the reader is ok, the code moves forward.
-            card = int.from_bytes(bytes(uid), "little", False)    # Card store the data from an RFID card / tag
-            return(card)                                         # Print the card details to the Python shell
-            #if card == 611994825:                               # Si la carte est le numéro ...
+            (stat, uid) = reader.SelectTagSN()
+            card = int.from_bytes(bytes(uid), "little", False)  # Card store the data from an RFID card / tag
+            return(card)                                        # Print the card details to the Python shell
+            #if card == 611994825:                              # Si la carte est le numéro ...
                 #print("Hello user1")
+
+conducteur = lecture()
+
+print(conducteur)
 
 #Source:
 #https://www.tomshardware.com/how-to/raspberry-pi-pico-powered-rfid-lighting
