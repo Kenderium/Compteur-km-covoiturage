@@ -16,9 +16,9 @@ Date   Sun Jan 16 2022   	By Julien Dagnelie	Comments
 
 import machine
 import time
-#import GPS1
 import ECRAN
 import RFID1
+#import GPS1
 #import covoit
 
 #  Creation des boutons, led indicatrices
@@ -106,6 +106,14 @@ def menu5():
     ECRAN.txt("Bluetooth", 0, 0)
     ECRAN.afficher()
 
+def menu6():
+    """ Menu 6: Scan de carte
+    """
+    ECRAN.clean()
+    ECRAN.txt("Scan de", 0, 0)
+    ECRAN.txt("la carte", 0, 10)
+    ECRAN.afficher()
+
 def menu_exit():
     """ Menu_exit: exit
     """
@@ -182,7 +190,20 @@ while True:
                     pass
                     #prix = covoit.prix(km, Passagers)
 
-            if i == 6:                              # Menu exit
+            if i == 6:
+                menu5()                             # Scan de la carte
+                if bouton2.value():                 # Confirmation
+                    led_verte.value(1)
+                    time.sleep(0.5)
+                    led_verte.value(0)
+                    while not bouton2.value():
+                        scan = RFID1.lecture()
+                        print(scan)
+                    led_rouge.value(1)
+                    time.sleep(0.5)
+                    led_rouge.value(0)
+
+            if i == 7:                              # Menu exit
                 menu_exit()
                 if bouton2.value():                 # Confirmation
                     led_rouge.value(1)
@@ -192,7 +213,7 @@ while True:
                     
 
             if bouton1.value():                     # Changer de menu
-                if i == 6:
+                if i == 7:
                     i = 1
                 else:
                     i += 1
