@@ -13,7 +13,7 @@ HISTORY:
 Date   Sun Jan 16 2022   	By Julien Dagnelie	Comments
 ----------	---	---------------------------------------------------------
 '''
-def prix(km, passagers, prix_plein= 16 ):
+def prix(kmindiv, kmtot, passagers, prix_plein= 16 ):
     try:
         list_passager = passagers
         km_perso = float(input("Quel est ton kilometrage personel ? : "))

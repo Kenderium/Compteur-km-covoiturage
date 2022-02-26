@@ -131,9 +131,10 @@ def menu_exit():
 def run():
     """Lance toute l'artillerie lourde
     """
-    km = 60
-    #with open("historique_trajets.txt") as historique:             #Enregistrer le trajet (km + conducteur + passagers)
-    #    historique.append("Trajet numéro {} ".format(trajet_numero) + "\n" + "km = {}".format(km) + "\t" +"Conducteur : " + Conducteur + "\t" + "Passagers : {}".format(Passagers))   
+    # Calcule les km avec le gps, ici on met 30
+    km = 30
+    with open("historique_trajets.txt") as historique:             #Enregistrer le trajet (km + conducteur + passagers)
+        historique[-1] = ("Trajet numéro {} ".format(trajet_numero) + "\n" + "km = {}".format(km) + "\t" +"Conducteur : " + str(Conducteur) + "\t" + "Passagers : {}".format(Passagers))   
     return km
 
 while True:
@@ -227,16 +228,19 @@ while True:
                     led_verte.value(1)
                     time.sleep(0.5)
                     led_verte.value(0)
-                    while not bouton2.value():                       # A optimiser: il faut parfois appuyer longtemps sur le bouton pour sortir....
+                    while not bouton2.value():
                         scan = RFID1.lecture()
                         nom = RFID1.name(scan)
-                        ECRAN.clean()
-                        ECRAN.txt("Nom :", 0,0)
-                        ECRAN.txt(str(nom), 0,10)
-                        ECRAN.txt("Numero :", 0,20)
-                        ECRAN.txt(str(scan), 0,30)
-                        ECRAN.afficher()
-                        #time.sleep(0.5)                            # Mettre un delai ?
+                        if scan == None:
+                            ECRAN.clean()
+                            ECRAN.afficher()
+                        else:
+                            ECRAN.clean()
+                            ECRAN.txt("Nom :", 0,0)
+                            ECRAN.txt(str(nom), 0,10)
+                            ECRAN.txt("Numero :", 0,20)
+                            ECRAN.txt(str(scan), 0,30)
+                            ECRAN.afficher()
                     led_rouge.value(1)
                     time.sleep(0.5)
                     led_rouge.value(0)
