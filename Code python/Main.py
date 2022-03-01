@@ -134,8 +134,9 @@ def run():
     # Calcule les km avec le gps, ici on met 30
     km = 30
     with open("historique_trajets.txt") as historique:             #Enregistrer le trajet (km + conducteur + passagers)
-        historique[-1] = ("Trajet numéro {} ".format(trajet_numero) + "\n" + "km = {}".format(km) + "\t" +"Conducteur : " + str(Conducteur) + "\t" + "Passagers : {}".format(Passagers))   
-    return km
+        #date = GPS1.date()
+        historique.write( km , str(Conducteur) , str(Passagers))
+        return km
 
 while True:
     if bouton1.value():                             # Allumage
@@ -263,11 +264,7 @@ while True:
             
 '''           
     Menu Bluethoot:
-    km total ?
-    prix du plein
-    recevoir historique
     stats?
-
     GPS
     Boite
 '''
