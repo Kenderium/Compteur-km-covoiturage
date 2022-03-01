@@ -19,39 +19,33 @@ Envoi d'un message via bluetooth par un HC-05 branché à un Raspberry Pi Pico
 Pour plus d'infos:
 https://electroniqueamateur.blogspot.com/2021/05/module-bluetooth-hc-06-et-raspberry-pi.html
 '''
-
-
-import machine
-from utime import sleep
-
-BT= machine.UART(0,baudrate=9600)  # initialisation UART
-
-compteur = 0
-
-while(True):
-    BT.write(str(compteur)+'\n')
-    compteur += 1
-    sleep(1)
-
-'''
-Réception d'un message bluetooth par un HC-06
-branché au Raspberry Pi Pico.
-Pour plus d'infos:
-https://electroniqueamateur.blogspot.com/2021/05/module-bluetooth-hc-06-et-raspberry-pi.html
-'''
-
 import machine
 
-BT= machine.UART(0,baudrate=9600)
+BT= machine.UART(0,baudrate=9600)       # Pin 0, 1 fonctionne pas ?
 
-# broche 25 définie en sortie
-led_embarquee = machine.Pin(25, machine.Pin.OUT)
+def reception(run):
+    """Pour recevoir un message en blutooth
 
-while(True):
-    if BT.any():
-        message = BT.readline().decode('utf-8')
-        print(message)
-        if (message[0]=='a'):
-            led_embarquee.value(1) # on allume
-        if (message[0]=='b'):
-            led_embarquee.value(0) # on éteint
+    Args:
+        run (bool): Statut (on/off)
+
+    Returns:
+        str: message reçu
+    """
+    message = ""
+    while(run):
+        if BT.any():
+            message = BT.readline().decode('utf-8')
+            run = False                                 # Juste 1 carractère...
+    return message
+
+def envoi(message):
+    """Pour envoyer un message en bluetooth
+
+    Args:
+        message (str): Le message
+    """
+    BT.write(str(message))
+
+envoi("yo")
+print(reception(True))
