@@ -23,20 +23,26 @@ import machine
 
 BT= machine.UART(0,baudrate=9600)       # Pin 0, 1 fonctionne pas ?
 
-def reception(run):
-    """Pour recevoir un message en blutooth
+def reception(run, nombre_messages = 1):
+    """Pour recevoir un message en blutooth (le nombre de mesages peut être décidé)
+    !!! "run" doit tourner en même temps si on veut arrêter la boucle
 
     Args:
         run (bool): Statut (on/off)
+        nombre_messgaes (int): Nombre de messages
 
     Returns:
         str: message reçu
     """
+
     message = ""
-    while(run):
+    char = None
+    while char != "":
         if BT.any():
-            message = BT.readline().decode('utf-8')
-            run = False                                 # Juste 1 carractère...
+            char = BT.readline().decode('utf-8')
+            print(char)
+            message += char
+            print("2")
     return message
 
 def envoi(message):
@@ -48,4 +54,4 @@ def envoi(message):
     BT.write(str(message))
 
 envoi("yo")
-print(reception(True))
+print(reception(True, 2))
