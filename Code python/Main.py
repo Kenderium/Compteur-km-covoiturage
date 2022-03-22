@@ -132,8 +132,9 @@ def menu_exit():
 def run():
     """Lance toute l'artillerie lourde
     """
-    # Calcule les km avec le gps, ici on met 30
+    # Calcule les km avec le gps, ici on met 30 Et on les ajoute à chaque passagers
     km = 30
+    #km = GPS1.main()?
     with open("historique_trajets.txt") as historique:             #Enregistrer le trajet (km + conducteur + passagers)
         #date = GPS1.date()
         historique.write( km , str(Conducteur) , str(Passagers))
@@ -224,6 +225,7 @@ while True:
                     prix_plein = int(Bluetooth.reception())
                     with open("historique_trajets.txt") as historique:
                         Bluetooth.envoi(covoit.prix(historique, Conducteur, Passagers, prix_plein))
+                        historique.write("Plein")
 
 
 
