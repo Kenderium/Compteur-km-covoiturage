@@ -4,7 +4,7 @@ Project: Code python
 Created Date: Su Jan 2022
 Author: Julien Dagnelie
 -----
-Last Modified: Wed Feb 23 2022
+Last Modified: Wed Mar 02 2022
 Modified By: Julien Dagnelie & Loïc Tumelaire
 -----
 Copyright (c) 2022 Universite catholique de Louvain
@@ -14,6 +14,7 @@ Date   Sun Jan 16 2022   	By Julien Dagnelie	Comments
 ----------	---	---------------------------------------------------------
 '''
 def prix(kmindiv, kmtot, passagers, prix_plein= 16 ):
+    
     try:
         list_passager = passagers
         km_perso = float(input("Quel est ton kilometrage personel ? : "))
@@ -34,3 +35,5 @@ def prix(kmindiv, kmtot, passagers, prix_plein= 16 ):
     finally:
         print("C'est ici que se termine mon beau calcul")
 input()
+
+print(prix(10,30,10,15))

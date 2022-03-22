@@ -4,7 +4,7 @@ Project: Code python
 Created Date: Su Jan 2022
 Author: Julien Dagnelie
 -----
-Last Modified: Wed Feb 23 2022
+Last Modified: Tue Mar 15 2022
 Modified By: Julien Dagnelie & Loïc Tumelaire
 -----
 Copyright (c) 2022 Universite catholique de Louvain
@@ -73,7 +73,6 @@ def aurevoir():
     led_verte.value(0)
     led_rouge.value(0)
     on = False
-
 
 def menu1():
     """ Menu 1: encodage chauffeur
