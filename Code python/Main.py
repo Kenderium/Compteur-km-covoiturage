@@ -14,12 +14,14 @@ Date   Sun Jan 16 2022   	By Julien Dagnelie	Comments
 ----------	---	---------------------------------------------------------
 '''
 
+from ast import Import
 import machine
 import time
 import ECRAN
 import RFID1
+import Bluetooth
+import covoit
 #import GPS1
-#import covoit
 
 # -------------------------------------------
 # Creation des boutons, led indicatrices ----
@@ -217,7 +219,13 @@ while True:
                     time.sleep(0.5)
                     led_verte.value(0)
                     pass
-                    #prix = covoit.prix(km, Passagers)
+                # Plein
+                    Bluetooth.envoi("Quel est le prix du plein ?")
+                    prix_plein = int(Bluetooth.reception())
+                    with open("historique_trajets.txt") as historique:
+                        Bluetooth.envoi(covoit.prix(historique, Conducteur, Passagers, prix_plein))
+
+
 
             if i == 6:
                 menu6()                             # Scan de la carte
