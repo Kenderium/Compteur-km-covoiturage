@@ -13,7 +13,7 @@ HISTORY:
 Date   Sun Jan 16 2022   	By Julien Dagnelie	Comments
 ----------	---	---------------------------------------------------------
 '''
-def prix(kmindiv, kmtot, passagers, prix_plein= 16 ):
+def prix(historique, Conducteur, Passagers, prix_plein= 16 ):
     
     try:
         list_passager = passagers
