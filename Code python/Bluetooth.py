@@ -19,9 +19,10 @@ Envoi d'un message via bluetooth par un HC-05 branché à un Raspberry Pi Pico
 Pour plus d'infos:
 https://electroniqueamateur.blogspot.com/2021/05/module-bluetooth-hc-06-et-raspberry-pi.html
 '''
+
 import machine
 
-BT= machine.UART(0,baudrate=9600)       # Pin 0, 1 fonctionne pas ?
+BT = machine.UART(0,baudrate=9600)       # Pin 0, 1 fonctionne pas ?
 
 def reception(run = True, nombre_messages = 1):
     """Pour recevoir un message en blutooth (le nombre de mesages peut être décidé)
@@ -52,6 +53,3 @@ def envoi(message):
         message (str): Le message
     """
     BT.write(str(message))
-
-envoi("yo")
-print(reception(True, 2))

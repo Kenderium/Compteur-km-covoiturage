@@ -14,7 +14,7 @@ Date   Sun Jan 16 2022   	By Julien Dagnelie	Comments
 ----------	---	---------------------------------------------------------
 '''
 
-from ast import Import
+#from ast import Import             WTF, c quoi ce truc ptdrrr
 import machine
 import time
 import ECRAN
@@ -26,6 +26,8 @@ import covoit
 # -------------------------------------------
 # Creation des boutons, led indicatrices ----
 # -------------------------------------------
+
+print("Run")
 
 bouton1 = machine.Pin(14, machine.Pin.IN, machine.Pin.PULL_DOWN) # bouton suivant
 bouton2 = machine.Pin(15, machine.Pin.IN, machine.Pin.PULL_DOWN) # bouton valider
@@ -224,7 +226,7 @@ while True:
                     Bluetooth.envoi("Quel est le prix du plein ?")
                     prix_plein = int(Bluetooth.reception())
                     with open("historique_trajets.txt") as historique:
-                        Bluetooth.envoi(covoit.prix(historique, Conducteur, Passagers, prix_plein))
+                        Bluetooth.envoi(covoit.prix(historique, prix_plein))
                         historique.write("Plein")
 
 
