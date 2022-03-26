@@ -13,40 +13,45 @@ HISTORY:
 Date   Sun Jan 16 2022   	By Julien Dagnelie	Comments
 ----------	---	---------------------------------------------------------
 '''
-def prix(historique, Conducteur, Passagers, prix_plein= 16 ):
-    """ Retourne le prix de chaque voyageur dans un dico
+def prix(historique, prix_plein= 16 ):
+    """ Retourne le prix de chaque voyageur dans un dico.
 
     Args:
-        historique (_type_): _description_
-        Conducteur (_type_): _description_
-        Passagers (_type_): _description_
-        prix_plein (int, optional): _description_. Defaults to 16.
+        historique (fichier texte): De type "km + conducteur + passagers" pour chaque trajet effectué, avec une ligne "plein" lorsque le plein est réalisé.
+        prix_plein (int, optional): Le prix du plein. Defaults to 16.
+
+    Return:
+        prix (dico): De type: Nom --> [km, prix]
     """
     #with open("historique_trajets.txt") as historique:   #Enregistrer le trajet (km + conducteur + passagers)
-    for trajets in historique:
-        trajet = trajets.strip()
+
+    # Trouver où se trouve le dernier plein dans l'historique
+    numéro_ligne = 0
+    Start = 0
+    for lines in historique:
+        if lines == "Plein":
+            Start = numéro_ligne
+        numéro_ligne += 1
+
+    # Création d'un dico et du compteur de km totaux
+    dico = {}                           # De type: Nom --> [km, prix]
+    km_tot = 0
+
+    # Lecture des trajets du plein
+    for trajets in historique[Start +1 :]:         # Commener à partir du start == au mot Plein
+        trajet = trajets.split()
         km = trajet[0]
+        km_tot += km
         conducteur = trajet[1]
-        passagers = trajet[2:]
+        passagers = trajet[2 :]
 
+        # Ajout des km
+        dico[conducteur][0] += km
 
-        # A MODIFIER EN FONCTION D'AU DESSUS
-        try:
-            list_passager = passagers
-            km_perso = float(input("Quel est ton kilometrage personel ? : "))
-            km_tot = km_perso
+        for passager in passagers:
+            dico[passager][0] += km
 
-            for i in range(len(passagers)):
-                x = i+1
-                passager = float(input("Entrez le nombre de kilomètre du passager n°{} : ".format(x)))
-                list_passager.append(passager)
-                km_tot += passager
-                
-            for k in range(4):
-                z = k + 1
-                prix  = (list_passager[k]/km_tot)*prix_plein
-                print("Le passager {} doit payer ".format(z), round(prix, 2), "€", sep="")
-        except ValueError:
-            print("Un plein ou des kilomètres ne se fait pas avec des lettres mais bien des chiffres")
-        finally:
-            print("C'est ici que se termine mon beau calcul")
+    # Ajout des prix
+    for passager in dico:
+        dico[passager][1]  = (dico[passager][0]/km_tot)*prix_plein
+    return dico
