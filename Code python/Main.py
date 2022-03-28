@@ -225,8 +225,9 @@ while True:
                 # Plein
                     Bluetooth.envoi("Quel est le prix du plein ?")
                     prix_plein = int(Bluetooth.reception())
+                    Bluetooth.envoi(covoit.prix("historique_trajets.txt", prix_plein))    #(dico): De type: Nom --> [km, prix]
+                # Rajoute Plein à la fin du fichier    
                     with open("historique_trajets.txt") as historique:
-                        Bluetooth.envoi(covoit.prix(historique, prix_plein))    #(dico): De type: Nom --> [km, prix]
                         historique.write("Plein")
 
 
