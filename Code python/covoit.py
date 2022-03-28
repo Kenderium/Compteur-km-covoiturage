@@ -4,7 +4,7 @@ Project: Code python
 Created Date: Su Jan 2022
 Author: Julien Dagnelie
 -----
-Last Modified: Wed Mar 02 2022
+Last Modified: Mon Mar 28 2022
 Modified By: Julien Dagnelie & Loïc Tumelaire
 -----
 Copyright (c) 2022 Universite catholique de Louvain
@@ -28,17 +28,28 @@ def prix(historique, prix_plein= 16 ):
     # Trouver où se trouve le dernier plein dans l'historique
     numéro_ligne = 0
     Start = 0
-    for lines in historique:
-        if lines == "Plein":
-            Start = numéro_ligne
-        numéro_ligne += 1
+    with open(historique) as hist:
+        for line in hist.readlines():
+            print(line)
+            if line == 'Plein':
+                print('Hey')
+            numéro_ligne +=1
+    # for lines in historique.read():
+    #     print(lines)
+    #     if lines == "Plein":
+    #         Start = numéro_ligne
+    #     numéro_ligne += 1
 
     # Création d'un dico et du compteur de km totaux
     dico = {}                           # De type: Nom --> [km, prix]
     km_tot = 0
-
+    # historiquev2 = []
+    # for lines in historique:
+    #     if lines > Start: 
+    #         historiquev2.append(lines)
+    
     # Lecture des trajets du plein
-    for trajets in historique[Start +1 :]:         # Commener à partir du start == au mot Plein
+    for trajets in historiquev2:         # Commener à partir du start == au mot Plein
         trajet = trajets.split()
         km = trajet[0]
         km_tot += km
@@ -55,3 +66,7 @@ def prix(historique, prix_plein= 16 ):
     for passager in dico:
         dico[passager][1]  = (dico[passager][0]/km_tot)*prix_plein
     return dico
+
+
+
+print(prix('historique.txt', 15))
