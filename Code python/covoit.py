@@ -26,52 +26,46 @@ def prix(historique, prix_plein= 70 ):
     #with open("historique_trajets.txt") as historique:   #Enregistrer le trajet (km + conducteur + passagers)
 
     # Trouver où se trouve le dernier plein dans l'historique
-    numéro_ligne = 1
+    numéro_ligne = 0
     Start = 0
+    historiquev2 = []
     with open(historique) as hist:
         for line in hist:
             if line.strip() == 'Plein':
                 Start = numéro_ligne
             numéro_ligne +=1
-        
-        for numline2 in range(len(hist.readlines())):
-            print(numline2)
-            if numline2 > Start:
-                historiquev2 = (hist.readlines()[numline2])
-                print(historiquev2)
 
-
-
-    print('Num', Start)
-
-
+    with open(historique) as hist:
+        historiquev2 = (hist.readlines()[Start+1:])
 
 
     # Création d'un dico et du compteur de km totaux
     dico = {}                           # De type: Nom --> [km, prix]
     km_tot = 0
-    historiquev2 = []
-    for lines in historique:
-        if lines > Start: 
-            historiquev2.append(lines)
     
     # Lecture des trajets du plein
     for trajets in historiquev2:         # Commener à partir du start == au mot Plein
         trajet = trajets.split()
-        km = trajet[0]
+        km = int(trajet[0])
         km_tot += km
         conducteur = trajet[1]
         passagers = trajet[2 :]
 
         # Ajout des km
-        dico[conducteur][0] += km
+        if conducteur not in dico:
+            dico[conducteur] = km
+        else:
+            dico[conducteur] += km
 
         for passager in passagers:
-            dico[passager][0] += km
+            if passager not in dico:
+                dico[passager] = km
+            else:
+                dico[passager] += km
 
     # Ajout des prix
-    for passager in dico:
-        dico[passager][1]  = (dico[passager][0]/km_tot)*prix_plein
+    for personnes in dico:
+        dico[personnes]  += (dico[personnes]/km_tot)*prix_plein
     return dico
 
 
