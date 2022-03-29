@@ -65,7 +65,7 @@ def prix(historique, prix_plein= 70 ):
 
     # Ajout des prix
     for personnes in dico:
-        dico[personnes]  += (dico[personnes]/km_tot)*prix_plein
+        dico[personnes]  = (dico[personnes]/km_tot)*prix_plein
     return dico
 
 
