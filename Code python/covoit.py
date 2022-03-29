@@ -26,27 +26,34 @@ def prix(historique, prix_plein= 70 ):
     #with open("historique_trajets.txt") as historique:   #Enregistrer le trajet (km + conducteur + passagers)
 
     # Trouver où se trouve le dernier plein dans l'historique
-    numéro_ligne = 0
+    numéro_ligne = 1
     Start = 0
     with open(historique) as hist:
-        for line in hist.readlines():
-            print(line)
-            if line == 'Plein':
-                print('Hey')
+        for line in hist:
+            if line.strip() == 'Plein':
+                Start = numéro_ligne
             numéro_ligne +=1
-    # for lines in historique.read():
-    #     print(lines)
-    #     if lines == "Plein":
-    #         Start = numéro_ligne
-    #     numéro_ligne += 1
+        
+        for numline2 in range(len(hist.readlines())):
+            print(numline2)
+            if numline2 > Start:
+                historiquev2 = (hist.readlines()[numline2])
+                print(historiquev2)
+
+
+
+    print('Num', Start)
+
+
+
 
     # Création d'un dico et du compteur de km totaux
     dico = {}                           # De type: Nom --> [km, prix]
     km_tot = 0
-    # historiquev2 = []
-    # for lines in historique:
-    #     if lines > Start: 
-    #         historiquev2.append(lines)
+    historiquev2 = []
+    for lines in historique:
+        if lines > Start: 
+            historiquev2.append(lines)
     
     # Lecture des trajets du plein
     for trajets in historiquev2:         # Commener à partir du start == au mot Plein
