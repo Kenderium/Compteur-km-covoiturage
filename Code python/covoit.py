@@ -81,7 +81,7 @@ def prix(historique, prix_plein = 70, km_tot = None ):
     # Ajout des prix
     for personnes in dico:
         km_perso = dico[personnes]
-        dico[personnes]  = (km_perso/(km_tot + km_parcourus_tot))*prix_plein
+        dico[personnes]  = round((km_perso/(km_tot + km_parcourus_tot))*prix_plein , 2)
     return dico
 
 
