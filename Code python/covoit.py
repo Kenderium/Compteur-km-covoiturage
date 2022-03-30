@@ -13,7 +13,7 @@ HISTORY:
 Date   Sun Jan 16 2022   	By Julien Dagnelie	Comments
 ----------	---	---------------------------------------------------------
 '''
-def prix(historique, prix_plein= 70, km_tot = None ):
+def prix(historique, prix_plein = 70, km_tot = None ):
     """ Retourne le prix de chaque voyageur dans un dico.
 
     Args:
@@ -44,13 +44,16 @@ def prix(historique, prix_plein= 70, km_tot = None ):
     # Création d'un dico et du compteur de km totaux
     dico = {}                           # De type: Nom --> [km, prix]
     if km_tot == None:
-            km_tot = 0
+        km_tot = 0
+        ajoutkm = True
+    else:
+        ajoutkm = False
 
     # Lecture des trajets du plein
     for trajets in historiquev2:         # Commener à partir du start == au mot Plein
         trajet = trajets.split()
         km = int(trajet[0])
-        if km_tot == 0:
+        if ajoutkm == True:
             km_tot += km
         conducteur = trajet[1]
         passagers = trajet[2 :]
@@ -67,6 +70,11 @@ def prix(historique, prix_plein= 70, km_tot = None ):
             else:
                 dico[passager] += km
 
+    print(km_tot, prix_plein)
+
+    print(dico)
+
+
     # Ajout des prix
     for personnes in dico:
         dico[personnes]  = (dico[personnes]/km_tot)*prix_plein
@@ -74,4 +82,4 @@ def prix(historique, prix_plein= 70, km_tot = None ):
 
 
 
-print(prix('historique.txt', 15))
+print(prix('historique.txt', 15, None))
