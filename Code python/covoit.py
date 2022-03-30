@@ -43,6 +43,8 @@ def prix(historique, prix_plein = 70, km_tot = None ):
 
     # Création d'un dico et du compteur de km totaux
     dico = {}                           # De type: Nom --> [km, prix]
+    km_parcourus_tot = 0
+
     if km_tot == None:
         km_tot = 0
         ajoutkm = True
@@ -65,6 +67,7 @@ def prix(historique, prix_plein = 70, km_tot = None ):
             dico[conducteur] += km
 
         for passager in passagers:
+            km_parcourus_tot += km
             if passager not in dico:
                 dico[passager] = km
             else:
@@ -77,7 +80,8 @@ def prix(historique, prix_plein = 70, km_tot = None ):
 
     # Ajout des prix
     for personnes in dico:
-        dico[personnes]  = (dico[personnes]/km_tot)*prix_plein
+        km_perso = dico[personnes]
+        dico[personnes]  = (km_perso/(km_tot + km_parcourus_tot))*prix_plein
     return dico
 
 
