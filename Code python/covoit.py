@@ -13,11 +13,12 @@ HISTORY:
 Date   Sun Jan 16 2022   	By Julien Dagnelie	Comments
 ----------	---	---------------------------------------------------------
 '''
-def prix(historique, prix_plein= 70 ):
+def prix(historique, prix_plein= 70, km_tot = None ):
     """ Retourne le prix de chaque voyageur dans un dico.
 
     Args:
         historique (fichier texte): De type "km + conducteur + passagers" pour chaque trajet effectué, avec une ligne "plein" lorsque le plein est réalisé.
+        km_tot (int, optional): Le nombre de km parcourus par la voiture
         prix_plein (int, optional): Le prix du plein. Defaults to 16.
 
     Return:
@@ -42,13 +43,15 @@ def prix(historique, prix_plein= 70 ):
 
     # Création d'un dico et du compteur de km totaux
     dico = {}                           # De type: Nom --> [km, prix]
-    km_tot = 0
-    
+    if km_tot == None:
+            km_tot = 0
+
     # Lecture des trajets du plein
     for trajets in historiquev2:         # Commener à partir du start == au mot Plein
         trajet = trajets.split()
         km = int(trajet[0])
-        km_tot += km
+        if km_tot == 0:
+            km_tot += km
         conducteur = trajet[1]
         passagers = trajet[2 :]
 
