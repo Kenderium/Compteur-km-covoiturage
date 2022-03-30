@@ -4,7 +4,7 @@ Project: Code python
 Created Date: Sa Jan 2022
 Author: Julien Dagnelie & Loïc Tumelaire
 -----
-Last Modified: Wed Feb 02 2022
+Last Modified: Wed Mar 30 2022
 Modified By: Julien Dagnelie & Loïc Tumelaire
 -----
 Copyright (c) 2022 Universite catholique de Louvain
@@ -512,7 +512,7 @@ def test_coordinate_representations():
 #test_logging()
 '''
 
-
+'''
 import machine
 from utime import sleep
 from micropyGPS import MicropyGPS  # https://github.com/inmcm/micropyGPS
@@ -536,3 +536,12 @@ while True:
         print('')
 
     sleep(.1)
+'''
+
+dic = {'julien' : 125, 'loic' : 125, 'lucas' : 125, 'eduardo' : 65}
+for pers in dic:
+
+    dic[pers] = (dic[pers]//125)*15
+    
+
+print(dic)
