@@ -82,4 +82,4 @@ def prix(historique, prix_plein = 70, km_tot = None ):
 
 
 
-print(prix('historique.txt', 15, None))
+print(prix('historique.txt', 15))
