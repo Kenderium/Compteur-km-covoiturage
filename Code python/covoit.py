@@ -73,17 +73,8 @@ def prix(historique, prix_plein = 70, km_tot = None ):
             else:
                 dico[passager] += km
 
-    print(km_tot, prix_plein)
-
-    print(dico)
-
-
     # Ajout des prix
     for personnes in dico:
         km_perso = dico[personnes]
         dico[personnes]  = round((km_perso/(km_tot + km_parcourus_tot))*prix_plein , 2)
     return dico
-
-
-
-print(prix('historique.txt', 15))
