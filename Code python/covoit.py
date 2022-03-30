@@ -23,18 +23,19 @@ def prix(historique, prix_plein= 70 ):
     Return:
         prix (dico): De type: Nom --> [km, prix]
     """
-    #with open("historique_trajets.txt") as historique:   #Enregistrer le trajet (km + conducteur + passagers)
-
-    # Trouver où se trouve le dernier plein dans l'historique
+    
     numéro_ligne = 0
     Start = 0
     historiquev2 = []
+
+    # Trouver où se trouve le dernier plein dans l'historique
     with open(historique) as hist:
         for line in hist:
             if line.strip() == 'Plein':
                 Start = numéro_ligne
             numéro_ligne +=1
 
+    # Créer un nouvel historique avec seulement les infos récentes
     with open(historique) as hist:
         historiquev2 = (hist.readlines()[Start+1:])
 
