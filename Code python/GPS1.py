@@ -4,7 +4,7 @@ Project: Code python
 Created Date: Su Jan 2022
 Author: Julien Dagnelie
 -----
-Last Modified: Wed Feb 23 2022
+Last Modified: Wed Apr 20 2022
 Modified By: Julien Dagnelie & Loïc Tumelaire
 -----
 Copyright (c) 2022 Universite catholique de Louvain
@@ -13,14 +13,14 @@ HISTORY:
 Date   Sun Jan 16 2022   	By Julien Dagnelie	Comments
 ----------	---	---------------------------------------------------------
 '''
-#import machine
+import machine
 from micropyGPS import MicropyGPS
 from math import radians, acos, cos, sin
 import time
 import _thread                                              # Pour exécuter plusieures taches en simultané
 
-#uart = machine.UART(1, baudrate=9600, tx = machine.Pin(1))
-#gps = MicropyGPS()
+uart = machine.UART(1, baudrate=9600, tx = machine.Pin(8), rx = machine.Pin(9))
+gps = MicropyGPS()
 
 def startgps(start):
     """Demarre le tracking gps et logs les latitudes et longitudes dans le fichier de logs
@@ -75,7 +75,7 @@ def distance(coord1, coord2):
 
 def run():
     _thread.start_new_thread(second_thread, ())   # Création du thread et démarrage
-    
+    global go
     while go:
         startgps(True)              # Démarre le gps
     startgps(False)                 # Arrete le gps
@@ -104,13 +104,15 @@ def run():
 def second_thread():        # Seconde tâche: Si on appuie sur le bouton
     global go
     bouton = True
+    baton = _thread.allocate_lock()
     while bouton:
         baton.acquire()     # Regarde si le thread est libre et se l'acquière
-        time.sleep(5)
+        time.sleep(50)
         bouton = False       # On appuie sur le bouton "A modifier"
         if bouton == False:
             go = False
         baton.release()     # Libère le thread
+
 
 go = True
 print(run())

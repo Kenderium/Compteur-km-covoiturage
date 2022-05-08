@@ -4,7 +4,7 @@ Project: Code python
 Created Date: Su Jan 2022
 Author: Julien Dagnelie
 -----
-Last Modified: Wed Mar 30 2022
+Last Modified: Sun May 08 2022
 Modified By: Julien Dagnelie & Loïc Tumelaire
 -----
 Copyright (c) 2022 Universite catholique de Louvain
@@ -19,12 +19,12 @@ def prix(historique, prix_plein = 70, km_tot = None ):
     Args:
         historique (fichier texte): De type "km + conducteur + passagers" pour chaque trajet effectué, avec une ligne "plein" lorsque le plein est réalisé.
         km_tot (int, optional): Le nombre de km parcourus par la voiture
-        prix_plein (int, optional): Le prix du plein. Defaults to 16.
+        prix_plein (int, optional): Le prix du plein. Defaults to 70.
 
     Return:
         prix (dico): De type: Nom --> [km, prix]
     """
-    
+    print(prix_plein)
     numéro_ligne = 0
     Start = 0
     historiquev2 = []
@@ -87,3 +87,5 @@ def prix(historique, prix_plein = 70, km_tot = None ):
         km_perso = dico[personnes]
         dico[personnes]  = round((km_perso/(km_tot + km_parcourus_tot))*prix_plein , 2)
     return dico
+
+print(prix("historique.txt",93 ,818))
