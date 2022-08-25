@@ -4,7 +4,7 @@ Project: Code python
 Created Date: Su Jan 2022
 Author: Julien Dagnelie
 -----
-Last Modified: Tue Mar 15 2022
+Last Modified: Thu Aug 25 2022
 Modified By: Julien Dagnelie & Loïc Tumelaire
 -----
 Copyright (c) 2022 Universite catholique de Louvain
@@ -139,8 +139,12 @@ def run():
     #km = GPS1.main()?
     with open("historique_trajets.txt") as historique:             #Enregistrer le trajet (km + conducteur + passagers)
         #date = GPS1.date()
-        historique.write( km , str(Conducteur) , str(Passagers))
-        return km
+        historique.write( str(km) + str(Conducteur) + str(Passagers), "a")
+        ECRAN.clean()
+        ECRAN.txt("Km parcourus :", 0, 0)
+        ECRAN.txt(str(km), 0, 10)
+        ECRAN.afficher()
+        time.sleep(1)
 
 while True:
     if bouton1.value():                             # Allumage
@@ -166,6 +170,7 @@ while True:
                     ECRAN.afficher()
                     time.sleep(1)
                     led_rouge.value(0)
+                    i += 1
 
             if i == 2:                              # Encoder passagers
                 menu2()
@@ -189,6 +194,9 @@ while True:
                             ECRAN.clean()
                             ECRAN.txt("Autre passager ?", 0,0)
                             ECRAN.afficher()
+                            time.sleep(1)
+                        time.sleep(0.1)
+                    time.sleep(0.5)
 
             if i == 3:                              # Démarer voyage
                 menu3()
@@ -207,13 +215,16 @@ while True:
                     with open("historique_trajets.txt") as historique:
                         i=0
                         while not bouton2.value():
-                            if bouton1.value():
-                                i +=1
+                            print("test okk")
                             try:
-                                ECRAN.txt(historique[i], 1, 1)
+                                ECRAN.txt(str(historique[i]), 1, 1)
                                 ECRAN.afficher()
+                                time.sleep(1)
                             except IndexError:
                                 break
+                            if bouton1.value():
+                                i +=1
+                        time.sleep(0.5)
 
             if i == 5:
                 menu5()                             # Bluetooth / plein
@@ -266,7 +277,7 @@ while True:
                     led_rouge.value(0)
                     aurevoir()
                     
-
+            time.sleep(0.1)
             if bouton1.value():                     # Changer de menu
                 if i == 7:
                     i = 1
