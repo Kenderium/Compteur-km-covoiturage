@@ -4,7 +4,7 @@ Project: Code python
 Created Date: Su Jan 2022
 Author: Julien Dagnelie
 -----
-Last Modified: Thu Aug 25 2022
+Last Modified: Wed Aug 31 2022
 Modified By: Julien Dagnelie & Loïc Tumelaire
 -----
 Copyright (c) 2022 Universite catholique de Louvain
@@ -83,7 +83,7 @@ def menu1():
     """
     ECRAN.clean()
     ECRAN.txt("Encoder", 0, 0)
-    ECRAN.txt("chauffeur", 0, 10)
+    ECRAN.txt("chauffeur ?", 0, 10)
     ECRAN.afficher()
 
 def menu2():
@@ -91,7 +91,7 @@ def menu2():
     """
     ECRAN.clean()
     ECRAN.txt("Encoder", 0, 0)
-    ECRAN.txt("passagers", 0, 10)
+    ECRAN.txt("passagers ?", 0, 10)
     ECRAN.afficher()
 
 def menu3():
@@ -99,7 +99,7 @@ def menu3():
     """
     ECRAN.clean()
     ECRAN.txt("Demarrer", 0, 0)
-    ECRAN.txt("le voyage", 0, 10)
+    ECRAN.txt("le voyage ?", 0, 10)
     ECRAN.afficher()
 
 def menu4():
@@ -139,7 +139,7 @@ def run():
     #km = GPS1.main()?
     with open("historique_trajets.txt") as historique:             #Enregistrer le trajet (km + conducteur + passagers)
         #date = GPS1.date()
-        historique.write( str(km) + str(Conducteur) + str(Passagers), "a")
+        historique.write( str(km ) + str(Conducteur ) + str(Passagers), "a")
         ECRAN.clean()
         ECRAN.txt("Km parcourus :", 0, 0)
         ECRAN.txt(str(km), 0, 10)
@@ -166,7 +166,8 @@ while True:
                         Conducteur = RFID1.name(RFID1.lecture())     # Encodage conducteur
                     led_rouge.value(1)
                     ECRAN.clean()
-                    ECRAN.txt("Ok !", 0,0)
+                    ECRAN.txt("Hello", 0,0)
+                    ECRAN.txt(Conducteur + " !",0,10)
                     ECRAN.afficher()
                     time.sleep(1)
                     led_rouge.value(0)
@@ -187,7 +188,8 @@ while True:
                             Passagers.append(passager)
                             led_rouge.value(1)
                             ECRAN.clean()
-                            ECRAN.txt("Ok !", 0,0)
+                            ECRAN.txt("Hello", 0,0)
+                            ECRAN.txt(passager + " !",0,10)
                             ECRAN.afficher()
                             time.sleep(1)
                             led_rouge.value(0)
@@ -215,7 +217,6 @@ while True:
                     with open("historique_trajets.txt") as historique:
                         i=0
                         while not bouton2.value():
-                            print("test okk")
                             try:
                                 ECRAN.txt(str(historique[i]), 1, 1)
                                 ECRAN.afficher()
