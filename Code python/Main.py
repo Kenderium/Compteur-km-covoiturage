@@ -139,7 +139,7 @@ def run():
     #km = GPS1.main()?
     with open("historique_trajets.txt") as historique:             #Enregistrer le trajet (km + conducteur + passagers)
         #date = GPS1.date()
-        historique.write( str(km ) + str(Conducteur ) + str(Passagers), "a")
+        historique.write( str(str(km ) + str(Conducteur ) + str(Passagers)), "a")
         ECRAN.clean()
         ECRAN.txt("Km parcourus :", 0, 0)
         ECRAN.txt(str(km), 0, 10)
