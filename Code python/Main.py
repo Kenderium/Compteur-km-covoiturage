@@ -4,7 +4,7 @@ Project: Code python
 Created Date: Su Jan 2022
 Author: Julien Dagnelie
 -----
-Last Modified: Wed Aug 31 2022
+Last Modified: Thu Sep 08 2022
 Modified By: Julien Dagnelie & Loïc Tumelaire
 -----
 Copyright (c) 2022 Universite catholique de Louvain
@@ -140,11 +140,11 @@ def run():
     with open("historique_trajets.txt") as historique:             #Enregistrer le trajet (km + conducteur + passagers)
         #date = GPS1.date()
         historique.write( str(str(km ) + str(Conducteur ) + str(Passagers)), "a")
-        ECRAN.clean()
-        ECRAN.txt("Km parcourus :", 0, 0)
-        ECRAN.txt(str(km), 0, 10)
-        ECRAN.afficher()
-        time.sleep(1)
+    ECRAN.clean()
+    ECRAN.txt("Km parcourus :", 0, 0)
+    ECRAN.txt(str(km), 0, 10)
+    ECRAN.afficher()
+    time.sleep(1)
 
 while True:
     if bouton1.value():                             # Allumage
@@ -216,16 +216,18 @@ while True:
                     led_verte.value(0)
                     with open("historique_trajets.txt") as historique:
                         i=0
-                        while not bouton2.value():
-                            try:
-                                ECRAN.txt(str(historique[i]), 1, 1)
-                                ECRAN.afficher()
-                                time.sleep(1)
-                            except IndexError:
-                                break
-                            if bouton1.value():
-                                i +=1
-                        time.sleep(0.5)
+                        trajets = historique.readlines()
+                    while not bouton2.value():
+                        try:
+                            ECRAN.clean()
+                            ECRAN.txt(str(trajets[i]), 1, 1)
+                            ECRAN.afficher()
+                            time.sleep(0.1)
+                        except IndexError:
+                            break
+                        if bouton1.value():
+                            i +=1
+                    time.sleep(0.5)
 
             if i == 5:
                 menu5()                             # Bluetooth / plein
