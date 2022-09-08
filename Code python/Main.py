@@ -134,12 +134,12 @@ def menu_exit():
 def run():
     """Lance toute l'artillerie lourde
     """
-    # Calcule les km avec le gps, ici on met 30 Et on les ajoute à chaque passagers
+    # Calcule les km avec le gps, ici on met 30 et on les ajoute à chaque passagers
     km = 30
     #km = GPS1.main()?
-    with open("historique_trajets.txt") as historique:             #Enregistrer le trajet (km + conducteur + passagers)
+    with open("historique_trajets.txt","a") as historique:             #Enregistrer le trajet (km + conducteur + passagers)
         #date = GPS1.date()
-        historique.write( str(str(km ) + str(Conducteur ) + str(Passagers)), "a")
+        historique.write( str( "\n" + str(km ) + str(Conducteur ) + str(Passagers)))
     ECRAN.clean()
     ECRAN.txt("Km parcourus :", 0, 0)
     ECRAN.txt(str(km), 0, 10)
