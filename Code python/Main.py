@@ -4,7 +4,7 @@ Project: Code python
 Created Date: Su Jan 2022
 Author: Julien Dagnelie
 -----
-Last Modified: Thu Sep 08 2022
+Last Modified: Fri Sep 09 2022
 Modified By: Julien Dagnelie & Loïc Tumelaire
 -----
 Copyright (c) 2022 Universite catholique de Louvain
@@ -242,7 +242,7 @@ while True:
                     Bluetooth.envoi(covoit.prix("historique_trajets.txt", prix_plein))    #(dico): De type: Nom --> [km, prix]
                 # Rajoute Plein à la fin du fichier    
                     with open("historique_trajets.txt") as historique:
-                        historique.write("Plein")
+                        historique.write("/n" + "Plein")
 
 
 
