@@ -245,7 +245,7 @@ while True:
                         ECRAN.afficher()
                         time.sleep(0.1)
                     ECRAN.clean()
-                    ECRAN.txt("Connecté !", 0, 0)
+                    ECRAN.txt("Connecte !", 0, 0)
                     ECRAN.afficher()
                     time.sleep(1)
 
@@ -306,7 +306,7 @@ while True:
                     i += 1
                 time.sleep(0.5)
             
-'''           
+'''        
     Menu Bluethoot:
     stats?
     GPS
