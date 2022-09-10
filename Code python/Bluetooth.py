@@ -42,9 +42,7 @@ def reception(run = True, nombre_messages = 1):
     while char != "":
         if BT.any():
             char = BT.readline().decode('utf-8')
-            print(char)
             message += char
-            print("2")
     return message
 
 def envoi(message):
