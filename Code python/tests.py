@@ -4,7 +4,7 @@ Project: Code python
 Created Date: Sa Jan 2022
 Author: Julien Dagnelie & Loïc Tumelaire
 -----
-Last Modified: Wed Apr 20 2022
+Last Modified: Sat Sep 10 2022
 Modified By: Julien Dagnelie & Loïc Tumelaire
 -----
 Copyright (c) 2022 Universite catholique de Louvain
@@ -546,7 +546,7 @@ for pers in dic:
 
 print(dic)'''
    
-from machine import Pin, UART, I2C
+"""from machine import Pin, UART, I2C
 from ssd1306 import SSD1306_I2C
 
 #Import utime library to implement delay
@@ -659,4 +659,12 @@ while True:
     if(TIMEOUT == True):
         print("Request Timeout: No GPS data is found.")
         TIMEOUT = False
-             
+             """
+
+import machine
+
+bouton1 = machine.Pin(14, machine.Pin.IN, machine.Pin.PULL_DOWN) # bouton suivant
+
+while True:
+    machine.deepsleep(10)
+    print("ok")

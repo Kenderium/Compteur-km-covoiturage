@@ -4,7 +4,7 @@ Project: Code python
 Created Date: Su Jan 2022
 Author: Julien Dagnelie
 -----
-Last Modified: Fri Sep 09 2022
+Last Modified: Sun Sep 11 2022
 Modified By: Julien Dagnelie & Loïc Tumelaire
 -----
 Copyright (c) 2022 Universite catholique de Louvain
@@ -139,7 +139,7 @@ def run():
     #km = GPS1.main()?
     with open("historique_trajets.txt","a") as historique:             #Enregistrer le trajet (km + conducteur + passagers)
         #date = GPS1.date()
-        historique.write( str( "\n" + str(km ) + str(Conducteur ) + str(Passagers)))
+        historique.write( str( "\n" + str(km ) + " " + str(Conducteur ) + " " + str(Passagers)))
     ECRAN.clean()
     ECRAN.txt("Km parcourus :", 0, 0)
     ECRAN.txt(str(km), 0, 10)
@@ -220,7 +220,7 @@ while True:
                     while not bouton2.value():
                         try:
                             ECRAN.clean()
-                            ECRAN.txt(str(trajets[i]), 1, 1)
+                            ECRAN.txt(str(trajets[i]), 0, 0)
                             ECRAN.afficher()
                             time.sleep(0.1)
                         except IndexError:
@@ -235,15 +235,33 @@ while True:
                     led_verte.value(1)
                     time.sleep(0.5)
                     led_verte.value(0)
-                    pass
+
+                # Demande connection
+                    while not bouton2.value() and Bluetooth.statut() != 1:
+                        ECRAN.clean()
+                        ECRAN.txt(" Connectez-", 0, 0)
+                        ECRAN.txt(" vous", 0, 10)
+                        ECRAN.txt(" en bluetooth", 0, 20)
+                        ECRAN.afficher()
+                        time.sleep(0.1)
+                    ECRAN.clean()
+                    ECRAN.txt("Connecté !", 0, 0)
+                    ECRAN.afficher()
+                    time.sleep(1)
+
                 # Plein
-                    Bluetooth.envoi("Quel est le prix du plein ?")
+                    ECRAN.clean()
+                    ECRAN.txt("Voir bluetooth", 0, 0)
+                    ECRAN.afficher()
+
+                    Bluetooth.envoi("Quel est le prix du plein (en euros)?")
                     prix_plein = int(Bluetooth.reception())
-                    Bluetooth.envoi(covoit.prix("historique_trajets.txt", prix_plein))    #(dico): De type: Nom --> [km, prix]
+
+                    Bluetooth.envoi(covoit.prix("historique_trajets.txt", prix_plein))
+                    
                 # Rajoute Plein à la fin du fichier    
                     with open("historique_trajets.txt") as historique:
                         historique.write("/n" + "Plein")
-
 
 
             if i == 6:

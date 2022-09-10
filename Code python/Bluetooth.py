@@ -4,7 +4,7 @@ Project: Code python
 Created Date: Su Jan 2022
 Author: Julien Dagnelie & Loïc Tumelaire
 -----
-Last Modified: Sat Feb 19 2022
+Last Modified: Sun Sep 11 2022
 Modified By: Julien Dagnelie & Loïc Tumelaire
 -----
 Copyright (c) 2022 Universite catholique de Louvain
@@ -23,6 +23,7 @@ https://electroniqueamateur.blogspot.com/2021/05/module-bluetooth-hc-06-et-raspb
 import machine
 
 BT = machine.UART(0,baudrate=9600)       # Pin 0, 1 fonctionne pas ?
+State = machine.Signal(13)               # Ou State = machine.Pin(13, machine.Pin.IN)
 
 def reception(run = True, nombre_messages = 1):
     """Pour recevoir un message en blutooth (le nombre de mesages peut être décidé)
@@ -53,3 +54,8 @@ def envoi(message):
         message (str): Le message
     """
     BT.write(str(message))
+
+def statut():
+    """Envoie True si connecté
+    """
+    return State.value()
