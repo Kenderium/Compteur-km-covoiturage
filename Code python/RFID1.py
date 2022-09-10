@@ -4,7 +4,7 @@ Project: Code python
 Created Date: Su Jan 2022
 Author: Julien Dagnelie
 -----
-Last Modified: Mon Jan 17 2022
+Last Modified: Sun Sep 11 2022
 Modified By: Julien Dagnelie & Loïc Tumelaire
 -----
 Copyright (c) 2022 Universite catholique de Louvain
@@ -39,7 +39,7 @@ def name(card):
         str: nom du propriétaire
     """
     if card == 0:
-        return "Rescannez"
+        return None
     elif card == 707308629:
         return "Lucas"
     elif card == 401531548:

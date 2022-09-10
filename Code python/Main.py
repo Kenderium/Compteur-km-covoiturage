@@ -76,6 +76,8 @@ def aurevoir():
     ECRAN.afficher()
     led_verte.value(0)
     led_rouge.value(0)
+    Conducteur = None
+    Passagers = []
     on = False
 
 def menu1():
@@ -306,7 +308,8 @@ while True:
                     i += 1
                 time.sleep(0.5)
             
-'''        
+'''  
+    Bug même conducteur....      
     Menu Bluethoot:
     stats?
     GPS
