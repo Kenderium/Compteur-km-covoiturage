@@ -219,6 +219,12 @@ while True:
                     with open("historique_trajets.txt") as historique:
                         i=0
                         trajets = historique.readlines()
+                        # Prendre après le dernier plein
+                        trajets.reverse()
+                        position = len(trajets) - (trajets.index("Plein") +1)
+                        trajets.reverse()
+                        trajets = trajets[position+1 :]
+                        
                     while not bouton2.value():
                         try:
                             ECRAN.clean()

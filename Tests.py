@@ -13,7 +13,7 @@ HISTORY:
 Date   Sun Jan 16 2022   	By Julien Dagnelie	Comments
 ----------	---	---------------------------------------------------------
 '''
-
+"""
 from machine import Pin, Timer
 import time
 
@@ -54,3 +54,11 @@ while True:
     if button.value():
         led.toggle()
         time.sleep(0.5)
+"""
+
+liste = ["Lo", "Plein", 'Lucas', 'Eduardo']
+liste.reverse()
+position = len(liste) - (liste.index("Plein") +1)
+liste.reverse()
+liste = liste[position+1 :]
+print(liste)
