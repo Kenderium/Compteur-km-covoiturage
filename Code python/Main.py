@@ -258,7 +258,6 @@ while True:
 
                     Bluetooth.envoi("Quel est le prix du plein (en euros)?")
                     prix_plein = int(Bluetooth.reception())
-
                     Bluetooth.envoi(covoit.prix("historique_trajets.txt", prix_plein))
                     
                 # Rajoute Plein à la fin du fichier    
