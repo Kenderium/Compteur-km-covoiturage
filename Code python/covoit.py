@@ -73,6 +73,7 @@ def prix(historique, prix_plein = 70, km_tot = None ):
 
         for passager in passagers:
             km_parcourus_tot += km
+            passager = passager.strip(" ,[]'")
             if passager not in dico:
                 dico[passager] = km
             else:
