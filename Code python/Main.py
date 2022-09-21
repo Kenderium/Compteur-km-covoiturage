@@ -262,7 +262,7 @@ while True:
                     
                 # Rajoute Plein à la fin du fichier    
                     with open("historique_trajets.txt") as historique:
-                        historique.write("/n" + "Plein")
+                        historique.write(str("/n" + "Plein"))
 
 
             if i == 6:
