@@ -57,7 +57,6 @@ def prix(historique, prix_plein = 70, km_tot = None ):
     for trajets in historiquev2:         # Commener à partir du start == au mot Plein
         trajet = trajets.split()
         km = int(trajet[0])
-        print(km)
         km_trajets += km
 
         if ajoutkm == True:
