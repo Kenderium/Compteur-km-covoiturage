@@ -38,6 +38,12 @@ def prix(historique, prix_plein = 70, km_tot = None ):
 
     # Trouver où se trouve le dernier plein dans l'historique
     with open(historique) as hist:
+
+        # hist.reverse()
+        # Start = len(hist) - (hist.index("Plein") +1)
+        # hist.reverse()
+        # historiquev2 = hist.readlines()[Start+1:]
+
         for line in hist:
             if line.strip() == 'Plein':
                 Start = numéro_ligne
@@ -57,7 +63,6 @@ def prix(historique, prix_plein = 70, km_tot = None ):
     for trajets in historiquev2:         # Commener à partir du start == au mot Plein
         trajet = trajets.split()
         km = int(trajet[0])
-        print(km)
         km_trajets += km
 
         if ajoutkm == True:
@@ -73,6 +78,7 @@ def prix(historique, prix_plein = 70, km_tot = None ):
 
         for passager in passagers:
             km_parcourus_tot += km
+            passager = passager.strip(" ,[]'")
             if passager not in dico:
                 dico[passager] = km
             else:

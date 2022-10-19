@@ -219,6 +219,12 @@ while True:
                     with open("historique_trajets.txt") as historique:
                         i=0
                         trajets = historique.readlines()
+                        # Prendre après le dernier plein
+                        trajets.reverse()
+                        position = len(trajets) - (trajets.index("Plein") +1)
+                        trajets.reverse()
+                        trajets = trajets[position+1 :]
+                        
                     while not bouton2.value():
                         try:
                             ECRAN.clean()
@@ -258,12 +264,11 @@ while True:
 
                     Bluetooth.envoi("Quel est le prix du plein (en euros)?")
                     prix_plein = int(Bluetooth.reception())
-
                     Bluetooth.envoi(covoit.prix("historique_trajets.txt", prix_plein))
                     
                 # Rajoute Plein à la fin du fichier    
                     with open("historique_trajets.txt") as historique:
-                        historique.write("/n" + "Plein")
+                        historique.write(str("/n" + "Plein"))
 
 
             if i == 6:
