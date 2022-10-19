@@ -88,4 +88,4 @@ def prix(historique, prix_plein = 70, km_tot = None ):
         dico[personnes]  = round((km_perso/(km_tot + km_parcourus_tot))*prix_plein , 2)
     return dico
 
-print(prix("historique_trajets.txt",93 ,818))
+print(prix("historique_trajets.txt",119 ,750))
