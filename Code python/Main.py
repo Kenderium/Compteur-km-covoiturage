@@ -22,6 +22,7 @@ import RFID1
 import Bluetooth
 import covoit
 #import GPS1
+import temperature
 
 # -------------------------------------------
 # Creation des boutons, led indicatrices ----
@@ -139,9 +140,14 @@ def run():
     # Calcule les km avec le gps, ici on met 30 et on les ajoute à chaque passagers
     km = 30
     #km = GPS1.main()?
+    #date = GPS1.date()
+    tempera = temperature.temperature_actuelle()
     with open("historique_trajets.txt","a") as historique:             #Enregistrer le trajet (km + conducteur + passagers)
-        #date = GPS1.date()
-        historique.write( str( "\n" + str(km ) + " " + str(Conducteur ) + " " + str(Passagers)))
+        trajets = historique.readlines()
+        if trajets == []:
+            historique.write( str(km ) + " " + str(Conducteur ) + " " + str(Passagers) + " " + str(tempera))
+        else:
+            historique.write( "\n" + str(km ) + " " + str(Conducteur ) + " " + str(Passagers) + " " + str(tempera))
     ECRAN.clean()
     ECRAN.txt("Km parcourus :", 0, 0)
     ECRAN.txt(str(km), 0, 10)
@@ -199,8 +205,9 @@ while True:
                             ECRAN.txt("Autre passager ?", 0,0)
                             ECRAN.afficher()
                             time.sleep(1)
-                        time.sleep(0.1)
+                        time.sleep(0.5)
                     time.sleep(0.5)
+                    i += 1
 
             if i == 3:                              # Démarer voyage
                 menu3()
@@ -209,6 +216,7 @@ while True:
                     time.sleep(0.5)
                     led_rouge.value(0)
                     run()                           # Démarage voyage
+                    i += 1
 
             if i == 4:
                 menu4()                             # Historique
@@ -221,7 +229,10 @@ while True:
                         trajets = historique.readlines()
                         # Prendre après le dernier plein
                         trajets.reverse()
-                        position = len(trajets) - (trajets.index("Plein") +1)
+                        if "Plein" in trajets:
+                            position = len(trajets) - (trajets.index("Plein") +1)
+                        else:
+                            position = len(trajets)
                         trajets.reverse()
                         trajets = trajets[position+1 :]
                         
@@ -236,6 +247,7 @@ while True:
                         if bouton1.value():
                             i +=1
                     time.sleep(0.5)
+                    i += 1
 
             if i == 5:
                 menu5()                             # Bluetooth / plein
@@ -269,14 +281,13 @@ while True:
                 # Rajoute Plein à la fin du fichier    
                     with open("historique_trajets.txt") as historique:
                         historique.write(str("/n" + "Plein"))
+                    i += 1
 
 
             if i == 6:
                 menu6()                             # Scan de la carte
                 if bouton2.value():                 # Confirmation
-                    ECRAN.clean()
-                    ECRAN.txt("Sannez", 0,0)
-                    ECRAN.afficher()
+                    
                     led_verte.value(1)
                     time.sleep(0.5)
                     led_verte.value(0)
@@ -285,6 +296,7 @@ while True:
                         nom = RFID1.name(scan)
                         if scan == None:
                             ECRAN.clean()
+                            ECRAN.txt("Sannez", 0,0)
                             ECRAN.afficher()
                         else:
                             ECRAN.clean()
@@ -296,6 +308,7 @@ while True:
                     led_rouge.value(1)
                     time.sleep(0.5)
                     led_rouge.value(0)
+                    i += 1
 
             if i == 7:                              # Menu exit
                 menu_exit()
@@ -313,8 +326,11 @@ while True:
                     i += 1
                 time.sleep(0.5)
             
-'''  
-    Bug même conducteur....      
+''' 
+    Bluethoot plante
+    Historique fonctionne pas
+    Bug même conducteur....
+    Bouton fin passagers lent   
     Menu Bluethoot:
     stats?
     GPS

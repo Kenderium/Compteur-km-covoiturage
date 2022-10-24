@@ -20,6 +20,10 @@ thermometre = machine.ADC(4)
 conversion = 3.3 / (65535)
 temperatures = [0.0,0.0,0.0]
 
+def temperature_actuelle():
+    valeur = thermometre.read_u16() * conversion
+    return 27 - (valeur - 0.706) / 0.001721
+
 def futur():
     valeur = (temperatures[-1] + temperatures[-2] + temperatures[-3])/3
     if math.fabs( temperature - valeur) <= 0.1:
@@ -29,15 +33,19 @@ def futur():
     else:
         return "Diminue"
 
-while True:
-    valeur = thermometre.read_u16() * conversion
-    temperature = 27 - (valeur - 0.706) / 0.001721
-    #print("Température: {}" .format(temperature))
-    temperatures.append(temperature)
-    ECRAN.clean()
-    ECRAN.txt("Temperature :",0,0)
-    ECRAN.txt(str(temperature) + " C",0,10)
-    ECRAN.txt(futur(),0,20)
-    ECRAN.afficher()
+def continu():
+    global temperature
+    while True:
+        valeur = thermometre.read_u16() * conversion
+        temperature = 27 - (valeur - 0.706) / 0.001721
+        #print("Température: {}" .format(temperature))
+        temperatures.append(temperature)
+        ECRAN.clean()
+        ECRAN.txt("Temperature :",0,0)
+        ECRAN.txt(str(temperature) + " C",0,10)
+        ECRAN.txt(futur(),0,20)
+        ECRAN.afficher()
 
-    time.sleep(20)
+        time.sleep(20)
+
+#continu()

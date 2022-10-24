@@ -68,7 +68,14 @@ def prix(historique, prix_plein = 70, km_tot = None ):
         if ajoutkm == True:
             km_tot += km
         conducteur = trajet[1]
-        passagers = trajet[2 :]
+        fin = len(trajet)
+        i = 0
+        while fin == len(trajet) and i <= len(trajet):
+            for char in trajet[i]:
+                if char == "]":
+                    fin = int(i)
+            i += 1
+        passagers = trajet[2 : fin]
 
         # Ajout des km
         if conducteur not in dico:
@@ -94,4 +101,4 @@ def prix(historique, prix_plein = 70, km_tot = None ):
         dico[personnes]  = round((km_perso/(km_tot + km_parcourus_tot))*prix_plein , 2)
     return dico
 
-print(prix("historique_trajets.txt",119 ,750))
+#print(prix("historique_trajets.txt",119 ,750))

@@ -1,8 +1,1 @@
-60 loic julien eduardo
-60 loic julien
-60 loic julien eduardo
-60 loic julien
-60 loic julien eduardo
-60 loic julien
-60 loic julien lucas
-60 loic julien
+30 Loic ['Julien', 'Lucas', 'Eduardo']
