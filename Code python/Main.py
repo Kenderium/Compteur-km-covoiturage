@@ -154,6 +154,10 @@ def run():
     ECRAN.afficher()
     time.sleep(1)
 
+def stats():
+    """Affiche un graph des km parcourus par pers
+    """
+
 while True:
     if bouton1.value():                             # Allumage
         bonjour()                                   # Message de bienvenue
