@@ -335,11 +335,11 @@ while True:
             
 ''' 
     Bluethoot plante
-    Historique fonctionne pas
     Bug même conducteur....
-    Bouton fin passagers lent   
-    Menu Bluethoot:
+    Bouton fin passagers lent
     stats?
     GPS
     Boite
+    Historique pas beau
+    App (bluethoot, stats, serveur)
 '''
