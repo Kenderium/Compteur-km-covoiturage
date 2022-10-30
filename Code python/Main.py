@@ -228,26 +228,27 @@ while True:
                     led_verte.value(1)
                     time.sleep(0.5)
                     led_verte.value(0)
+
                     with open("historique_trajets.txt") as historique:
-                        
                         trajets = historique.readlines()
                         # Prendre après le dernier plein
                         trajets.reverse()
-                        if "Plein" in trajets:
-                            position = len(trajets) - (trajets.index("Plein") +1)
+                        if 'Plein\n' in trajets:
+                            position = len(trajets) - (trajets.index('Plein\n') +1)
                         else:
-                            position = len(trajets)
+                            position = 0
                         trajets.reverse()
                         trajets = trajets[position+1 :]
                     l=0    
-                    while not bouton2.value() and l <= len(trajets):
-                        try:
-                            ECRAN.clean()
-                            ECRAN.txt(str(trajets[l]), 0, 0)
-                            ECRAN.afficher()
-                            time.sleep(0.1)
-                        except IndexError:
-                            break
+
+                    while not bouton2.value() and l < len(trajets):
+                        ECRAN.clean()
+                        ECRAN.txt(str(trajets[l][0:14]), 0, 0)
+                        ECRAN.txt(str(trajets[l][15:29]), 0, 10)
+                        ECRAN.txt(str(trajets[l][30:44]), 0, 20)
+                        ECRAN.txt(str(trajets[l][45:59]), 0, 30)
+                        ECRAN.afficher()
+                        time.sleep(0.1)
                         if bouton1.value():
                             l +=1
                     time.sleep(0.5)
