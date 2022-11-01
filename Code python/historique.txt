@@ -1,4 +1,4 @@
-30 Loic ['Lucas', 'Eduardo'] 16.27709
-30 Julien ['Eduardo', 'Lucas'] 18.61781
-30 Loic [] 19.08595
-30 Lucas ['Loic', 'Eduardo'] 18.61781
+60 Loic ['Eduardo'] 16.27709
+30 Loic ['Julien'] 18.61781
+30 Loic ['Amadine'] 19.08595
+30 Loic ['Amadine'] 18.61781
