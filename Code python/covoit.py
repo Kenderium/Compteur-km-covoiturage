@@ -17,7 +17,7 @@ def prix(historique, prix_plein = 70, km_tot = None ):
     """ Retourne le prix de chaque voyageur dans un dico.
 
     Args:
-        historique (fichier texte): De type "km + conducteur + passagers" pour chaque trajet effectué, avec une ligne "plein" lorsque le plein est réalisé.
+        historique (fichier texte): De type "km + conducteur + [ passagers ]" pour chaque trajet effectué, avec une ligne "plein" lorsque le plein est réalisé.
         km_tot (int, optional): Le nombre de km parcourus par la voiture
         prix_plein (int, optional): Le prix du plein. Defaults to 70.
 
