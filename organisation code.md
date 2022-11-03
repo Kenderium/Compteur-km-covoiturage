@@ -6,13 +6,13 @@
 - ssd1306py
 
 
-# GPS
+# [GPS](Code%20python/GPS1.py)
 - startgps(running)
     - cette fonction permet de demarer les logs du gps pour recuperer les latitudes et longitudes
 - distance(lat1, lat2, long1, long2)
     - calcul la distance selon la formule haversine pour savoir les km parcourus lors du trajets
 
-# Affichage LCD
+# [Affichage LCD](Code%20python/ECRAN.py)
 - txt(texte, x, y)
     - Crée un texte à afficher sur l'écran.
 - pixel(x, y)
@@ -24,9 +24,9 @@
 - afficher()
     - Pour afficher les éléments réalisés à l'écran.
 
-# RFID
+# [RFID](Code%20python/RFID1.py)
 
-# Bluethoot - App
+# [Bluethoot - App](Code%20python/Bluetooth.py)
 
 # Partie mathematique
 

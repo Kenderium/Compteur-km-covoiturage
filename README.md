@@ -9,7 +9,7 @@
 - [Credits](#credits)
 
 # Description
-&emsp; Covoiturez-vous souvent ? Ne savez-vous pas comment partagez les frais des trajets ? CarpoX est la pour résoudre tous ces problèmes. L'objectif de ce projet est de creer un boitier qui avec une puce GPS, des lecteurs RFID, du bluetooth pour connecter avec le téléphone, permet de calculer le nombre des kilomètres que chaque utilisateur a parcouru et de vous dire combien chaque passager devras au conducteur en fonction du plein d'essence, des kilomètres totaux, individuel, du nombre de personne. Malheursement nous ne prenons pas encore en compte l'usure de la voiture (Usure des pneus, assurance, ...)
+&emsp; Covoiturez-vous souvent ? Ne savez-vous pas comment partagez les frais des trajets ? CarpoX est la pour résoudre tous ces problèmes. L'objectif de ce projet est de créer un boitier qui avec une puce GPS, des lecteurs RFID, du bluetooth pour connecter avec le téléphone, permet de calculer le nombre des kilomètres que chaque utilisateur a parcouru et de vous dire combien chaque passager devra au conducteur en fonction du plein d'essence, des kilomètres totaux, individuel et bien évidament du nombre de personne. Malheursement nous ne prenons pas encore en compte l'usure de la voiture (usure des pneus, assurance, impots,...)
 # Installation
 
 ## 1.Set up 
