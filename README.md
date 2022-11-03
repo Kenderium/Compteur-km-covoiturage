@@ -1,9 +1,12 @@
 # Title of the project
 # Table of contents
-1. [Description](#description)
-2. [Installation]()
-3. [How to use]()
-4. [Credits]()
+- [Title of the project](#title-of-the-project)
+- [Table of contents](#table-of-contents)
+- [Description](#description)
+- [Installation](#installation)
+  - [Set up](#set-up)
+- [How to use](#how-to-use)
+- [Credits](#credits)
 
 # Description
 
