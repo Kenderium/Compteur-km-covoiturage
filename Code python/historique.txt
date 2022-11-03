@@ -1,1 +1,2 @@
-30 Loic ['Julien', 'Lucas', 'Eduardo']
+60 Julien [ Loic , Lucas ]
+60 Julien [ Loic , Eduardo ]
