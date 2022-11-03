@@ -1,6 +1,6 @@
-# The Carpool Project
+# The Carpool Project (CarpoX)
 # Table of contents
-- [The Carpool Project](#the-carpool-project)
+- [The Carpool Project (CarpoX)](#the-carpool-project-carpox)
 - [Table of contents](#table-of-contents)
 - [Description](#description)
 - [Installation](#installation)
