@@ -1,13 +1,13 @@
 # Title of the project
+# Table of contents
+
 
 # Description
-
-# Table of contents
 
 
 # Installation
 
-## Set up du boitier
+## Set up 
 
 
 # How to use
