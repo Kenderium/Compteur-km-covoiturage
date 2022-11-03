@@ -9,15 +9,14 @@
 - [Credits](#credits)
 
 # Description
-Ce projet permet de 
-
+&emsp; Covoiturez-vous souvent ? Ne savez-vous pas comment partagez les frais des trajets ? CarpoX est la pour résoudre tous ces problèmes. L'objectif de ce projet est de creer un boitier qui avec une puce GPS, des lecteurs RFID, du bluetooth pour connecter avec le téléphone, permet de calculer le nombre des kilomètres que chaque utilisateur a parcouru et de vous dire combien chaque passager devras au conducteur en fonction du plein d'essence, des kilomètres totaux, individuel, du nombre de personne. Malheursement nous ne prenons pas encore en compte l'usure de la voiture (Usure des pneus, assurance, ...)
 # Installation
 
 ## 1.Set up 
-Téléverser l'intérieur de dossier [codePython](/Code%20python/) dans un raspberry pi pico 
+&emsp; Téléverser l'intérieur de dossier [codePython](/Code%20python/) dans un raspberry pi pico 
 
 # How to use
-Appuyer sur le bouton principal et c'est parti !
+&emsp; Appuyer sur le bouton principal et c'est parti !
 
 # Credits 
 @LaTeam
