@@ -61,21 +61,29 @@ def prix(historique, prix_plein = 70, km_tot = None ):
 
     # Lecture des trajets du plein
     for trajets in historiquev2:         # Commener à partir du start == au mot Plein
-        trajet = trajets.split()
+        trajet = []
+        temp = ""
+        # Divise la ligne en liste
+        for char in trajets:
+            
+            if char == "]":
+                trajet.append(temp)
+                break
+            elif char == " " and temp != "":
+                trajet.append(temp)
+                temp = ""
+            elif char == "," or char == "'" or char == "[":
+                pass
+            else:
+                temp += char
+
         km = int(trajet[0])
         km_trajets += km
 
         if ajoutkm == True:
             km_tot += km
         conducteur = trajet[1]
-        fin = len(trajet)
-        i = 0
-        while fin == len(trajet) and i <= len(trajet):
-            for char in trajet[i]:
-                if char == "]":
-                    fin = int(i)
-            i += 1
-        passagers = trajet[2 : fin]
+        passagers = trajet[2 :]
 
         # Ajout des km
         if conducteur not in dico:
@@ -85,7 +93,6 @@ def prix(historique, prix_plein = 70, km_tot = None ):
 
         for passager in passagers:
             km_parcourus_tot += km
-            passager = passager.strip(" ,[]'")
             if passager not in dico:
                 dico[passager] = km
             else:
@@ -101,4 +108,4 @@ def prix(historique, prix_plein = 70, km_tot = None ):
         dico[personnes]  = round((km_perso/(km_tot + km_parcourus_tot))*prix_plein , 2)
     return dico
 
-#print(prix("historique_trajets.txt",119 ,750))
+#print(prix("historique.txt",119 ,750))
