@@ -13,7 +13,9 @@ HISTORY:
 Date   Sun Jan 16 2022   	By Julien Dagnelie	Comments
 ----------	---	---------------------------------------------------------
 '''
-def prix(historique, prix_plein = 70, km_tot = None ):
+
+
+def prix(historique, prix_plein=70, km_tot=None):
     """ Retourne le prix de chaque voyageur dans un dico.
 
     Args:
@@ -27,7 +29,7 @@ def prix(historique, prix_plein = 70, km_tot = None ):
     numéro_ligne = 0
     Start = -1
     historiquev2 = []
-    
+
     # Si il y a des km supp
     if km_tot == None:
         km_tot = 0
@@ -47,25 +49,24 @@ def prix(historique, prix_plein = 70, km_tot = None ):
         for line in hist:
             if line.strip() == 'Plein':
                 Start = numéro_ligne
-            numéro_ligne +=1
+            numéro_ligne += 1
 
     # Créer un nouvel historique avec seulement les infos récentes
     with open(historique) as hist:
-        historiquev2 = (hist.readlines()[Start+1:])
-
+        historiquev2 = (hist.readlines()[Start + 1:])
 
     # Création d'un dico et du compteur de km totaux
-    dico = {}                           # De type: Nom --> [km, prix]
+    dico = {}  # De type: Nom --> [km, prix]
     km_trajets = 0
     km_parcourus_tot = 0
 
     # Lecture des trajets du plein
-    for trajets in historiquev2:         # Commener à partir du start == au mot Plein
+    for trajets in historiquev2:  # Commener à partir du start == au mot Plein
         trajet = []
         temp = ""
         # Divise la ligne en liste
         for char in trajets:
-            
+
             if char == "]":
                 trajet.append(temp)
                 break
@@ -80,10 +81,10 @@ def prix(historique, prix_plein = 70, km_tot = None ):
         km = int(trajet[0])
         km_trajets += km
 
-        if ajoutkm == True:
+        if ajoutkm: #Is True ?
             km_tot += km
         conducteur = trajet[1]
-        passagers = trajet[2 :]
+        passagers = trajet[2:]
 
         # Ajout des km
         if conducteur not in dico:
@@ -96,16 +97,17 @@ def prix(historique, prix_plein = 70, km_tot = None ):
             if passager not in dico:
                 dico[passager] = km
             else:
-                dico[passager] += km 
+                dico[passager] += km
 
-    if km_trajets < km_tt:                  # Si il y a des km supp, les retires dans le plein
-        pourcentage = (km_trajets/km_tt)
-        prix_plein *= (1-(1-pourcentage))
-                   
+    if km_trajets < km_tt:  # Si il y a des km supp, les retires dans le plein
+        pourcentage = (km_trajets / km_tt)
+        prix_plein *= (1 - (1 - pourcentage))
+
     # Ajout des prix
     for personnes in dico:
         km_perso = dico[personnes]
-        dico[personnes]  = round((km_perso/(km_tot + km_parcourus_tot))*prix_plein , 2)
+        dico[personnes] = round((km_perso / (km_tot + km_parcourus_tot)) * prix_plein, 2)
     return dico
 
-#print(prix("historique.txt",119 ,750))
+
+print(prix("historique.txt", 119, 750))
