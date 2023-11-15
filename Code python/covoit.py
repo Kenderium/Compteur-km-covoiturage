@@ -110,4 +110,4 @@ def prix(historique, prix_plein=70, km_tot=None):
     return dico
 
 
-print(prix("historique.txt", 119, 750))
+print(prix("historique.txt", 84.18, 750))
