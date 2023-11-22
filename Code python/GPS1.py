@@ -29,22 +29,13 @@ def startgps(start):
     Args:
         start (bool, optional): . Defaults to False.
     """
-
-    gps.start_logging("CoordinateLogs.txt")  # Base de données meilleure ?
-    if uart.any():
-        coordonees = gps.latitude, gps.longitude
-        gps.write_log(str(coordonees) + "\n")
-    time.sleep(1.5)  # Toute les 1.5 secondes suffisant ?
+    if gps.satellite_data_updated():
+        gps.start_logging("logs.txt")  # Base de données meilleure ?
+        if uart.any():
+            coordonees = gps.latitude(), gps.longitude()   # Latitude (37°, 51', 'N') degree, minutes, N/S
+            gps.write_log(str(coordonees) + "\n")
+        time.sleep(1.5)  # Toute les 1.5 secondes suffisant ?
     gps.stop_logging()
-
-
-"""
-INUTILE ?
-
-def transformation_coord(coord): 
-    new_coord = float(coord[0]) + float(coord[1]) / 60
-    return new_coord
-"""
 
 
 def distance(coord1, coord2):
@@ -76,6 +67,19 @@ def distance(coord1, coord2):
     return distkm
 
 
+def reset_log_file(file):
+    """
+    Reset un fichier  pour éviter des problèmes de stockage
+
+    Args :
+        file : fichier a vider
+
+    Returns:
+        nothing
+    """
+    pass
+
+
 def run():
     _thread.start_new_thread(second_thread, ())  # Création du thread et démarrage
     global go
@@ -83,8 +87,8 @@ def run():
         startgps(True)  # Démarre le gps
     startgps(False)  # Arrete le gps
 
-    with open("CoordinateLogs.txt") as file:  # Ouvre le fichier des trajets
-        l = []  # Liste contenant comme chaque élément une coordonnée: ([0, 0.0, 'N'], [0, 0.0, 'W'])
+    with open("logs.txt") as file:  # Ouvre le fichier des trajets
+        l = []  # Liste contenant comme chaque élément une coordonnée: ([0, 0.0, 'N'], [0, 0.0, 'W']) TODO les coordonnées sont stockées comme suit : ((0 , 0.0, 'N') ,(0 , 0.0, 'W')) (int, float, char)
         d = []  # Liste finale, avec juste longitude, lat (sans "(" ")"
         km = 0  # Compteur de km
 
