@@ -1,4 +1,5 @@
-60 Loic ['Eduardo'] 16.27709
-30 Loic ['Julien'] 18.61781
-30 Loic ['Lucas'] 19.08595
-30 Loic ['Amandine'] 18.61781
+60 Loic ['Eduardo']
+30 Loic ['Julien']
+30 Loic ['Lucas']
+Plein
+50 Loic ['Amandine']
