@@ -1,0 +1,5 @@
+# Caddy obtient et renouvelle le certificat HTTPS tout seul.
+# Le HTTPS est obligatoire : le Bluetooth dans le navigateur ne marche que sur une page sécurisée.
+carpox.mondomaine.be {
+	reverse_proxy 127.0.0.1:8000
+}
