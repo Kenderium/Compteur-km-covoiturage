@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CarpoX</title>
+  <meta name="theme-color" content="#1f6f5c">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a href="#cars" class="brand">CarpoX</a>
+    <nav id="nav" hidden>
+      <a href="#cars">Voitures</a>
+      <a href="#account">Compte</a>
+    </nav>
+  </header>
+  <main id="view" aria-live="polite"></main>
+  <div id="toast" role="status" hidden></div>
+  <script src="ble.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

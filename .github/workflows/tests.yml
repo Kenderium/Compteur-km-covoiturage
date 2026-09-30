@@ -1,0 +1,23 @@
+name: Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r server/requirements-dev.txt mpy-cross
+      - name: Tests (logique partagée, firmware simulé, serveur)
+        run: pytest -q
+      - name: Le firmware compile pour MicroPython
+        run: |
+          for f in firmware/main.py firmware/config_example.py firmware/carpox/*.py core/carpox_core/*.py; do
+            python -m mpy_cross -o /tmp/out.mpy "$f"
+          done

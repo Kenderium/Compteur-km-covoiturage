@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+# Configuration locale du boîtier (mots de passe WiFi, jeton)
+firmware/config.py
+# Base de données du serveur
+*.sqlite3
+*.db

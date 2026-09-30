@@ -1,0 +1,19 @@
+# /etc/systemd/system/carpox.service
+[Unit]
+Description=Serveur CarpoX
+After=network.target
+
+[Service]
+User=carpox
+WorkingDirectory=/opt/carpox
+Environment=PYTHONPATH=/opt/carpox/core:/opt/carpox/server
+Environment=CARPOX_DB=/var/lib/carpox/carpox.sqlite3
+# Environment=CARPOX_INVITE_CODE=choisissez-un-code
+ExecStart=/opt/carpox/.venv/bin/uvicorn carpox_server.main:app --host 127.0.0.1 --port 8000 --proxy-headers
+Restart=on-failure
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/carpox
+
+[Install]
+WantedBy=multi-user.target
