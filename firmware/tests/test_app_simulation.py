@@ -146,6 +146,7 @@ def firmware(tmp_path, monkeypatch):
         clock_ms[0] += ms
 
     monkeypatch.setattr(time, "sleep_ms", sleep_ms, raising=False)
+    monkeypatch.setattr(time, "time", lambda: 1_000_000 + clock_ms[0] // 1000)
 
     machine = types.ModuleType("machine")
     machine.Pin = FakePin
@@ -195,10 +196,7 @@ def press(app, button):
 
 def run_for(app, ms):
     for _ in range(ms // 20):
-        app.ble.poll()
-        fix = app.gps.poll()
-        if fix and app.recorder.active:
-            app.recorder.add_fix(*fix)
+        app.poll_inputs()
         app.step()
         time.sleep_ms(20)
 
@@ -276,3 +274,51 @@ def test_bluetooth_de_bout_en_bout(firmware):
     replies = b"".join(ble.notified).decode().strip().split("\n")
     assert json.loads(replies[0])["ok"] is True
     assert json.loads(replies[1])["pending"] == 0
+
+
+def drive_north(app, km, start_s=0, lat0=50.6680):
+    step = 0.02 / 111.195
+    n = int(km * 50)
+    for s in range(n + 1):
+        FakeUART.instance.buf += gps_sentences(lat0 + s * step, 4.6118, start_s + s).encode()
+        run_for(app, 1000)
+    return lat0 + n * step, start_s + n + 1
+
+
+def test_km_comptes_sans_badge(firmware):
+    """La voiture roule sans que personne ne badge : les km sont quand même notés."""
+    app, _ = firmware
+    assert app.state == "menu"
+    lat, t = drive_north(app, 2)
+    assert app.drive.km == pytest.approx(2.0, abs=0.1)
+    assert app.journal.all() == []
+    # Garée 3 minutes : le segment est écrit au journal, avec son parcours.
+    run_for(app, 185000)
+    events = app.journal.all()
+    assert [e["type"] for e in events] == ["drive"]
+    assert events[0]["km"] == pytest.approx(2.0, abs=0.1)
+    assert len(events[0]["track"]) >= 10
+
+    # Elle repart, puis quelqu'un badge : le segment est clos au départ du trajet.
+    lat, t = drive_north(app, 1, t, lat)
+    press(app, "ok")
+    present_badge(app, 54835169)
+    press(app, "ok")
+    assert app.state == "trip"
+    assert [e["type"] for e in app.journal.all()] == ["drive", "drive"]
+    drive_north(app, 1, t + 5, lat)
+    assert app.drive.km == 0
+    assert app.recorder.km == pytest.approx(1.0, abs=0.1)
+    assert len(app.recorder.track.copy()) >= 5
+
+
+def test_km_sans_badge_apres_coupure_du_contact(firmware, tmp_path):
+    app, _ = firmware
+    drive_north(app, 1)
+    run_for(app, 31000)  # sauvegarde périodique
+    assert (tmp_path / "drive_state.json").exists()
+    app2 = type(app)()  # contact coupé puis remis
+    events = app2.journal.all()
+    assert [e["type"] for e in events] == ["drive"]
+    assert events[0]["km"] == pytest.approx(1.0, abs=0.1)
+    assert not (tmp_path / "drive_state.json").exists()

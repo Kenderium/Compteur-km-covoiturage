@@ -5,6 +5,9 @@ s'en sert pour dédoublonner : renvoyer deux fois le même événement (coupure
 WiFi pendant la synchro, relais par le téléphone puis par le WiFi) est sans
 danger. `synced_seq` retient jusqu'où le serveur a confirmé la réception.
 
+Les trajets contiennent leur parcours GPS (quelques Ko chacun) : le fichier
+est donc lu ligne par ligne, sans jamais le charger en entier en mémoire.
+
 Tourne sous MicroPython et CPython (les tests l'utilisent directement).
 """
 
@@ -59,34 +62,43 @@ class Journal:
         self._save_state()
         return event
 
-    def all(self):
-        events = []
+    def _lines(self):
+        """(événement, ligne brute) un par un. Ignore une ligne tronquée par une coupure."""
         try:
-            with open(self.path) as f:
-                for line in f:
-                    line = line.strip()
-                    if not line:
-                        continue
-                    try:
-                        events.append(json.loads(line))
-                    except ValueError:
-                        # Ligne tronquée (coupure de courant pendant l'écriture).
-                        pass
+            f = open(self.path)
         except OSError:
-            pass
-        return events
+            return
+        with f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    yield json.loads(line), line
+                except ValueError:
+                    pass
 
-    def after(self, seq, limit=None):
+    def all(self):
+        return [e for e, _ in self._lines()]
+
+    def after(self, seq, limit=None, max_bytes=None):
+        """Événements après `seq`. `max_bytes` limite la taille totale (au moins un
+        événement est toujours renvoyé), pour tenir dans la mémoire du Pico."""
         out = []
-        for e in self.all():
-            if e.get("seq", 0) > seq:
-                out.append(e)
-                if limit is not None and len(out) >= limit:
-                    break
+        size = 0
+        for e, line in self._lines():
+            if e.get("seq", 0) <= seq:
+                continue
+            if max_bytes is not None and out and size + len(line) > max_bytes:
+                break
+            out.append(e)
+            size += len(line)
+            if limit is not None and len(out) >= limit:
+                break
         return out
 
-    def unsynced(self, limit=None):
-        return self.after(self.synced_seq, limit)
+    def unsynced(self, limit=None, max_bytes=None):
+        return self.after(self.synced_seq, limit, max_bytes)
 
     def pending_count(self):
         return self.next_seq - 1 - self.synced_seq
@@ -101,21 +113,37 @@ class Journal:
             self.synced_seq = seq
             self._save_state()
 
-    def recent(self, count):
-        events = self.all()
-        return events[-count:] if count else []
+    def recent(self, count, kind=None, strip=("track",)):
+        """Les `count` derniers événements (du type `kind` si donné), sans le parcours."""
+        out = []
+        if not count:
+            return out
+        for e, _ in self._lines():
+            if kind is not None and e.get("type") != kind:
+                continue
+            for key in strip:
+                e.pop(key, None)
+            out.append(e)
+            if len(out) > count:
+                out.pop(0)
+        return out
 
     def compact(self, keep_synced=50):
         """Supprime les vieux événements déjà synchronisés pour libérer la flash."""
-        events = self.all()
-        kept_synced = [e for e in events if e.get("seq", 0) <= self.synced_seq][-keep_synced:]
-        unsynced = [e for e in events if e.get("seq", 0) > self.synced_seq]
-        kept = kept_synced + unsynced
-        if len(kept) == len(events):
+        synced = 0
+        for e, _ in self._lines():
+            if e.get("seq", 0) <= self.synced_seq:
+                synced += 1
+        drop = synced - keep_synced
+        if drop <= 0:
             return 0
         tmp = self.path + ".tmp"
+        dropped = 0
         with open(tmp, "w") as f:
-            for e in kept:
-                f.write(json.dumps(e) + "\n")
+            for e, line in self._lines():
+                if dropped < drop and e.get("seq", 0) <= self.synced_seq:
+                    dropped += 1
+                    continue
+                f.write(line + "\n")
         _replace(tmp, self.path)
-        return len(events) - len(kept)
+        return dropped

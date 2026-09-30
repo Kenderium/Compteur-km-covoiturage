@@ -1,0 +1,103 @@
+{
+  "user": {
+    "id": 1,
+    "username": "loic",
+    "display_name": "Loïc",
+    "person": "u:1"
+  },
+  "generated_at": 1790000100,
+  "totals": {
+    "balance_cents": 500,
+    "owes_cents": 0,
+    "owed_cents": 500,
+    "km": 100.0
+  },
+  "cars": [
+    {
+      "id": "box-1234",
+      "name": "Golf",
+      "is_owner": true,
+      "last_sync_at": 1790000000,
+      "km": {
+        "total": 150.0,
+        "tracked": 100.0,
+        "untracked": 50.0,
+        "since_fill": 150.0,
+        "odometer": 100150.0
+      },
+      "fuel": {
+        "tank_l": 50,
+        "consumption_l_100km": 6.0,
+        "consumption_source": "measured",
+        "measured_l_100km": 6.0,
+        "remaining_l": 41.0,
+        "remaining_pct": 82.0,
+        "range_km": 683.0,
+        "last_fill": {
+          "at": 1789990000,
+          "litres": 45,
+          "amount_cents": 7000
+        }
+      },
+      "me": {
+        "balance_cents": 500,
+        "km": 100.0,
+        "owes": [],
+        "owed": [
+          {
+            "from": {
+              "key": "u:2",
+              "name": "Julien"
+            },
+            "amount_cents": 500
+          }
+        ]
+      },
+      "balances": [
+        {
+          "key": "u:2",
+          "name": "Julien",
+          "cents": -500
+        },
+        {
+          "key": "u:1",
+          "name": "Loïc",
+          "cents": 500
+        }
+      ],
+      "settlements": [
+        {
+          "from": {
+            "key": "u:2",
+            "name": "Julien"
+          },
+          "to": {
+            "key": "u:1",
+            "name": "Loïc"
+          },
+          "amount_cents": 500
+        }
+      ],
+      "trips_count": 2,
+      "last_trip": {
+        "id": 7,
+        "type": "trip",
+        "seq": 1,
+        "km": 100.0,
+        "start": 1789999000,
+        "end": 1790000000,
+        "received_at": 1790000000,
+        "people": [
+          "Loïc",
+          "Julien"
+        ],
+        "track_points": 20
+      },
+      "last_position": {
+        "lat": 50.668,
+        "lon": 4.6118,
+        "at": 1790000000
+      }
+    }
+  ]
+}

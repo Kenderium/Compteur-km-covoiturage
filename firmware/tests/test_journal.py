@@ -28,3 +28,15 @@ def test_ligne_tronquee_ignoree(journal):
     with open(journal.path, "a") as f:
         f.write('{"type": "tr')
     assert len(journal.all()) == 1
+
+
+def test_lecture_limitee_en_taille(journal):
+    track = [[50.0 + i / 1000, 4.0] for i in range(200)]
+    for i in range(5):
+        journal.append({"type": "trip", "km": i, "track": track})
+    batch = journal.unsynced(max_bytes=10000)
+    assert 1 <= len(batch) < 5
+    assert len(journal.unsynced(max_bytes=10)) == 1  # toujours au moins un
+    recent = journal.recent(2, "trip")
+    assert [e["seq"] for e in recent] == [4, 5]
+    assert "track" not in recent[0]

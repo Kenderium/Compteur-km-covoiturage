@@ -29,7 +29,11 @@ CREATE TABLE IF NOT EXISTS devices (
     token_hash TEXT NOT NULL,
     ble_pin TEXT NOT NULL,
     created_at INTEGER NOT NULL,
-    last_sync_at INTEGER
+    last_sync_at INTEGER,
+    -- Réglages du propriétaire (facultatifs) : estimation du carburant.
+    tank_l REAL,
+    consumption_l_100km REAL,
+    odometer_start_km REAL
 );
 
 CREATE TABLE IF NOT EXISTS device_members (
@@ -63,6 +67,17 @@ CREATE TABLE IF NOT EXISTS events (
     created_at INTEGER NOT NULL,
     UNIQUE (device_id, seq)
 );
+-- Jetons personnels en lecture seule (Home Assistant...), sans expiration
+-- mais révocables. Seule l'empreinte est stockée, comme pour les sessions.
+CREATE TABLE IF NOT EXISTS api_tokens (
+    id INTEGER PRIMARY KEY,
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    name TEXT NOT NULL,
+    token_hash TEXT NOT NULL UNIQUE,
+    created_at INTEGER NOT NULL,
+    last_used_at INTEGER
+);
+
 CREATE INDEX IF NOT EXISTS events_order ON events (device_id, order_seq, order_sub, id);
 """
 
@@ -80,7 +95,22 @@ def init(path):
     if path != ":memory:":
         conn.execute("PRAGMA journal_mode = WAL")
     conn.executescript(SCHEMA)
+    _migrate(conn)
     return conn
+
+
+# Colonnes ajoutées après la première version : on les crée dans les bases existantes.
+ADDED_COLUMNS = {
+    "devices": [("tank_l", "REAL"), ("consumption_l_100km", "REAL"), ("odometer_start_km", "REAL")],
+}
+
+
+def _migrate(conn):
+    for table, columns in ADDED_COLUMNS.items():
+        existing = {r["name"] for r in conn.execute("PRAGMA table_info(%s)" % table)}
+        for name, kind in columns:
+            if name not in existing:
+                conn.execute("ALTER TABLE %s ADD COLUMN %s %s" % (table, name, kind))
 
 
 def now():

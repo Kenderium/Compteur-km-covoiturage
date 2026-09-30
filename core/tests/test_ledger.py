@@ -87,3 +87,28 @@ def test_legacy_puis_plein_prix_inconnu_ne_casse_rien():
 def test_legacy_ligne_illisible():
     with pytest.raises(ValueError):
         parse_legacy_history("abc def")
+
+
+def test_km_sans_badge_a_la_charge_de_celui_qui_paie_le_plein():
+    events = [
+        trip(100, "Loic", "Julien"),
+        {"type": "drive", "km": 100},
+        {"type": "fuel", "amount_cents": 2000, "payer": "Loic"},
+    ]
+    ledger = compute_ledger(events)
+    # 200 km pour 20 € : le trajet à deux coûte 10 € (5 chacun), le reste est pour Loïc.
+    assert ledger["balances"] == {"Loic": 500, "Julien": -500}
+    assert ledger["pending_drive_km"] == 0
+
+
+def test_compteur_journalier_prime_s_il_est_plus_grand():
+    events = [
+        trip(100, "Loic", "Julien"),
+        {"type": "drive", "km": 20},
+        {"type": "fuel", "amount_cents": 2000, "payer": "Julien", "distance_km": 200},
+        {"type": "drive", "km": 7},
+    ]
+    ledger = compute_ledger(events)
+    # 200 km au compteur : le trajet à deux coûte 10 €, Julien paie les 100 km restants.
+    assert ledger["balances"] == {"Julien": 500, "Loic": -500}
+    assert ledger["pending_drive_km"] == 7

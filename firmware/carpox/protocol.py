@@ -20,13 +20,14 @@ MAX_AUTH_FAILURES = 5
 
 
 class CommandHandler:
-    def __init__(self, device_id, pin, journal, badges, recorder=None, clock=None):
+    def __init__(self, device_id, pin, journal, badges, recorder=None, clock=None, drive=None):
         self.device_id = device_id
         self.pin = str(pin)
         self.journal = journal
         self.badges = badges
         self.recorder = recorder
         self.clock = clock
+        self.drive = drive
         self.last_scan = None
         self.on_connect()
 
@@ -80,7 +81,7 @@ class CommandHandler:
     def _events(self, arg):
         after = int(arg) if arg.strip() else self.journal.synced_seq
         out = []
-        for e in self.journal.after(after, sync.BATCH_SIZE):
+        for e in self.journal.after(after, sync.BATCH_SIZE, sync.BATCH_BYTES):
             out.append(json.dumps({"event": e}))
         out.append(json.dumps({"ok": True, "end": True, "count": len(out)}))
         return out
@@ -97,6 +98,7 @@ class CommandHandler:
             "synced_seq": self.journal.synced_seq,
             "pending": self.journal.pending_count(),
             "trip": trip,
+            "drive_km": round(self.drive.km, 2) if self.drive is not None else None,
         }
 
 

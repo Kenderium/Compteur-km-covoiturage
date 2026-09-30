@@ -25,6 +25,10 @@ WIFI_NETWORKS = [
 # n'est en cours.
 SYNC_INTERVAL_S = 300
 
+# Le boîtier compte les km dès qu'il est allumé, même sans badge. Après N
+# secondes à l'arrêt, les km roulés hors trajet sont écrits au journal.
+DRIVE_IDLE_S = 180
+
 # Brochage (voir hardware/README.md).
 PIN_BUTTON_NEXT = 14
 PIN_BUTTON_OK = 15

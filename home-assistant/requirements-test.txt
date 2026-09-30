@@ -1,0 +1,2 @@
+# Tests de l'intégration Home Assistant (Python 3.13) : cd home-assistant && pytest
+pytest-homeassistant-custom-component

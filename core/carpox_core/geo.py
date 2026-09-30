@@ -74,5 +74,18 @@ class DistanceAccumulator:
         return True
 
     @property
+    def position(self):
+        """Dernier point retenu (lat, lon, t_s), ou None."""
+        return self._last
+
+    def restart(self, keep_position=True):
+        """Remet la distance à zéro. Avec `keep_position`, le prochain point est
+        mesuré depuis le dernier point retenu : aucun mètre n'est perdu."""
+        self.total_m = 0.0
+        self.points = 0
+        if not keep_position:
+            self._last = None
+
+    @property
     def total_km(self):
         return self.total_m / 1000.0

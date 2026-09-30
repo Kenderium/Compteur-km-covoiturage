@@ -1,0 +1,109 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "CarpoX",
+        "description": "Address of your CarpoX server and a personal token. Create the token in the CarpoX app, Account tab > Home Assistant. It is read-only.",
+        "data": {
+          "url": "Server address",
+          "token": "Personal token"
+        },
+        "data_description": {
+          "url": "For example https://carpox.example.org",
+          "token": "Starts with cpx_"
+        }
+      },
+      "reauth_confirm": {
+        "title": "New CarpoX token",
+        "description": "The token for {url} was refused (probably revoked). Create a new one in the CarpoX app.",
+        "data": {
+          "token": "Personal token"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Token refused. Check it is a personal token (cpx_...) that has not been revoked.",
+      "cannot_connect": "Cannot reach a CarpoX server at this address.",
+      "invalid_url": "The address must start with https:// (or http:// on a local network).",
+      "unknown": "Unexpected error, see the Home Assistant log."
+    },
+    "abort": {
+      "already_configured": "This CarpoX account is already configured.",
+      "reauth_successful": "Token updated.",
+      "wrong_account": "This token belongs to another CarpoX account."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "CarpoX",
+        "data": {
+          "scan_interval_min": "Update every (minutes)"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "km_since_fill": {
+        "name": "Km since fill-up"
+      },
+      "fuel_remaining": {
+        "name": "Estimated fuel"
+      },
+      "fuel_level": {
+        "name": "Estimated tank level"
+      },
+      "range": {
+        "name": "Estimated range"
+      },
+      "consumption": {
+        "name": "Fuel consumption"
+      },
+      "total_km": {
+        "name": "Total km"
+      },
+      "untracked_km": {
+        "name": "Km without badge"
+      },
+      "odometer": {
+        "name": "Estimated odometer"
+      },
+      "my_km": {
+        "name": "My km"
+      },
+      "my_balance": {
+        "name": "My balance"
+      },
+      "settlements": {
+        "name": "Pending repayments"
+      },
+      "last_sync": {
+        "name": "Last sync"
+      },
+      "last_trip": {
+        "name": "Last trip"
+      },
+      "trips": {
+        "name": "Trips"
+      },
+      "balance": {
+        "name": "Total balance"
+      },
+      "owes": {
+        "name": "I owe"
+      },
+      "owed": {
+        "name": "Owed to me"
+      },
+      "total_my_km": {
+        "name": "My km (all cars)"
+      }
+    },
+    "device_tracker": {
+      "position": {
+        "name": "Last position"
+      }
+    }
+  }
+}

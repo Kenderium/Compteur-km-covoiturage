@@ -4,6 +4,9 @@ La boucle ne bloque jamais longtemps : à chaque tour elle lit les boutons,
 le GPS, le lecteur RFID et les commandes Bluetooth. Chaque écran est un état.
 
 Boutons : SUIVANT (menu suivant / annuler) et OK (valider).
+
+Le boîtier compte les km dès qu'il est allumé (donc dès que la voiture
+roule) : hors trajet badgé, ils vont dans des segments "drive" (carpox.drive).
 """
 
 import json
@@ -13,6 +16,7 @@ import config
 from carpox import clock, wifi
 from carpox.badges import Badges
 from carpox.ble import BleUart
+from carpox.drive import DriveRecorder
 from carpox.gps import Gps
 from carpox.hw import Hardware
 from carpox.journal import Journal
@@ -22,29 +26,40 @@ from carpox.trip import TripRecorder
 
 MENU = ["Nouveau trajet", "Historique", "Synchro WiFi", "Scanner badge", "Etat"]
 TRIP_STATE_FILE = "trip_state.json"
+DRIVE_STATE_FILE = "drive_state.json"
 SAVE_EVERY_MS = 30000
 RFID_EVERY_MS = 250
+# Segment hors trajet terminé après N secondes à l'arrêt (config.DRIVE_IDLE_S).
+DRIVE_IDLE_S = getattr(config, "DRIVE_IDLE_S", 180)
 
 
-def _save_trip(recorder):
-    with open(TRIP_STATE_FILE, "w") as f:
+def _save_state(path, recorder):
+    with open(path, "w") as f:
         f.write(json.dumps(recorder.snapshot()))
 
 
-def _clear_trip():
+def _clear_state(path):
     try:
         import os
-        os.remove(TRIP_STATE_FILE)
+        os.remove(path)
     except OSError:
         pass
 
 
-def _load_trip():
+def _load_state(path):
     try:
-        with open(TRIP_STATE_FILE) as f:
+        with open(path) as f:
             return json.loads(f.read())
     except (OSError, ValueError):
         return None
+
+
+def _save_trip(recorder):
+    _save_state(TRIP_STATE_FILE, recorder)
+
+
+def _clear_trip():
+    _clear_state(TRIP_STATE_FILE)
 
 
 class App:
@@ -54,10 +69,11 @@ class App:
         self.journal = Journal()
         self.badges = Badges()
         self.recorder = TripRecorder()
+        self.drive = DriveRecorder()
         self.gps = Gps()
         self.rfid = RfidReader()
         self.handler = CommandHandler(config.DEVICE_ID, config.BLE_PIN, self.journal,
-                                      self.badges, self.recorder, clock)
+                                      self.badges, self.recorder, clock, self.drive)
         self.ble = BleUart(config.BLE_NAME, self.handler)
         self.state = "menu"
         self.menu_index = 0
@@ -66,10 +82,17 @@ class App:
         self.message_until = 0
         self.last_rfid_ms = 0
         self.last_save_ms = 0
+        self.last_drive_save_ms = 0
         self.last_sync_s = time.time() - config.SYNC_INTERVAL_S + 20  # 1re synchro ~20 s après démarrage
         self.dirty = True
 
-        saved = _load_trip()
+        # Km roulés hors trajet avant la dernière coupure du contact.
+        saved = _load_state(DRIVE_STATE_FILE)
+        if saved:
+            self.drive.restore(saved)
+            self.close_drive(keep_position=False)
+
+        saved = _load_state(TRIP_STATE_FILE)
         if saved and saved.get("driver"):
             self.recorder.restore(saved)
             self.state = "resume"
@@ -100,13 +123,34 @@ class App:
 
     def run(self):
         while True:
-            self.ble.poll()
-            fix = self.gps.poll()
-            if fix and self.recorder.active:
-                if self.recorder.add_fix(*fix):
-                    self.dirty = True
+            self.poll_inputs()
             self.step()
             time.sleep_ms(20)
+
+    def poll_inputs(self):
+        """Bluetooth et GPS. Les km comptent toujours : dans le trajet s'il y en
+        a un, sinon dans le segment hors trajet."""
+        self.ble.poll()
+        fix = self.gps.poll()
+        if fix:
+            if self.recorder.active:
+                if self.recorder.add_fix(*fix):
+                    self.dirty = True
+            else:
+                self.drive.add_fix(fix[0], fix[1], fix[2], fix[3], time.time(), clock.now())
+        if self.drive.active:
+            if self.drive.idle_for(time.time()) >= DRIVE_IDLE_S:
+                self.close_drive()
+            elif time.ticks_diff(time.ticks_ms(), self.last_drive_save_ms) > SAVE_EVERY_MS:
+                _save_state(DRIVE_STATE_FILE, self.drive)
+                self.last_drive_save_ms = time.ticks_ms()
+
+    def close_drive(self, keep_position=True):
+        """Écrit au journal les km roulés hors trajet depuis le dernier arrêt."""
+        event = self.drive.close(keep_position)
+        if event is not None and event["km"] > 0:
+            self.journal.append(event)
+        _clear_state(DRIVE_STATE_FILE)
 
     def step(self):
         nxt = self.hw.next.pressed()
@@ -130,7 +174,7 @@ class App:
                 self.recorder.reset()
                 self.goto("driver")
             elif choice == "Historique":
-                self.history = [e for e in self.journal.recent(20) if e.get("type") == "trip"]
+                self.history = self.journal.recent(20, "trip")
                 self.history.reverse()
                 self.history_index = 0
                 self.goto("history")
@@ -179,6 +223,8 @@ class App:
             self.goto("menu")
             return
         if ok:
+            # À partir d'ici, c'est le trajet qui compte les km.
+            self.close_drive(keep_position=False)
             self.recorder.start(clock.now())
             _save_trip(self.recorder)
             self.last_save_ms = time.ticks_ms()
@@ -274,9 +320,9 @@ class App:
         if self.dirty:
             self.hw.show("Etat", "Trajets: %d" % self.journal.last_seq(),
                          "A envoyer: %d" % self.journal.pending_count(),
+                         "Hors trajet: %.1f km" % self.drive.km,
                          ("GPS %d sat" % self.gps.satellites()) if self.gps.has_fix() else "GPS: pas de fix",
-                         "BT: connecte" if self.ble.connected() else "BT: libre",
-                         "Heure: ok" if clock.now() else "Heure: inconnue")
+                         "BT: connecte" if self.ble.connected() else "BT: libre")
             self.dirty = False
 
 

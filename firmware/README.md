@@ -26,7 +26,20 @@ Deux boutons : **SUIVANT** (menu suivant / annuler) et **OK** (valider).
   seul toutes les 5 minutes quand il voit un WiFi connu et n'est pas en trajet.
 - **Scanner badge** : affiche le numéro d'un badge, pour l'associer à une
   personne depuis l'app (onglet Boîtier).
-- **Etat** : trajets en attente, satellites GPS, Bluetooth, heure.
+- **Etat** : trajets en attente, km roulés sans badge, satellites GPS, Bluetooth.
+
+### Km comptés sans badge
+
+Le boîtier est alimenté par la voiture : dès qu'elle roule, il compte les km,
+même si personne n'a badgé. Hors trajet, ces km sont regroupés par segment :
+un segment se termine après `DRIVE_IDLE_S` secondes à l'arrêt (3 minutes par
+défaut, dans `config.py`) ou à la coupure du contact, puis il est envoyé au
+serveur comme les trajets. Ils servent à estimer le carburant restant, et
+sont à la charge de celui qui paie le plein suivant. Quand un trajet badgé
+démarre, c'est lui qui compte les km.
+
+Les trajets et ces segments gardent leur **parcours** (un point tous les
+200 m environ, 250 points au plus), visible dans l'app, onglet Trajets.
 
 Les frais ne se calculent plus sur le boîtier : les pleins se saisissent dans
 l'app et les soldes sont calculés par le serveur.
@@ -39,6 +52,8 @@ config_example.py    modèle de configuration (config.py n'est pas versionné)
 carpox/app.py        écrans et boucle principale (non bloquante)
 carpox/gps.py        lecture du GPS sur l'UART
 carpox/trip.py       trajet en cours, km via carpox_core.geo
+carpox/drive.py      km roulés sans badge
+carpox/track.py      parcours simplifié (points GPS)
 carpox/journal.py    trajets numérotés, stockés en JSON lines
 carpox/wifi.py       synchro WiFi
 carpox/ble.py        Bluetooth BLE (service Nordic UART)

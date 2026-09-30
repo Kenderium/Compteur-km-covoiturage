@@ -1,0 +1,12 @@
+{
+  "domain": "carpox",
+  "name": "CarpoX",
+  "codeowners": ["@LoicTumelaire"],
+  "config_flow": true,
+  "documentation": "https://github.com/Kenderium/Compteur-km-covoiturage/blob/main/home-assistant/README.md",
+  "integration_type": "hub",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/Kenderium/Compteur-km-covoiturage/issues",
+  "requirements": [],
+  "version": "1.0.0"
+}

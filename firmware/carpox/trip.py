@@ -1,6 +1,7 @@
-"""Enregistrement d'un trajet : conducteur, passagers et km mesurés au GPS."""
+"""Enregistrement d'un trajet : conducteur, passagers, km et parcours mesurés au GPS."""
 
 from carpox_core.geo import DistanceAccumulator
+from carpox.track import Track
 
 
 class TripRecorder:
@@ -14,6 +15,7 @@ class TripRecorder:
         self.active = False
         self.started_at = None
         self.acc = DistanceAccumulator(min_step_m=self.min_step_m)
+        self.track = Track()
 
     def set_driver(self, uid):
         self.driver = str(uid)
@@ -35,8 +37,9 @@ class TripRecorder:
         self.started_at = unix_ts
 
     def add_fix(self, lat, lon, t_s=None, hdop=None):
-        if self.active:
-            return self.acc.add(lat, lon, t_s, hdop)
+        if self.active and self.acc.add(lat, lon, t_s, hdop):
+            self.track.add(lat, lon)
+            return True
         return False
 
     @property
@@ -51,6 +54,7 @@ class TripRecorder:
             "total_m": self.acc.total_m,
             "points": self.acc.points,
             "started_at": self.started_at,
+            "track": self.track.copy(),
         }
 
     def restore(self, state):
@@ -60,6 +64,7 @@ class TripRecorder:
         self.acc.total_m = state.get("total_m", 0.0)
         self.acc.points = state.get("points", 0)
         self.started_at = state.get("started_at")
+        self.track = Track(points=state.get("track"))
         self.active = True
 
     def stop(self, unix_ts=None, temp_c=None):
@@ -72,6 +77,7 @@ class TripRecorder:
             "start": self.started_at,
             "end": unix_ts,
             "gps_points": self.acc.points,
+            "track": self.track.finish(),
         }
         if temp_c is not None:
             event["temp_c"] = round(temp_c, 1)
