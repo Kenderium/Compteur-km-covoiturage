@@ -20,18 +20,24 @@ de qui a payé chaque plein.
 2. **Synchronisation** : dès que le boîtier voit un WiFi connu (maison, partage
    de connexion), il envoie ses trajets au serveur. On peut aussi le faire via
    le téléphone en Bluetooth, depuis l'app.
-3. **Au plein** : celui qui paie saisit le prix dans l'app. Le plein est réparti
-   sur les trajets faits depuis le plein précédent.
+3. **Au plein** : celui qui paie saisit le prix (et, idéalement, les litres)
+   dans l'app. Le plein est réparti sur les trajets faits depuis le plein
+   précédent. L'app estime aussi le carburant restant.
 4. **Soldes** : l'app affiche qui doit combien à qui, avec le minimum de
    virements. On y note aussi les remboursements, péages et parkings.
+5. **Historique** : chaque trajet garde son parcours GPS, visible sur une carte.
+6. **Home Assistant** (facultatif) : chacun peut afficher ses soldes, les km et
+   le carburant estimé dans Home Assistant. Voir
+   [`home-assistant/README.md`](home-assistant/README.md).
 
 ### Règle de partage
 
 Chaque trajet coûte `km du trajet × prix au km du plein`, partagé à parts
 égales entre les personnes à bord, conducteur compris. Un trajet fait seul est
-payé par le conducteur ; un trajet à quatre coûte un quart à chacun. Si le
-compteur journalier indique plus de km que les trajets enregistrés, la
-différence reste à la charge de celui qui a payé le plein. Les calculs se font
+payé par le conducteur ; un trajet à quatre coûte un quart à chacun. Les km
+roulés sans que personne n'ait badgé (le boîtier les compte quand même), ou
+indiqués en plus par le compteur journalier, restent à la charge de celui qui
+a payé le plein. Les calculs se font
 au centime près, sans jamais perdre ni créer de centime.
 
 ## Organisation du dépôt
@@ -42,6 +48,7 @@ au centime près, sans jamais perdre ni créer de centime.
 | [`firmware/`](firmware/) | MicroPython pour le Raspberry Pi Pico W : écrans, GPS, badges, WiFi, Bluetooth. |
 | [`server/`](server/) | Serveur FastAPI + SQLite : comptes, synchro, calcul des soldes. Sert aussi l'app. |
 | [`app/`](app/) | App web installable (HTML/JS sans dépendance) : comptes, pleins, soldes, Bluetooth. |
+| [`custom_components/carpox/`](custom_components/carpox/) | Intégration Home Assistant (installable avec HACS), documentée dans [`home-assistant/`](home-assistant/). |
 | [`hardware/`](hardware/) | Brochage, schémas Fritzing, boîtier 3D, liste du matériel. |
 
 ## Démarrer
@@ -60,6 +67,9 @@ iPhone, où la synchro passe alors uniquement par le WiFi du boîtier.
 pip install -r server/requirements-dev.txt
 pytest
 ```
+
+Les tests de l'intégration Home Assistant se lancent à part (voir
+[`home-assistant/README.md`](home-assistant/README.md)).
 
 Les tests couvrent la logique de partage, le firmware (avec une simulation du
 matériel qui envoie de vraies trames GPS) et l'API du serveur.

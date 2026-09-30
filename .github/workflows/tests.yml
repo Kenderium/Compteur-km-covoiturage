@@ -21,3 +21,15 @@ jobs:
           for f in firmware/main.py firmware/config_example.py firmware/carpox/*.py core/carpox_core/*.py; do
             python -m mpy_cross -o /tmp/out.mpy "$f"
           done
+
+  home-assistant:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: pip install -r home-assistant/requirements-test.txt
+      - name: Tests de l'intégration Home Assistant
+        working-directory: home-assistant
+        run: pytest -q

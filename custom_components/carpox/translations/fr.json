@@ -1,0 +1,109 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "CarpoX",
+        "description": "Adresse de votre serveur CarpoX et jeton personnel. Créez le jeton dans l'app CarpoX, onglet Compte > Home Assistant. Il est en lecture seule.",
+        "data": {
+          "url": "Adresse du serveur",
+          "token": "Jeton personnel"
+        },
+        "data_description": {
+          "url": "Par exemple https://carpox.mondomaine.be",
+          "token": "Commence par cpx_"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Nouveau jeton CarpoX",
+        "description": "Le jeton pour {url} a été refusé (sans doute révoqué). Créez-en un nouveau dans l'app CarpoX.",
+        "data": {
+          "token": "Jeton personnel"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Jeton refusé. Vérifiez qu'il s'agit d'un jeton personnel (cpx_...) non révoqué.",
+      "cannot_connect": "Impossible de joindre le serveur CarpoX à cette adresse.",
+      "invalid_url": "L'adresse doit commencer par https:// (ou http:// sur le réseau local).",
+      "unknown": "Erreur inattendue, voir le journal de Home Assistant."
+    },
+    "abort": {
+      "already_configured": "Ce compte CarpoX est déjà ajouté.",
+      "reauth_successful": "Jeton mis à jour.",
+      "wrong_account": "Ce jeton appartient à un autre compte CarpoX."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "CarpoX",
+        "data": {
+          "scan_interval_min": "Mise à jour toutes les (minutes)"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "km_since_fill": {
+        "name": "Km depuis le plein"
+      },
+      "fuel_remaining": {
+        "name": "Carburant estimé"
+      },
+      "fuel_level": {
+        "name": "Niveau du réservoir estimé"
+      },
+      "range": {
+        "name": "Autonomie estimée"
+      },
+      "consumption": {
+        "name": "Consommation"
+      },
+      "total_km": {
+        "name": "Km totaux"
+      },
+      "untracked_km": {
+        "name": "Km sans badge"
+      },
+      "odometer": {
+        "name": "Compteur estimé"
+      },
+      "my_km": {
+        "name": "Mes km"
+      },
+      "my_balance": {
+        "name": "Mon solde"
+      },
+      "settlements": {
+        "name": "Remboursements à faire"
+      },
+      "last_sync": {
+        "name": "Dernière synchro"
+      },
+      "last_trip": {
+        "name": "Dernier trajet"
+      },
+      "trips": {
+        "name": "Trajets"
+      },
+      "balance": {
+        "name": "Solde total"
+      },
+      "owes": {
+        "name": "Je dois"
+      },
+      "owed": {
+        "name": "On me doit"
+      },
+      "total_my_km": {
+        "name": "Mes km (toutes voitures)"
+      }
+    },
+    "device_tracker": {
+      "position": {
+        "name": "Dernière position"
+      }
+    }
+  }
+}

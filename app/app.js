@@ -4,7 +4,7 @@
 "use strict";
 
 const view = document.getElementById("view");
-const state = { token: null, me: null, link: new BoxLink(), linkDevice: null };
+const state = { token: null, me: null, config: null, link: new BoxLink(), linkDevice: null };
 
 try { state.token = localStorage.getItem("carpox_token"); } catch { /* stockage indisponible */ }
 
@@ -27,7 +27,8 @@ function el(tag, attrs = {}, ...children) {
 }
 
 function render(...nodes) {
-  view.replaceChildren(...nodes);
+  // Même règles que el() : listes aplaties, valeurs vides ignorées.
+  view.replaceChildren(...nodes.flat(Infinity).filter((n) => n !== null && n !== undefined && n !== false));
 }
 
 function toast(message) {
@@ -46,6 +47,17 @@ function parseEuros(text) {
   const value = Number(String(text).replace(/\s/g, "").replace(",", "."));
   if (!Number.isFinite(value) || value <= 0) throw new Error("Montant invalide");
   return Math.round(value * 100);
+}
+
+function number(text) {
+  if (text === undefined || text === null || String(text).trim() === "") return null;
+  const value = Number(String(text).replace(/\s/g, "").replace(",", "."));
+  if (!Number.isFinite(value)) throw new Error("Nombre invalide : " + text);
+  return value;
+}
+
+function dateTime(unix) {
+  return unix ? new Date(unix * 1000).toLocaleString("fr-BE", { dateStyle: "short", timeStyle: "short" }) : "?";
 }
 
 function formData(form) {
@@ -93,13 +105,14 @@ function guarded(fn) {
 // --- routage ------------------------------------------------------------------
 
 async function route() {
-  const [page, id, tab] = location.hash.slice(1).split("/");
+  const [page, id, tab, sub] = location.hash.slice(1).split("/");
   document.getElementById("nav").hidden = !state.token;
   if (!state.token) return viewLogin();
   try {
     if (!state.me) state.me = await api("GET", "/api/me");
-    if (page === "car" && id) return await viewCar(id, tab || "soldes");
-    if (page === "account") return viewAccount();
+    if (!state.config) state.config = await api("GET", "/api/config");
+    if (page === "car" && id) return await viewCar(id, tab || "soldes", sub);
+    if (page === "account") return await viewAccount();
     return await viewCars();
   } catch (err) {
     render(el("p", {}, err.message));
@@ -143,7 +156,9 @@ function viewLogin() {
   draw();
 }
 
-function viewAccount() {
+async function viewAccount() {
+  const tokens = await api("GET", "/api/me/tokens");
+  const newToken = el("div");
   render(
     el("h1", {}, "Mon compte"),
     el("div", { class: "card" }, el("p", {}, state.me.display_name, " ", el("span", { class: "muted" }, "(" + state.me.username + ")"))),
@@ -159,6 +174,32 @@ function viewAccount() {
       el("label", { for: "new" }, "Nouveau mot de passe"),
       el("input", { id: "new", name: "new_password", type: "password", required: true, minlength: 10, autocomplete: "new-password" }),
       el("button", { type: "submit" }, "Changer")),
+    el("div", { class: "card" },
+      el("h2", {}, "Home Assistant et autres applications"),
+      el("p", { class: "muted" }, "Un jeton personnel permet à Home Assistant de lire vos voitures, vos km et vos soldes. Il ne peut rien modifier. Il n'expire pas : révoquez-le quand il ne sert plus."),
+      tokens.length === 0 && el("p", { class: "muted" }, "Aucun jeton pour l'instant."),
+      tokens.map((t) => el("div", { class: "row" },
+        el("span", {}, t.name, el("br"), el("span", { class: "muted" },
+          "créé le " + dateTime(t.created_at) + " · " + (t.last_used_at ? "utilisé le " + dateTime(t.last_used_at) : "jamais utilisé"))),
+        el("button", { class: "small secondary", onclick: guarded(async () => {
+          if (!confirm(`Révoquer « ${t.name} » ? Ce qui l'utilise cessera de fonctionner.`)) return;
+          await api("DELETE", `/api/me/tokens/${t.id}`);
+          route();
+        }) }, "Révoquer"))),
+      el("form", { onsubmit: guarded(async (e) => {
+        const t = await api("POST", "/api/me/tokens", formData(e.target));
+        e.target.reset();
+        newToken.replaceChildren(
+          el("p", {}, el("strong", {}, "Copiez ce jeton maintenant : il ne sera plus affiché."),
+            " Dans Home Assistant : Paramètres > Appareils et services > Ajouter une intégration > CarpoX, avec l'adresse ", el("strong", {}, location.origin), "."),
+          el("pre", { class: "secret" }, t.token),
+          el("button", { onclick: () => navigator.clipboard.writeText(t.token).then(() => toast("Copié")) }, "Copier"),
+          el("button", { class: "secondary", onclick: () => route() }, "C'est noté"));
+      }) },
+        el("label", { for: "t-name" }, "Nom du jeton"),
+        el("input", { id: "t-name", name: "name", required: true, maxlength: 40, placeholder: "Home Assistant maison" }),
+        el("button", { type: "submit" }, "Créer un jeton")),
+      newToken),
     el("button", { class: "secondary", onclick: guarded(async () => {
       await api("POST", "/api/auth/logout").catch(() => {});
       setToken(null);
@@ -205,17 +246,37 @@ function viewNewDevice(d) {
     el("a", { class: "button", href: "#car/" + d.id }, "Ouvrir la voiture"));
 }
 
-const TABS = [["soldes", "Soldes"], ["ajouter", "Ajouter"], ["journal", "Journal"], ["boitier", "Boîtier"], ["membres", "Membres"]];
+const TABS = [["soldes", "Soldes"], ["trajets", "Trajets"], ["ajouter", "Ajouter"], ["journal", "Journal"],
+  ["boitier", "Boîtier"], ["membres", "Membres"], ["voiture", "Voiture"]];
 
-async function viewCar(id, tab) {
+async function viewCar(id, tab, sub) {
   const device = await api("GET", "/api/devices/" + id);
   const header = [
     el("h1", {}, device.name),
     el("div", { class: "tabs" }, TABS.map(([key, label]) =>
       el("a", { href: `#car/${id}/${key}`, class: key === tab ? "active" : null }, label))),
   ];
-  const body = await ({ soldes: tabBalances, ajouter: tabAdd, journal: tabJournal, boitier: tabBox, membres: tabMembers }[tab] || tabBalances)(device);
+  const tabs = { soldes: tabBalances, trajets: tabTrips, ajouter: tabAdd, journal: tabJournal, boitier: tabBox,
+    membres: tabMembers, voiture: tabSettings };
+  const body = await (tabs[tab] || tabBalances)(device, sub);
   render(...header, ...[body].flat());
+}
+
+function fuelCard(f, device) {
+  if (f.remaining_l === null) {
+    return el("p", { class: "muted" }, f.last_fill === null ? "L'estimation du réservoir commence au prochain plein."
+      : (device.is_owner ? "Indiquez la taille du réservoir et la consommation dans l'onglet Voiture pour estimer le carburant restant."
+        : "Le propriétaire n'a pas encore indiqué la taille du réservoir."));
+  }
+  const bar = el("div");
+  bar.style.width = f.remaining_pct + "%";
+  return [
+    el("div", { class: "row" }, el("span", {}, "Carburant estimé"), el("strong", {}, `${f.remaining_l} L (${f.remaining_pct} %)`)),
+    el("div", { class: "gauge" }, bar),
+    el("div", { class: "row" }, el("span", {}, "Autonomie estimée"), el("span", {}, f.range_km + " km")),
+    el("div", { class: "row" }, el("span", {}, "Consommation"),
+      el("span", {}, f.consumption_l_100km + " L/100 km ", el("span", { class: "muted" }, f.consumption_source === "measured" ? "(mesurée)" : "(réglée)"))),
+  ];
 }
 
 async function tabBalances(device) {
@@ -233,7 +294,11 @@ async function tabBalances(device) {
           el("span", {}, b.name), el("span", { class: b.cents >= 0 ? "pos" : "neg" }, (b.cents > 0 ? "+" : "") + euros(b.cents))))),
     el("div", { class: "card" },
       el("h2", {}, "Depuis le dernier plein"),
-      el("p", {}, el("span", { class: "big" }, s.pending_km + " km"), " ", el("span", { class: "muted" }, `sur ${s.pending_trips} trajet(s), payés au prochain plein`))),
+      el("p", {}, el("span", { class: "big" }, s.km.since_fill + " km"), " ",
+        el("span", { class: "muted" }, `dont ${s.pending_km} km sur ${s.pending_trips} trajet(s) badgé(s), payés au prochain plein`)),
+      s.pending_untracked_km > 0 && el("p", { class: "muted" },
+        `${s.pending_untracked_km} km roulés sans badge : ils seront à la charge de celui qui paie le prochain plein.`),
+      fuelCard(s.fuel, device)),
     el("div", { class: "card" },
       el("h2", {}, "Km parcourus"),
       s.km_by_person.map((p) => el("div", { class: "row" }, el("span", {}, p.name), el("span", {}, p.km + " km")))),
@@ -257,12 +322,15 @@ async function tabAdd(device) {
   return [
     el("form", { class: "card", onsubmit: submit((d) => ({
       type: "fuel", amount_cents: parseEuros(d.amount), payer: d.payer,
-      distance_km: d.distance_km ? Number(d.distance_km.replace(",", ".")) : undefined, note: d.note || undefined,
+      distance_km: number(d.distance_km) ?? undefined, litres: number(d.litres) ?? undefined, note: d.note || undefined,
     })) },
       el("h2", {}, "Plein d'essence"),
       el("p", { class: "muted" }, "Le plein est réparti sur les trajets faits depuis le plein précédent. Synchronisez le boîtier avant, pour que tous les trajets soient comptés."),
       el("label", { for: "amount" }, "Prix payé (€)"),
       el("input", { id: "amount", name: "amount", inputmode: "decimal", required: true, placeholder: "84,18" }),
+      el("label", { for: "litres" }, "Litres mis"),
+      el("input", { id: "litres", name: "litres", inputmode: "decimal", placeholder: "42,5" }),
+      el("p", { class: "muted" }, "Facultatif mais conseillé : avec les litres, CarpoX mesure la consommation réelle. Faites le plein complet."),
       el("label", { for: "payer" }, "Payé par"), personSelect("payer", people, me),
       el("label", { for: "distance_km" }, "Km au compteur journalier (facultatif)"),
       el("input", { id: "distance_km", name: "distance_km", inputmode: "decimal", placeholder: "750" }),
@@ -293,14 +361,15 @@ async function tabAdd(device) {
   ];
 }
 
-const EVENT_LABELS = { trip: "Trajet", fuel: "Plein", expense: "Frais", payment: "Remboursement" };
+const EVENT_LABELS = { trip: "Trajet", drive: "Km sans badge", fuel: "Plein", expense: "Frais", payment: "Remboursement" };
 
 async function tabJournal(device) {
   const events = await api("GET", `/api/devices/${device.id}/events?limit=200`);
   if (events.length === 0) return el("p", { class: "muted" }, "Rien pour l'instant. Les trajets arrivent quand le boîtier se synchronise.");
   return el("div", { class: "card" }, events.map((e) => {
     const d = e.data;
-    const what = e.type === "trip" ? `${d.km.toFixed(1)} km` : euros(d.amount_cents);
+    const isKm = e.type === "trip" || e.type === "drive";
+    const what = isKm ? `${d.km.toFixed(1)} km` : euros(d.amount_cents) + (d.litres ? ` · ${d.litres} L` : "");
     const who = e.type === "trip" ? e.people.join(", ") : e.label + (d.note ? " · " + d.note : "");
     const when = d.end || d.start || e.created_at;
     return el("div", { class: "row" },
@@ -312,6 +381,63 @@ async function tabJournal(device) {
         route();
       }) }, "Supprimer"));
   }));
+}
+
+// --- historique des trajets ------------------------------------------------------
+
+async function tabTrips(device, tripId) {
+  if (tripId) return await tripDetail(device, tripId);
+  const trips = await api("GET", `/api/devices/${device.id}/trips?limit=100`);
+  if (trips.length === 0) return el("p", { class: "muted" }, "Aucun trajet pour l'instant. Ils arrivent quand le boîtier se synchronise.");
+  return el("div", { class: "card" }, trips.map((t) => el("a", { class: "row", href: `#car/${device.id}/trajets/${t.id}` },
+    el("span", {}, el("strong", {}, `${t.km.toFixed(1)} km`), " · ", t.type === "drive" ? "sans badge" : t.people.join(", "), el("br"),
+      el("span", { class: "muted" }, dateTime(t.start || t.end || t.received_at))),
+    el("span", { class: "muted" }, t.track_points && t.track_visible ? "parcours ›" : ""))));
+}
+
+async function tripDetail(device, tripId) {
+  const t = await api("GET", `/api/devices/${device.id}/trips/${encodeURIComponent(tripId)}`);
+  const map = el("div");
+  const card = el("div", { class: "card" },
+    el("h2", {}, t.type === "drive" ? "Km roulés sans badge" : "Trajet"),
+    el("div", { class: "row" }, el("span", {}, "Distance"), el("strong", {}, t.km.toFixed(1) + " km")),
+    el("div", { class: "row" }, el("span", {}, "Départ"), el("span", {}, dateTime(t.start))),
+    el("div", { class: "row" }, el("span", {}, "Arrivée"), el("span", {}, dateTime(t.end))),
+    t.type === "trip" && el("div", { class: "row" }, el("span", {}, "À bord"), el("span", {}, t.people.join(", "))),
+    t.track.length ? map : el("p", { class: "muted" }, !t.track_visible
+      ? "Le parcours n'est visible que par le propriétaire de la voiture et les personnes à bord."
+      : "Pas de parcours GPS pour ce trajet."));
+  if (t.track.length) requestAnimationFrame(() => drawRoute(map, t.track, state.config.map_tiles));
+  return [card, el("a", { class: "button", href: `#car/${device.id}/trajets` }, "Tous les trajets")];
+}
+
+// --- réglages de la voiture ------------------------------------------------------
+
+function tabSettings(device) {
+  const s = device.settings;
+  const field = (id, label, value, hint) => [
+    el("label", { for: id }, label),
+    el("input", { id, name: id, inputmode: "decimal", value: value ?? "", disabled: !device.is_owner }),
+    hint && el("p", { class: "muted" }, hint)];
+  return el("form", { class: "card", onsubmit: guarded(async (e) => {
+    const d = formData(e.target);
+    await api("PATCH", `/api/devices/${device.id}`, {
+      name: d.name, tank_l: number(d.tank_l), consumption_l_100km: number(d.consumption_l_100km),
+      odometer_start_km: number(d.odometer_start_km),
+    });
+    toast("Réglages enregistrés");
+    route();
+  }) },
+    el("h2", {}, "Réglages de la voiture"),
+    !device.is_owner && el("p", { class: "muted" }, "Seul le propriétaire peut modifier ces réglages."),
+    el("label", { for: "name" }, "Nom"),
+    el("input", { id: "name", name: "name", required: true, maxlength: 40, value: device.name, disabled: !device.is_owner }),
+    field("tank_l", "Capacité du réservoir (L)", s.tank_l),
+    field("consumption_l_100km", "Consommation moyenne (L/100 km)", s.consumption_l_100km,
+      "Sert tant que les pleins n'indiquent pas les litres. Ensuite, la consommation mesurée prend le relais."),
+    field("odometer_start_km", "Compteur de la voiture à l'installation du boîtier (km)", s.odometer_start_km,
+      "Facultatif : permet d'estimer le kilométrage total de la voiture."),
+    device.is_owner && el("button", { type: "submit" }, "Enregistrer"));
 }
 
 // --- Bluetooth ----------------------------------------------------------------
@@ -366,6 +492,7 @@ function tabBox(device) {
       el("div", { class: "row" }, el("span", {}, "Trajets enregistrés"), el("strong", {}, s.last_seq)),
       el("div", { class: "row" }, el("span", {}, "Pas encore envoyés"), el("strong", {}, s.pending)),
       s.trip && el("div", { class: "row" }, el("span", {}, s.trip.active ? "Trajet en cours" : "Trajet en préparation"), el("strong", {}, s.trip.km + " km")),
+      s.drive_km ? el("div", { class: "row" }, el("span", {}, "Km sans badge (en cours)"), el("strong", {}, s.drive_km + " km")) : null,
     ].filter(Boolean));
   }).catch((err) => status.replaceChildren(el("p", {}, err.message)));
 

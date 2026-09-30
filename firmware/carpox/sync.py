@@ -6,10 +6,13 @@ Le même format sert pour la synchro WiFi directe et pour le relais via l'app.
 """
 
 BATCH_SIZE = 50
+# Les parcours GPS pèsent quelques Ko : on limite aussi la taille d'un envoi
+# pour tenir dans la mémoire du Pico W.
+BATCH_BYTES = 12000
 
 
 def build_payload(device_id, journal, limit=BATCH_SIZE):
-    events = journal.unsynced(limit)
+    events = journal.unsynced(limit, BATCH_BYTES)
     return {"device_id": device_id, "events": events, "last_seq": journal.last_seq()}
 
 

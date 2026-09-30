@@ -2,8 +2,9 @@
 
 - Mots de passe : scrypt (bibliothèque standard), sel aléatoire par
   utilisateur, comparaison en temps constant.
-- Jetons de session et de boîtier : aléatoires, seule leur empreinte SHA-256
-  est stockée en base (une fuite de la base ne donne pas accès aux comptes).
+- Jetons de session, de boîtier et personnels (Home Assistant) : aléatoires,
+  seule leur empreinte SHA-256 est stockée en base (une fuite de la base ne
+  donne pas accès aux comptes).
 """
 
 import base64
@@ -48,6 +49,14 @@ DUMMY_HASH = hash_password(secrets.token_urlsafe(16))
 
 def new_token():
     return secrets.token_urlsafe(32)
+
+
+API_TOKEN_PREFIX = "cpx_"
+
+
+def new_api_token():
+    """Jeton personnel : préfixe reconnaissable (utile si on le retrouve dans un fichier)."""
+    return API_TOKEN_PREFIX + secrets.token_urlsafe(32)
 
 
 def token_hash(token):
